@@ -1,9 +1,9 @@
 ---
 title: ワタリEA
 slug: watari-ea
-summary: イベントの告知と記録を、ひとつのGit管理された静的サイトへまとめる取り組み。
-origin: 告知がSNSへ流れ、開催後の記録が残りにくい状況から始まった。
-intention: イベントの前後を通して情報へ辿り着ける、継続可能なアーカイブへ変える。
+summary: イベント告知、開催記録、管理画面、GitOps運用をひとつにまとめた静的イベントサイト基盤。
+origin: 告知がSNSへ流れ、開催後の記録も分散する状況から始まった。
+intention: 開催前後を通して情報へ辿り着ける、継続可能なイベントアーカイブへ変える。
 status: operation
 interfaces:
   - creative-to-engineering
@@ -14,7 +14,9 @@ fields:
 technologies:
   - Astro
   - TypeScript
+  - React
   - Cloudflare Pages
+  - Cloudflare Pages Functions
   - GitHub Actions
 roles:
   - 企画
@@ -25,15 +27,17 @@ roles:
 featured: true
 order: 10
 startedAt: "2025"
+repositoryUrl: https://github.com/albasimia/catharsiswatari-events
 websiteUrl: https://catharsiswatari-events.pages.dev/
 relatedProjects:
   - yasai-toretore
   - albasimia-ssg-core
+draft: false
 ---
 
 ## Origin
 
-イベントの告知はSNS上で流れやすく、開催後の情報も複数の投稿へ分散していました。告知と記録を同じ場所に残し、次の開催や別の企画へ経験をつなげる必要がありました。
+イベント告知はSNS上で流れやすく、開催後の情報も複数の投稿へ分散していました。告知と記録を同じ場所に残し、次の開催や別の企画へ経験をつなげる必要がありました。
 
 ## Ideal Experience
 
@@ -44,7 +48,9 @@ relatedProjects:
 - Gitを正本として履歴を残せること
 - 静的配信で運用負荷を抑えること
 - イベントごとの表現を許容しつつ、情報構造を揃えること
-- スマートフォンで告知情報を読みやすいこと
+- 非技術者でも管理画面から更新できること
+- 管理画面と公開画面の責務を分けること
+- モバイルで読みやすいこと
 
 ## Interfaces
 
@@ -52,15 +58,15 @@ Creative Identityが現場でイベントを企画・観測し、Engineering Ide
 
 ## Decisions
 
-SNSだけに情報を置かず、Astroによる静的サイトとGit管理のコンテンツを採用しました。イベント固有の表現と、共通のデータ構造を分離しています。
+SNSだけに情報を置かず、Astroによる静的サイトとGit管理のコンテンツを採用しました。公開ページは静的HTML、管理画面はReact SPA、管理APIはCloudflare Pages Functionsとして分離しています。
 
 ## Implementation
 
-Astro Content Collectionsでイベントデータを検証し、GitHub ActionsとCloudflare Pagesで配信します。管理機能もデータベースを正本にせず、GitHub上のファイルを編集する構成です。
+Astro Content Collectionsでイベントデータを検証し、GitHub ActionsとCloudflare Pagesで配信します。管理画面からGitHub上のMarkdown、YAML、画像を更新し、差分確認、競合検知、Actions進行状況の確認まで行える構成です。
 
 ## Verification
 
-実イベントの告知・開催記録を継続して掲載しながら、モバイル表示、テーマ、更新手順を検証しています。
+実イベントの告知・開催記録を継続して掲載しながら、モバイル表示、テーマ、更新手順、管理画面、GitHub連携を検証しています。
 
 ## Reconsideration
 
@@ -72,4 +78,4 @@ Astro Content Collectionsでイベントデータを検証し、GitHub Actions�
 
 ## Learning
 
-共通化すべきものは見た目ではなく、データ検証、公開、更新といった責務であると分かりました。
+共通化すべきものは見た目ではなく、データ検証、公開、更新、認証、Git操作といった責務であると分かりました。

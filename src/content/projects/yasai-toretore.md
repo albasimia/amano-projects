@@ -13,17 +13,20 @@ fields:
   - Agriculture
 technologies:
   - Event Design
-  - Web
+  - Astro
 roles:
   - 企画
   - 主催
   - Web制作
+  - 広報設計
 featured: true
 order: 20
 startedAt: "2026"
 websiteUrl: https://catharsiswatari-events.pages.dev/events/yasai-toretore-2026/
 relatedProjects:
   - watari-ea
+  - kaka-see
+draft: false
 ---
 
 ## Origin
@@ -38,6 +41,7 @@ DJイベントで得た場づくりの経験と、農業を通して触れた収
 
 - 会場の通常運用と両立すること
 - 音楽、酒、野菜のどれか一つを知らなくても参加できること
+- 生野菜の持ち帰りなど、会場ルールと食品提供条件を守ること
 - 告知上の面白さだけでなく、当日の体験として成立すること
 
 ## Interfaces
@@ -46,16 +50,20 @@ Creative Identityが現場の体験を構想し、Engineering Identityが告知�
 
 ## Decisions
 
-詳細な判断記録は開催準備と検証後に追記します。
+野菜は会場で調理提供せず、生の持ち帰りを基本としました。イベント情報はワタリEA上で公開し、出演者紹介とタイムテーブルを段階的に更新します。
 
 ## Implementation
 
-イベントの企画と、ワタリEA上の告知ページを制作しています。
+イベント企画、出演者調整、フライヤー制作、告知計画、Webページ制作を並行しています。
 
 ## Verification
 
-開催後、参加者の動きと運用結果を記録します。
+開催後、参加者の動き、野菜の受け取られ方、告知導線、会場運用を記録します。
+
+## Social Connection
+
+DJコミュニティ、友人コミュニティ、近隣住民、農業を接続する小さな共同体の場として設計しています。
 
 ## Learning
 
-TODO: 開催後に学びを追記します。
+開催後に、異なる入口を持つ参加者同士がどのように交わったかを記録します。

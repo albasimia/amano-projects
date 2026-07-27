@@ -1,0 +1,45 @@
+---
+title: House Tect Corporate Website
+slug: housetect-corporate
+summary: 住宅修繕、太陽光、害虫獣駆除など異なる事業を、暮らしの困りごとを軸に整理した企業サイト。
+origin: 性質の異なる住宅関連サービスを、利用者に分かりやすい分類へ整理する必要があった。
+intention: 個別サービスを企業の信頼性と接続し、困りごとから適切な情報へ辿れる導線をつくる。
+status: completed
+interfaces:
+  - engineering
+fields:
+  - Client Work
+  - Corporate Website
+  - Service Design
+technologies:
+  - WordPress
+  - PHP
+  - JavaScript
+  - Docker
+roles:
+  - 要件整理
+  - 情報設計
+  - 実装
+  - 公開
+featured: false
+order: 210
+websiteUrl: https://housetect.co.jp/
+relatedProjects: []
+draft: true
+---
+
+## Origin
+
+リフォーム、蓄電池、太陽光、害虫獣駆除、防除用品、地震対策など、異なるサービスを一つのサイトで扱う必要がありました。
+
+## Ideal Experience
+
+利用者が自分の困りごとから入り、必要なサービスと企業情報へ自然に辿れる状態を目指しました。
+
+## Role
+
+フリーランスとして実務制作を担当しました。
+
+## Publication Note
+
+現行サイトには制作後のリニューアルや更新が含まれる可能性があるため、担当時点の範囲を確認してから公開します。

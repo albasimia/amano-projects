@@ -27,6 +27,7 @@ startedAt: "2026"
 repositoryUrl: https://github.com/albasimia/albasimia-ssg-core
 relatedProjects:
   - watari-ea
+draft: false
 ---
 
 ## Origin
@@ -44,10 +45,6 @@ relatedProjects:
 - 固有名詞や業務ロジックを持ち込まないこと
 - 公開APIを小さく保つこと
 
-## Interfaces
-
-Engineering Identityが、複数Projectで繰り返し現れる責務を抽出しています。
-
 ## Decisions
 
 root exportを設けず、機能境界ごとのsubpathを公開しています。consumerへ不要なビルド依存を要求しないため、CSSやLayoutは生成済み成果物として配布します。
@@ -59,14 +56,6 @@ Site Meta、sitemap、content source、Git content、deployment status、BaseLay
 ## Verification
 
 packed packageとGitHub tagの双方を、一時consumerへインストールしてAstro buildを検証しています。
-
-## Reconsideration
-
-抽象化を先行させず、ワタリEAとアマノPJの実利用結果から公開APIを見直します。
-
-## Social Connection
-
-静的サイトを小さく保ちながら、更新可能で継承しやすい制作基盤にすることを目指しています。
 
 ## Learning
 
