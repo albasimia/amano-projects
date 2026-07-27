@@ -1,0 +1,106 @@
+---
+import ProjectCard from "../components/ProjectCard.astro";
+import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import Container from "albasimia-ssg-core/components/Container.astro";
+import Section from "albasimia-ssg-core/components/Section.astro";
+import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { getPublishedProjects } from "../lib/projects";
+
+const projects = await getPublishedProjects();
+const featuredProjects = projects.filter(({ data }) => data.featured);
+
+const process = [
+  { number: "01", label: "OBSERVE", title: "心が動く／課題を発見する", description: "現実の場へ入り、既存の仕組みでは拾われない違和感や可能性を観測する。" },
+  { number: "02", label: "STRUCTURE", title: "体験と成立条件を構造化する", description: "どうなれば自然かを先に描き、必要な条件、境界、技術を整理する。" },
+  { number: "03", label: "IMPLEMENT & VERIFY", title: "実装し、現実世界で検証する", description: "領域を越えて形にし、実際の利用と運用から前提を問い直す。" },
+];
+
+const identities = [
+  { label: "LEGAL IDENTITY", name: "天野 浩平", description: "社会と契約する入口" },
+  { label: "CREATIVE IDENTITY", name: "ｶﾀﾙｼｽﾜﾀﾘ", description: "現実を経験し、課題を観測する入口" },
+  { label: "ENGINEERING IDENTITY", name: "albasimia", description: "課題を構造化し、実装する入口" },
+];
+---
+
+<SiteLayout
+  pageClass="home-page"
+  meta={{ titleMode: "absolute", title: "AMANO PROJECT", canonicalPath: "/" }}
+>
+  <section class="home-hero" aria-labelledby="home-title">
+    <Container class="home-hero__inner">
+      <div class="home-hero__meta">
+        <p>AMANO PROJECT</p>
+        <p>Web Engineer / Frontend Developer</p>
+      </div>
+      <h1 id="home-title">
+        <span>作らなくていいなら</span>
+        <strong>作りたくない。</strong>
+        <span>でも作らずには</span>
+        <strong>いられない。</strong>
+      </h1>
+      <div class="home-hero__footer">
+        <p>現実の中で心が動いたことから課題を見つけ、<br />体験を構想し、成立条件を整理し、<br />必要な技術と領域を越境して実装する。</p>
+        <p>アマノPJは、その過程を記録するポートフォリオです。</p>
+        <div class="home-hero__links">
+          <ArrowLink href="/projects/">PROJECTS</ArrowLink>
+          <ArrowLink href="/about/">ABOUT</ArrowLink>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <Section labelledby="process-title">
+    <Container>
+      <SectionHeader eyebrow="PROCESS" title="Experience becomes structure." id="process-title" description="制作は、成果物ではなく循環として続いていく。" />
+      <ol class="process-list">
+        {process.map((item) => (
+          <li>
+            <span class="process-list__number">{item.number}</span>
+            <p class="eyebrow">{item.label}</p>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </li>
+        ))}
+      </ol>
+      <ArrowLink href="/about/">VIEW THE FULL PROCESS</ArrowLink>
+    </Container>
+  </Section>
+
+  <Section class="section--muted" labelledby="featured-title">
+    <Container>
+      <SectionHeader eyebrow="FEATURED PROJECTS" title="課題と制作過程" id="featured-title" description="完成物の裏側にある、発端、判断、実装、検証を辿る。" />
+      <div class="project-list project-list--featured">
+        {featuredProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+      <ArrowLink href="/projects/">ALL PROJECTS</ArrowLink>
+    </Container>
+  </Section>
+
+  <Section labelledby="identities-title">
+    <Container>
+      <SectionHeader eyebrow="IDENTITIES" title="One person, different interfaces." id="identities-title" />
+      <div class="identity-grid">
+        {identities.map((identity) => (
+          <article>
+            <p class="eyebrow">{identity.label}</p>
+            <h3>{identity.name}</h3>
+            <p>{identity.description}</p>
+          </article>
+        ))}
+      </div>
+      <ArrowLink href="/about/">ABOUT THESE INTERFACES</ArrowLink>
+    </Container>
+  </Section>
+
+  <Section class="section--muted" labelledby="experience-title">
+    <Container class="experience-intro">
+      <SectionHeader eyebrow="EXPERIENCE" title="現場と実装を往復する。" id="experience-title" />
+      <div class="experience-intro__body">
+        <p>この制作方法は、<br />個人活動だけで生まれたものではありません。</p>
+        <p>Web制作、VR、業務システム、CMS、<br />クライアントとの要件定義、チーム運用改善を通して、<br />現場と実装を往復する方法として形成されました。</p>
+        <ArrowLink href="/experience/">EXPERIENCE</ArrowLink>
+      </div>
+    </Container>
+  </Section>
+</SiteLayout>

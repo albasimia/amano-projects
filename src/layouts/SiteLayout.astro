@@ -1,0 +1,37 @@
+---
+import BaseLayout from "albasimia-ssg-core/layouts/BaseLayout.astro";
+import type { PageMeta } from "albasimia-ssg-core/site-meta";
+import SkipLink from "albasimia-ssg-core/components/SkipLink.astro";
+import ThemeBoot from "albasimia-ssg-core/components/ThemeBoot.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { site } from "../site.js";
+import "../styles/global.css";
+
+interface Props {
+  meta?: PageMeta;
+  pageClass?: string;
+}
+
+const { meta, pageClass } = Astro.props;
+---
+
+<BaseLayout site={site} meta={meta}>
+  <ThemeBoot slot="head" storageKey="amano-project-theme" />
+  <script slot="head" is:inline>
+    document.addEventListener("asc:theme-change", (event) => {
+      const resolved = event.detail?.resolved;
+      if (resolved !== "light" && resolved !== "dark") return;
+      const color = resolved === "dark" ? "#171717" : "#f4f2ec";
+      document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+        meta.setAttribute("content", color);
+      });
+    });
+  </script>
+  <SkipLink label="本文へ移動" />
+  <SiteHeader />
+  <main id="main-content" class={pageClass}>
+    <slot />
+  </main>
+  <SiteFooter />
+</BaseLayout>

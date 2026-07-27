@@ -1,0 +1,26 @@
+---
+import ProjectCard from "../../components/ProjectCard.astro";
+import Container from "albasimia-ssg-core/components/Container.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { getPublishedProjects } from "../../lib/projects";
+
+const projects = await getPublishedProjects();
+---
+
+<SiteLayout
+  pageClass="index-page"
+  meta={{ title: "Projects", description: "課題の発見から検証まで、制作過程を記録したProject一覧。", canonicalPath: "/projects/" }}
+>
+  <header class="page-hero">
+    <Container>
+      <p class="eyebrow">PROJECT INDEX</p>
+      <h1>PROJECTS</h1>
+      <p>作品の一覧ではなく、課題と制作過程への索引。</p>
+    </Container>
+  </header>
+  <Container>
+    <div class="project-list">
+      {projects.map((project) => <ProjectCard project={project} headingLevel="h2" />)}
+    </div>
+  </Container>
+</SiteLayout>

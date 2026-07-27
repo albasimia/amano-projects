@@ -1,0 +1,14 @@
+---
+import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import Container from "albasimia-ssg-core/components/Container.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+---
+
+<SiteLayout pageClass="not-found-page" meta={{ title: "Page Not Found", robots: ["noindex", "nofollow"] }}>
+  <Container>
+    <p class="eyebrow">ERROR 404</p>
+    <h1>このページは、<br />まだ存在しない。</h1>
+    <p>URLが変更されたか、ページが削除された可能性があります。</p>
+    <ArrowLink href="/">BACK TO HOME</ArrowLink>
+  </Container>
+</SiteLayout>

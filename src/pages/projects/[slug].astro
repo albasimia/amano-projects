@@ -1,0 +1,92 @@
+---
+import { render } from "astro:content";
+import ProjectCard from "../../components/ProjectCard.astro";
+import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import Container from "albasimia-ssg-core/components/Container.astro";
+import MetaList from "albasimia-ssg-core/components/MetaList.astro";
+import Tag from "albasimia-ssg-core/components/Tag.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { getPublishedProjects, interfaceLabels, projectPeriod, statusLabels, type ProjectEntry } from "../../lib/projects";
+
+export async function getStaticPaths() {
+  const projects = await getPublishedProjects();
+  return projects.map((project) => ({ params: { slug: project.data.slug }, props: { project, projects } }));
+}
+
+interface Props {
+  project: ProjectEntry;
+  projects: ProjectEntry[];
+}
+
+const { project, projects } = Astro.props;
+const { Content } = await render(project);
+const period = projectPeriod(project);
+const related = project.data.relatedProjects
+  .map((slug) => projects.find(({ data }) => data.slug === slug))
+  .filter((entry): entry is ProjectEntry => entry !== undefined);
+const facts: Array<{ term: string; value: string | string[] }> = [];
+if (period) facts.push({ term: "Period", value: period });
+facts.push({ term: "Status", value: statusLabels[project.data.status] });
+if (project.data.roles.length) facts.push({ term: "Role", value: project.data.roles });
+facts.push({ term: "Field", value: project.data.fields });
+if (project.data.technologies.length) facts.push({ term: "Technology", value: project.data.technologies });
+---
+
+<SiteLayout
+  pageClass="project-page"
+  meta={{
+    title: project.data.title,
+    description: project.data.summary,
+    canonicalPath: `/projects/${project.data.slug}/`,
+    openGraph: { type: "article" },
+  }}
+>
+  <article>
+    <header class="project-hero">
+      <Container>
+        <ArrowLink href="/projects/">ALL PROJECTS</ArrowLink>
+        <div class="project-hero__tags">
+          <Tag tone="accent">{statusLabels[project.data.status]}</Tag>
+          {project.data.interfaces.map((item) => <Tag>{interfaceLabels[item]}</Tag>)}
+        </div>
+        <h1>{project.data.title}</h1>
+        <p class="project-hero__summary">{project.data.summary}</p>
+      </Container>
+    </header>
+
+    <Container class="project-overview">
+      <div>
+        <p class="eyebrow">OVERVIEW</p>
+        <h2>{project.data.intention}</h2>
+      </div>
+      <MetaList items={facts} />
+      {(project.data.websiteUrl || project.data.repositoryUrl) && (
+        <div class="project-overview__links">
+          {project.data.websiteUrl && <ArrowLink href={project.data.websiteUrl}>WEBSITE</ArrowLink>}
+          {project.data.repositoryUrl && <ArrowLink href={project.data.repositoryUrl}>REPOSITORY</ArrowLink>}
+        </div>
+      )}
+    </Container>
+
+    <Container size="prose" class="project-prose">
+      <Content />
+    </Container>
+
+    <Container class="project-facts">
+      <p class="eyebrow">FACTS</p>
+      <MetaList items={facts} />
+    </Container>
+
+    {related.length > 0 && (
+      <section class="related-projects" aria-labelledby="related-title">
+        <Container>
+          <p class="eyebrow">RELATED PROJECTS</p>
+          <h2 id="related-title">経験は、次の制作へつながる。</h2>
+          <div class="project-list">
+            {related.map((entry) => <ProjectCard project={entry} />)}
+          </div>
+        </Container>
+      </section>
+    )}
+  </article>
+</SiteLayout>

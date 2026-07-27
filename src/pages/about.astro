@@ -1,0 +1,78 @@
+---
+import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import Container from "albasimia-ssg-core/components/Container.astro";
+import Section from "albasimia-ssg-core/components/Section.astro";
+import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const identities = [
+  { number: "01", label: "LEGAL IDENTITY", name: "天野 浩平", description: "契約、就職、職務経歴など、社会制度上の本人として接続するInterface。" },
+  { number: "02", label: "CREATIVE IDENTITY", name: "ｶﾀﾙｼｽﾜﾀﾘ", description: "DJ、イベント、農業、フィールドワークを通して、現実の場へ入り、体験と課題を観測するInterface。" },
+  { number: "03", label: "ENGINEERING IDENTITY", name: "albasimia", description: "観測した課題を構造化し、Web、IoT、Tool、Architectureとして実装するInterface。" },
+];
+
+const process = [
+  ["心が動く", "まだ課題と呼ばれていない違和感や可能性を観測する。"],
+  ["理想の体験を構想する", "問題を並べる前に、どうなれば自然かを描く。"],
+  ["成立条件を構造化する", "体験を支える境界、制約、情報、運用を整理する。"],
+  ["必要な領域へ越境する", "肩書きではなく、成立に必要な技術と現場を選ぶ。"],
+  ["実装する", "考えた構造を、人が触れられる具体へ変換する。"],
+  ["実世界で検証する", "利用者、現場、運用から、設計時には見えなかった事実を得る。"],
+  ["前提を問い直す", "結果を成功・失敗だけで閉じず、問いそのものを更新する。"],
+  ["社会へ接続する", "誰が使い、続け、引き継げるのかまで設計する。"],
+  ["次の制作へ蓄積する", "経験を再利用可能な構造へ変え、別のProjectへ持ち越す。"],
+];
+
+const roots = ["映像", "Web技術", "インタラクティブ表現", "業務システム", "要件定義と運用設計", "現実世界を含むProject"];
+---
+
+<SiteLayout pageClass="about-page" meta={{ title: "About", description: "天野浩平、ｶﾀﾙｼｽﾜﾀﾘ、albasimia。異なるInterfaceを通じた制作思想。", canonicalPath: "/about/" }}>
+  <header class="page-hero page-hero--statement">
+    <Container>
+      <p class="eyebrow">ABOUT</p>
+      <h1>作ること自体を、<br />目的にはしない。</h1>
+      <p>現実の中で心が動き、<br />既存の仕組みでは成立しない体験が見えた時、<br />必要な構造を考え、実装します。</p>
+    </Container>
+  </header>
+
+  <Section class="section--muted" labelledby="interfaces-title">
+    <Container>
+      <SectionHeader eyebrow="IDENTITIES AS INTERFACES" title="同じ人間が、異なる入口から現実へ接続する。" id="interfaces-title" />
+      <div class="identity-list">
+        {identities.map((identity) => (
+          <article>
+            <span>{identity.number}</span>
+            <div><p class="eyebrow">{identity.label}</p><h3>{identity.name}</h3></div>
+            <p>{identity.description}</p>
+          </article>
+        ))}
+      </div>
+      <p class="identity-statement">These are not different personas,<br />but different interfaces to the same person.</p>
+    </Container>
+  </Section>
+
+  <Section labelledby="full-process-title">
+    <Container>
+      <SectionHeader eyebrow="PROCESS" title="経験を、次の制作へ変換する。" id="full-process-title" />
+      <ol class="full-process">
+        {process.map(([title, description], index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{title}</h3>
+            <p>{description}</p>
+          </li>
+        ))}
+      </ol>
+    </Container>
+  </Section>
+
+  <Section class="section--muted" labelledby="roots-title">
+    <Container>
+      <SectionHeader eyebrow="ROOTS" title="制作の領域は、連続している。" id="roots-title" />
+      <ol class="roots-list">
+        {roots.map((root, index) => <li><span>{String(index + 1).padStart(2, "0")}</span>{root}</li>)}
+      </ol>
+      <ArrowLink href="/experience/">EXPERIENCE</ArrowLink>
+    </Container>
+  </Section>
+</SiteLayout>

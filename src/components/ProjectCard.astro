@@ -1,0 +1,31 @@
+---
+import type { ProjectEntry } from "../lib/projects";
+import { interfaceLabels, statusLabels } from "../lib/projects";
+import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import Tag from "albasimia-ssg-core/components/Tag.astro";
+
+interface Props {
+  project: ProjectEntry;
+  headingLevel?: "h2" | "h3";
+}
+
+const { project, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+---
+
+<article class="project-card">
+  <div class="project-card__index" aria-hidden="true">{String(project.data.order).padStart(2, "0")}</div>
+  <div class="project-card__content">
+    <div class="project-card__tags">
+      <Tag tone="accent">{statusLabels[project.data.status]}</Tag>
+      {project.data.interfaces.map((item) => <Tag>{interfaceLabels[item]}</Tag>)}
+    </div>
+    <Heading><a href={`/projects/${project.data.slug}/`}>{project.data.title}</a></Heading>
+    <p class="project-card__origin">{project.data.origin}</p>
+    <p>{project.data.intention}</p>
+    <div class="project-card__fields" aria-label="分野">
+      {project.data.fields.map((field) => <span>{field}</span>)}
+    </div>
+    <ArrowLink href={`/projects/${project.data.slug}/`}>VIEW PROJECT</ArrowLink>
+  </div>
+</article>

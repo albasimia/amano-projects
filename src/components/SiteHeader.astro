@@ -1,0 +1,31 @@
+---
+import ThemeSwitcher from "albasimia-ssg-core/components/ThemeSwitcher.astro";
+
+const pathname = Astro.url.pathname;
+const navigation = [
+  { href: "/projects/", label: "PROJECTS", current: pathname.startsWith("/projects/") },
+  { href: "/about/", label: "ABOUT", current: pathname.startsWith("/about/") },
+  { href: "/experience/", label: "EXPERIENCE", current: pathname.startsWith("/experience/") },
+];
+---
+
+<header class="site-header">
+  <a class="site-brand" href="/" aria-label="AMANO PROJECT トップへ">
+    <span class="site-brand__primary">AMANO</span>
+    <span class="site-brand__secondary">PROJECT</span>
+  </a>
+  <div class="site-header__actions">
+    <nav aria-label="メインナビゲーション">
+      {navigation.map((item) => (
+        <a href={item.href} aria-current={item.current ? "page" : undefined}>{item.label}</a>
+      ))}
+    </nav>
+    <ThemeSwitcher
+      storageKey="amano-project-theme"
+      groupLabel="表示テーマ"
+      lightLabel="ライトテーマ"
+      darkLabel="ダークテーマ"
+      autoLabel="端末設定に合わせる"
+    />
+  </div>
+</header>
