@@ -1,0 +1,45 @@
+---
+import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import Container from "albasimia-ssg-core/components/Container.astro";
+import Section from "albasimia-ssg-core/components/Section.astro";
+import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
+import { processCycle } from "../data/process";
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const roots = ["映像", "Web技術", "インタラクティブ表現", "業務システム", "要件定義と運用設計", "現実世界を含むProject"];
+---
+
+<SiteLayout pageClass="philosophy-page" meta={{ title: "Philosophy", description: "アマノPROJECTSの制作思想と、経験を次の制作へ変換するProcess。", canonicalPath: "/philosophy/" }}>
+  <header class="page-hero page-hero--statement">
+    <Container>
+      <p class="eyebrow">PHILOSOPHY</p>
+      <h1>作ること自体を、<br />目的にはしない。</h1>
+      <p>現実の中で心が動き、<br />既存の仕組みでは成立しない体験が見えた時、<br />必要な構造を考え、実装します。</p>
+    </Container>
+  </header>
+
+  <Section id="process" labelledby="full-process-title">
+    <Container>
+      <SectionHeader eyebrow="PROCESS" title="経験を、次の制作へ変換する。" id="full-process-title" />
+      <ol class="full-process">
+        {processCycle.map(({ title, description }, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{title}</h3>
+            <p>{description}</p>
+          </li>
+        ))}
+      </ol>
+    </Container>
+  </Section>
+
+  <Section class="section--muted" labelledby="roots-title">
+    <Container>
+      <SectionHeader eyebrow="ROOTS" title="制作の領域は、連続している。" id="roots-title" />
+      <ol class="roots-list">
+        {roots.map((root, index) => <li><span>{String(index + 1).padStart(2, "0")}</span>{root}</li>)}
+      </ol>
+      <ArrowLink href="/experience/">EXPERIENCE</ArrowLink>
+    </Container>
+  </Section>
+</SiteLayout>

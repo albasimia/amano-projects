@@ -38,6 +38,7 @@ const projects = defineCollection({
     repositoryUrl: z.url().optional(),
     websiteUrl: z.url().optional(),
     heroImage: z.string().trim().min(1).optional(),
+    accent: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
     relatedProjects: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).default([]),
     draft: z.boolean().default(false),
   }),

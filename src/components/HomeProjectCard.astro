@@ -1,0 +1,31 @@
+---
+import type { ProjectEntry } from "../lib/projects";
+
+interface Props {
+  project: ProjectEntry;
+}
+
+const { project } = Astro.props;
+const href = `/projects/${project.data.slug}/`;
+const style = project.data.accent ? `--project-accent:${project.data.accent}` : undefined;
+const category = project.data.fields.slice(0, 2).join(" / ");
+---
+
+<article class="home-project-card" style={style}>
+  <a class="home-project-card__media" href={href} aria-label={`${project.data.title}の詳細を見る`}>
+    {project.data.heroImage ? (
+      <img src={project.data.heroImage} alt="" loading="lazy" />
+    ) : (
+      <span class="home-project-card__placeholder" aria-hidden="true">
+        <span>{String(project.data.order).padStart(2, "0")}</span>
+        <strong>{project.data.title}</strong>
+      </span>
+    )}
+  </a>
+  <div class="home-project-card__body">
+    <p class="home-project-card__category">{category}</p>
+    <h3><a href={href}>{project.data.title}</a></h3>
+    <p class="home-project-card__summary">{project.data.summary}</p>
+    <a class="home-project-card__arrow" href={href} aria-label={`${project.data.title}の詳細を見る`}><span aria-hidden="true">→</span></a>
+  </div>
+</article>
