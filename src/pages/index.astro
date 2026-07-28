@@ -83,7 +83,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
 
   <Section class="home-section home-process" labelledby="process-title">
     <Container>
-      <SectionHeader eyebrow="PROCESS" title="経験が、構造になる。" id="process-title" />
+      <SectionHeader eyebrow="PROCESS" title="経験が、構造になる" id="process-title" />
       <div class="process-cycle">
         <svg class="process-cycle__track" viewBox="0 0 100 100" aria-hidden="true">
           <defs>
@@ -98,7 +98,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
             <li style={item.style}><span>{item.number}</span><strong>{item.title}</strong></li>
           ))}
         </ol>
-        <p class="process-cycle__center"><span>制作は、成果物ではなく</span><span>循環として続いていく。</span></p>
+        <p class="process-cycle__center"><span>制作の循環</span></p>
       </div>
       <ArrowLink href="/philosophy/#process">VIEW THE FULL PROCESS</ArrowLink>
     </Container>
@@ -169,7 +169,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
 
   <Section class="home-section home-identities" labelledby="identities-title">
     <Container>
-      <SectionHeader eyebrow="IDENTITIES" title="ひとりの人間が、異なる入口から現実へ接続する。" id="identities-title" />
+      <SectionHeader eyebrow="IDENTITIES" title="ひとりの人間、三つのInterface" id="identities-title" />
       <div class="identity-grid">
         {identities.map((identity) => (
           <article>

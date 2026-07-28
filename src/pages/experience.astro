@@ -7,96 +7,277 @@ import Tag from "albasimia-ssg-core/components/Tag.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
 
 const phases = [
-  { number: "01", label: "PHYSICAL AND IMMERSIVE MEDIA", period: "2016–2017", company: "株式会社ユニモト", items: ["GearVRアプリ", "360°VR動画", "撮影・編集・リアルタイム通信"] },
-  { number: "02", label: "INTERACTIVE FRONTEND", period: "2017–2018", company: "株式会社カヤック", items: ["キャンペーンサイト", "Canvas / SVG", "Vue.js / Firebase", "インタラクティブコンテンツ"] },
-  { number: "03", label: "SYSTEMS AND OPERATIONS", period: "2019–2025", company: "株式会社Bloomark", items: ["Webサイト運用", "CMS", "業務システム", "要件定義", "CI/CD", "チーム運用"] },
+  {
+    number: "01",
+    label: "PHYSICAL AND IMMERSIVE MEDIA",
+    period: "2016–2017",
+    company: "株式会社ユニモト",
+    items: ["GearVRアプリ", "360°VR動画", "撮影・編集・リアルタイム通信"],
+  },
+  {
+    number: "02",
+    label: "INTERACTIVE FRONTEND",
+    period: "2017–2018",
+    company: "株式会社カヤック",
+    items: [
+      "キャンペーンサイト",
+      "Canvas / SVG",
+      "Vue.js / Firebase",
+      "インタラクティブコンテンツ",
+    ],
+  },
+  {
+    number: "03",
+    label: "SYSTEMS AND OPERATIONS",
+    period: "2019–2025",
+    company: "株式会社Bloomark",
+    items: [
+      "Webサイト運用",
+      "CMS",
+      "業務システム",
+      "要件定義",
+      "CI/CD",
+      "チーム運用",
+    ],
+  },
 ];
 
 const professionalProjects = [
-  { title: "クラロワ日本一決定戦", description: "担当範囲と判断・工夫を整理中。", technologies: ["Web", "Interactive"] },
-  { title: "SUBARU公式サイト", description: "運用上の制約、担当範囲、改善内容を整理中。", technologies: ["Web", "CMS", "Operation"] },
-  { title: "個人情報台帳管理システム", description: "業務要件と設計上の判断を整理中。", technologies: ["System", "Data", "Requirement"] },
-  { title: "社内向け勉強会・業務改善", description: "技術展開と運用改善の記録を整理中。", technologies: ["Guidance", "Workflow", "Documentation"] },
+  {
+    title: "クラロワ日本一決定戦",
+    description: "担当範囲と判断・工夫を整理中。",
+    technologies: ["Web", "Interactive"],
+  },
+  {
+    title: "SUBARU公式サイト",
+    description: "運用上の制約、担当範囲、改善内容を整理中。",
+    technologies: ["Web", "CMS", "Operation"],
+  },
+  {
+    title: "個人情報台帳管理システム",
+    description: "業務要件と設計上の判断を整理中。",
+    technologies: ["System", "Data", "Requirement"],
+  },
+  {
+    title: "社内向け勉強会・業務改善",
+    description: "技術展開と運用改善の記録を整理中。",
+    technologies: ["Guidance", "Workflow", "Documentation"],
+  },
 ];
 
 const earlierProjects = ["へぇボタン", "Quizzool", "rice_caster"];
 
-const roots = ["映像", "Web技術", "インタラクティブ表現", "業務システム", "要件定義と運用設計", "現実世界を含むProject"];
+const roots = [
+  "映像",
+  "Web技術",
+  "インタラクティブ表現",
+  "業務システム",
+  "要件定義と運用設計",
+  "現実世界を含むProject",
+];
 
 const capabilities = [
-  { label: "OBSERVE", items: ["Client Interview", "Field Observation", "Operational Analysis", "User Experience"] },
-  { label: "STRUCTURE", items: ["Requirement Definition", "Information Architecture", "System Design", "Data Design", "Technical Selection"] },
-  { label: "IMPLEMENT", items: ["HTML / CSS / JavaScript / TypeScript", "Vue / React / Astro", "PHP / Laravel / WordPress", "Node.js / Electron", "Firebase / MySQL"] },
-  { label: "DELIVER AND OPERATE", items: ["Git / GitHub", "Docker", "GitHub Actions", "Cloudflare", "CMS", "Maintenance Design"] },
-  { label: "SHARE AND IMPROVE", items: ["Code Review", "Technical Guidance", "Workflow Standardization", "Testing", "Documentation"] },
+  {
+    label: "OBSERVE",
+    items: [
+      "クライアントヒアリング",
+      "現場観察",
+      "業務分析",
+      "ユーザー体験分析",
+    ],
+  },
+  {
+    label: "STRUCTURE",
+    items: ["要件定義", "情報設計", "システム設計", "データ設計", "技術選定"],
+  },
+  {
+    label: "IMPLEMENT",
+    items: [
+      "HTML / CSS / JavaScript / TypeScript",
+      "Vue / React / Astro",
+      "PHP / Laravel / WordPress",
+      "Node.js / Electron",
+      "Firebase / MySQL",
+    ],
+  },
+  {
+    label: "DELIVER AND OPERATE",
+    items: [
+      "Git / GitHub",
+      "GitHub Actions",
+      "Docker",
+      "Cloudflare",
+      "CMS",
+      "保守・運用設計",
+    ],
+  },
+  {
+    label: "SHARE AND IMPROVE",
+    items: [
+      "コードレビュー",
+      "技術指導",
+      "ワークフロー標準化",
+      "テスト",
+      "ドキュメント作成",
+    ],
+  },
+  {
+    label: "CREATIVE",
+    items: [
+      "企画・コンセプト設計",
+      "UI / UXデザイン",
+      "写真・映像撮影、編集",
+      "イラストレーション",
+      "音楽制作",
+      "DJ・選曲・サウンド演出",
+    ],
+  },
 ];
 ---
 
-<SiteLayout pageClass="experience-page" meta={{ title: "Experience", description: "現場と実装を往復して形成された、天野浩平の職務経験と制作能力。", canonicalPath: "/experience/" }}>
+<SiteLayout
+  pageClass="experience-page"
+  meta={{
+    title: "Experience",
+    description:
+      "現場と実装を往復して形成された、天野浩平の職務経験と制作能力。",
+    canonicalPath: "/experience/",
+  }}
+>
   <header class="page-hero page-hero--statement">
     <Container>
       <p class="eyebrow">EXPERIENCE</p>
-      <h1>現場と実装を、<br />往復してきた。</h1>
-      <p>2016年から、VRアプリ、キャンペーンサイト、Webサイト、CMS、業務システムの設計・開発に従事。</p>
-      <p>フロントエンド実装を起点に、顧客ヒアリング、要件定義、技術選定、チームへの技術展開、CI/CDや運用改善まで担当領域を広げてきました。</p>
+      <h1>実感と実装の往復</h1>
+      <p>
+        2016年から、VRアプリ、キャンペーンサイト、Webサイト、CMS、業務システムの設計・開発に従事。
+      </p>
+      <p>
+        フロントエンド実装を起点に、顧客ヒアリング、要件定義、技術選定、チームへの技術展開、CI/CDや運用改善まで担当領域を広げてきました。
+      </p>
     </Container>
   </header>
 
   <Section class="section--muted" labelledby="career-title">
     <Container>
-      <SectionHeader eyebrow="CAREER PHASES" title="役割は、実装から構造へ広がった。" id="career-title" />
+      <SectionHeader
+        eyebrow="CAREER PHASES"
+        title="実装から構造へ――役割の拡張"
+        id="career-title"
+      />
       <div class="career-phases">
-        {phases.map((phase) => (
-          <article>
-            <span class="career-phases__number">{phase.number}</span>
-            <div><p class="eyebrow">{phase.label}</p><h3>{phase.company}</h3><time>{phase.period}</time></div>
-            <ul>{phase.items.map((item) => <li>{item}</li>)}</ul>
-          </article>
-        ))}
+        {
+          phases.map((phase) => (
+            <article>
+              <span class="career-phases__number">{phase.number}</span>
+              <div>
+                <>
+                  <p class="eyebrow">{phase.label}</p>
+                  <h3>{phase.company}</h3>
+                  <time>{phase.period}</time>
+                </>
+              </div>
+              <ul>
+                {phase.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
       </div>
     </Container>
   </Section>
 
   <Section labelledby="roots-title">
     <Container>
-      <SectionHeader eyebrow="ROOTS" title="制作の領域は、連続している。" id="roots-title" />
+      <SectionHeader
+        eyebrow="ROOTS"
+        title="体験の為に越境する制作"
+        id="roots-title"
+      />
       <ol class="roots-list">
-        {roots.map((root, index) => <li><span>{String(index + 1).padStart(2, "0")}</span>{root}</li>)}
+        {
+          roots.map((root, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {root}
+            </li>
+          ))
+        }
       </ol>
     </Container>
   </Section>
 
   <Section labelledby="professional-title">
     <Container>
-      <SectionHeader eyebrow="SELECTED PROFESSIONAL PROJECTS" title="制約の中で、成立する方法を選ぶ。" id="professional-title" />
+      <SectionHeader
+        eyebrow="SELECTED PROFESSIONAL PROJECTS"
+        title="制約の中で成立する方法の選択"
+        id="professional-title"
+      />
       <div class="professional-grid">
-        {professionalProjects.map((project) => (
-          <article>
-            <h3>{project.title}</h3>
-            <p>{project.description}</p>
-            <div>{project.technologies.map((technology) => <Tag>{technology}</Tag>)}</div>
-          </article>
-        ))}
+        {
+          professionalProjects.map((project) => (
+            <article>
+              <h3>{project.title}</h3>
+              <p>{project.description}</p>
+              <div>
+                {project.technologies.map((technology) => (
+                  <Tag>{technology}</Tag>
+                ))}
+              </div>
+            </article>
+          ))
+        }
       </div>
     </Container>
   </Section>
 
   <Section class="section--muted" labelledby="earlier-title">
     <Container>
-      <SectionHeader eyebrow="EARLIER PERSONAL PROJECTS" title="現在につながる、以前の制作。" id="earlier-title" />
+      <SectionHeader
+        eyebrow="EARLIER PERSONAL PROJECTS"
+        title="現在につながる、以前の制作"
+        id="earlier-title"
+      />
       <ul class="earlier-projects">
-        {earlierProjects.map((project, index) => <li><span>{String(index + 1).padStart(2, "0")}</span><strong>{project}</strong><small>詳細を整理中</small></li>)}
+        {
+          earlierProjects.map((project, index) => (
+            <li>
+              <>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{project}</strong>
+                <small>詳細を整理中</small>
+              </>
+            </li>
+          ))
+        }
       </ul>
     </Container>
   </Section>
 
   <Section labelledby="capabilities-title">
     <Container>
-      <SectionHeader eyebrow="CAPABILITIES" title="工程をまたいで、制作を成立させる。" id="capabilities-title" />
+      <SectionHeader
+        eyebrow="CAPABILITIES"
+        title="目的の為に工程をまたぐ視点と感性"
+        id="capabilities-title"
+      />
       <div class="capability-grid">
-        {capabilities.map((capability) => (
-          <article><h3>{capability.label}</h3><ul>{capability.items.map((item) => <li>{item}</li>)}</ul></article>
-        ))}
+        {
+          capabilities.map((capability) => (
+            <article>
+              <>
+                <h3>{capability.label}</h3>
+                <ul>
+                  {capability.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </>
+            </article>
+          ))
+        }
       </div>
       <ArrowLink href="/projects/">PROJECTS</ArrowLink>
     </Container>
