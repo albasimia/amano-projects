@@ -167,21 +167,12 @@ function projectStyle(project: ProjectEntry): string | undefined {
         </div>
         <article class="progress-project" style={projectStyle(inProgressProject)}>
           <a class="progress-project__media" href={`/projects/${inProgressProject.data.slug}/`} aria-label={`${inProgressProject.data.title}の詳細を見る`}>
-<<<<<<< HEAD
-            {inProgressProject.data.heroImage ? (
-              <img
-                src={inProgressProject.data.heroImage.src}
-                alt={inProgressProject.data.heroImage.alt}
-                loading="lazy"
-                style={inProgressProject.data.heroImage.position ? `object-position:${inProgressProject.data.heroImage.position}` : undefined}
-=======
             {inProgressImage ? (
               <img
                 src={inProgressImage.src}
                 alt={inProgressImage.alt}
                 loading="lazy"
                 style={inProgressImage.position ? `object-position:${inProgressImage.position}` : undefined}
->>>>>>> origin/chore/project-visuals
               />
             ) : (
               <span class="progress-project__placeholder" aria-hidden="true">

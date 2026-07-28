@@ -16,10 +16,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-<<<<<<< HEAD
-=======
     "collect:visuals": "node scripts/collect-project-visuals.mjs",
->>>>>>> origin/chore/project-visuals
     "sync:assets": "node scripts/sync-content-assets.mjs",
     "predev": "npm run sync:assets",
     "dev": "astro dev",
