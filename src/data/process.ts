@@ -7,5 +7,5 @@ export const processCycle = [
   { title: "実世界で検証する", description: "利用者、現場、運用から、設計時には見えなかった事実を得る。" },
   { title: "前提を問い直す", description: "結果を成功・失敗だけで閉じず、問いそのものを更新する。" },
   { title: "社会へ接続する", description: "誰が使い、続け、引き継げるのかまで設計する。" },
-  { title: "次の制作へ蓄積する", description: "経験を再利用可能な構造へ変え、別のProjectへ持ち越す。" },
+  { title: "経験を取り込む", description: "経験を再利用可能な構造へ変え、別のProjectへ持ち越す。" },
 ] as const;
