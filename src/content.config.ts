@@ -52,6 +52,10 @@ const projects = defineCollection({
       alt: z.string().trim().min(1),
       position: z.string().trim().min(1).optional(),
     }).optional(),
+    screenshots: z.object({
+      desktop: z.boolean().default(false),
+      mobile: z.boolean().default(false),
+    }).default({ desktop: false, mobile: false }),
     accent: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
     relatedProjects: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).default([]),
     organization: z.string().trim().min(1).optional(),

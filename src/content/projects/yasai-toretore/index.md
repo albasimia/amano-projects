@@ -30,6 +30,9 @@ draft: false
 heroImage:
   asset: img/og-image.webp
   alt: やさいとれとれ祭りの代表画像
+screenshots:
+  desktop: true
+  mobile: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

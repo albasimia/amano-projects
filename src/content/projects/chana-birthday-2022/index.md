@@ -30,6 +30,9 @@ websiteUrl: https://albasimia.github.io/chana_birthday_2022/
 heroImage:
   asset: img/og-image.png
   alt: chana_birthday_2022の代表画像
+screenshots:
+  desktop: true
+  mobile: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

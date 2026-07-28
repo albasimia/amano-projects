@@ -538,6 +538,13 @@ main[class] .asc-tag {
 .project-hero__tags { display: flex; flex-wrap: wrap; gap: .5rem; }
 .project-hero h1 { margin: 1.5rem 0; font-size: clamp(3.2rem, 8vw, 7rem); font-weight: 650; line-height: .9; letter-spacing: -.065em; overflow-wrap: anywhere; }
 .project-hero__summary { max-width: 42rem; margin: 0 0 0 auto; color: var(--color-muted); font-size: clamp(1.1rem, 2vw, 1.4rem); }
+.project-screenshots { padding-block: var(--section-space); border-bottom: 1px solid var(--color-border); }
+.project-screenshots__grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(12rem, 1fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
+.project-screenshots__grid--single { grid-template-columns: minmax(0, 1fr); }
+.project-screenshot { min-width: 0; margin: 0; }
+.project-screenshot figcaption { margin-bottom: .75rem; color: var(--color-muted); font-family: var(--font-code); font-size: .68rem; font-weight: 700; letter-spacing: .12em; }
+.project-screenshot img { display: block; width: 100%; height: auto; border: 1px solid var(--color-border); background: var(--color-surface); }
+.project-screenshot--mobile img { width: min(100%, 26rem); margin-inline: auto; }
 .project-overview { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(18rem, .7fr); gap: 3rem 6rem; padding-block: var(--section-space); border-bottom: 1px solid var(--color-border); }
 .project-overview h2 { margin: 1rem 0 0; font-size: clamp(1.75rem, 3.2vw, 3rem); line-height: 1.12; letter-spacing: -.05em; }
 .project-overview__links { grid-column: 2; display: flex; flex-wrap: wrap; gap: 1.5rem; }
@@ -691,6 +698,7 @@ main[class] .asc-tag {
   .company-work-list { border-left: 0; }
   .company-work-list article { min-height: 0; padding-inline: 0; border-right: 0; }
   .project-page .asc-container .asc-meta-list > div { grid-template-columns: 1fr; gap: .35rem; }
+  .project-screenshots__grid { grid-template-columns: 1fr; }
   .about-profile { grid-template-areas: "header" "portrait" "body"; grid-template-columns: minmax(0, 1fr); column-gap: 0; }
   .about-profile__header h1 { margin-bottom: 2rem; }
   .about-profile__portrait { width: min(100%, 34rem); margin: 0 0 2.5rem; justify-self: start; }

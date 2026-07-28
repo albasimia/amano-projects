@@ -29,6 +29,9 @@ draft: false
 heroImage:
   asset: img/screenshot-desktop.jpg
   alt: へぇボタンの代表画像
+screenshots:
+  desktop: true
+  mobile: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

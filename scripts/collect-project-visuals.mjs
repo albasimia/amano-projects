@@ -1,5 +1,5 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { extname, join, relative, resolve } from "node:path";
+import { extname, join, resolve } from "node:path";
 import { chromium } from "playwright";
 import { parseDocument } from "yaml";
 import { imageSize } from "image-size";
@@ -16,6 +16,34 @@ const githubHeaders = {
 
 const IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpg", ".jpeg", ".png", ".webp"]);
 const MAX_ASSET_BYTES = 10 * 1024 * 1024;
+
+const DEFAULT_CAPTURE_CONFIG = Object.freeze({
+  delayMs: 1_800,
+  timeoutMs: 45_000,
+  networkIdleTimeoutMs: 10_000,
+  waitFor: null,
+  videoTime: 1.5,
+  hero: "og",
+  click: [],
+  consentSelectors: [],
+  hideSelectors: [],
+});
+
+// repositoryUrlを持たないProjectや、GitHub上のrepository名とslugが異なるProject用。
+const WEBSITE_OVERRIDES = new Map([
+  ["chachamaru-birthday", "https://albasimia.github.io/chachamaru_birthday/"],
+]);
+
+const COMMON_CONSENT_SELECTORS = [
+  "#onetrust-accept-btn-handler",
+  "#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll",
+  "#didomi-notice-agree-button",
+  "button[data-testid='uc-accept-all-button']",
+  "button[data-testid='cookie-policy-manage-dialog-accept-button']",
+  "button[aria-label='Accept all']",
+  "button[aria-label='すべて許可']",
+];
+
 const entries = await listProjectEntries(projectsRoot);
 const browser = await chromium.launch({ headless: true });
 const report = [];
@@ -42,6 +70,7 @@ async function processProject(entry) {
   const title = data.title;
   const notes = [];
   const assetsDir = join(entry.directory, "assets/img");
+  const captureConfig = await loadCaptureConfig(entry.directory, slug);
   await mkdir(assetsDir, { recursive: true });
 
   let repository = null;
@@ -59,7 +88,13 @@ async function processProject(entry) {
     }
   }
 
-  const website = await resolveWebsite(data.websiteUrl, repository);
+  const website = await resolveWebsite({
+    existingWebsiteUrl: data.websiteUrl,
+    repository,
+    slug,
+    captureConfig,
+  });
+
   if (website?.url && data.websiteUrl !== website.url) {
     document.set("websiteUrl", website.url);
     notes.push(`websiteUrlを追加: ${website.url}`);
@@ -75,6 +110,7 @@ async function processProject(entry) {
       url: website.url,
       title,
       assetsDir,
+      config: captureConfig,
     });
     ogAsset = captured.ogAsset;
     desktopAsset = captured.desktopAsset;
@@ -83,15 +119,27 @@ async function processProject(entry) {
   }
 
   if (repository) {
-    repositoryAsset = await collectRepositoryImage({ repository, assetsDir, title });
+    repositoryAsset = await collectRepositoryImage({ repository, assetsDir });
     if (repositoryAsset) notes.push(`repository画像を保存: ${repositoryAsset}`);
   }
 
-  const heroAsset = ogAsset ?? desktopAsset ?? repositoryAsset;
-  if (heroAsset) {
+  const existingHeroAsset = typeof data.heroImage?.asset === "string"
+    ? data.heroImage.asset.replace(/^img\//, "")
+    : null;
+
+  const heroAsset = selectHeroAsset(captureConfig.hero, {
+    ogAsset,
+    desktopAsset,
+    mobileAsset,
+    repositoryAsset,
+    existingHeroAsset,
+  });
+
+  if (heroAsset && data.heroImage?.asset !== `img/${heroAsset}`) {
     document.set("heroImage", {
       asset: `img/${heroAsset}`,
-      alt: `${title}の代表画像`,
+      alt: data.heroImage?.alt || `${title}の代表画像`,
+      ...(data.heroImage?.position ? { position: data.heroImage.position } : {}),
     });
     notes.push(`heroImageを設定: img/${heroAsset}`);
   }
@@ -116,81 +164,317 @@ async function processProject(entry) {
   };
 }
 
-async function captureWebsite({ url, title, assetsDir }) {
+async function captureWebsite({ url, assetsDir, config }) {
   const notes = [];
-  let desktopAsset = null;
-  let mobileAsset = null;
   let ogAsset = null;
 
-  const desktop = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
-    deviceScaleFactor: 1,
-    colorScheme: "light",
-    ignoreHTTPSErrors: true,
+  const desktopResult = await captureViewport({
+    url,
+    assetsDir,
+    config,
+    viewportName: "PC",
+    filename: "screenshot-desktop.jpg",
+    contextOptions: {
+      viewport: { width: 1440, height: 900 },
+      deviceScaleFactor: 1,
+      colorScheme: "light",
+      ignoreHTTPSErrors: true,
+      reducedMotion: "reduce",
+    },
+    collectOg: true,
   });
 
-  try {
-    const page = await desktop.newPage();
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
-    await waitForPage(page);
+  notes.push(...desktopResult.notes);
+  ogAsset = desktopResult.ogAsset;
 
-    const ogImage = await page.locator('meta[property="og:image"]').first().getAttribute("content").catch(() => null)
-      ?? await page.locator('meta[name="twitter:image"]').first().getAttribute("content").catch(() => null);
-
-    if (ogImage) {
-      const resolvedOg = new URL(ogImage, page.url()).href;
-      ogAsset = await downloadImage(resolvedOg, assetsDir, "og-image");
-      if (ogAsset) notes.push(`OGP画像を保存: ${ogAsset}`);
-    }
-
-    desktopAsset = "screenshot-desktop.jpg";
-    await page.screenshot({
-      path: join(assetsDir, desktopAsset),
-      type: "jpeg",
-      quality: 84,
-      fullPage: false,
-    });
-    notes.push(`PCスクリーンショットを保存: ${desktopAsset}`);
-  } catch (error) {
-    notes.push(`PC取得失敗: ${errorMessage(error)}`);
-  } finally {
-    await desktop.close();
-  }
-
-  const mobile = await browser.newContext({
-    viewport: { width: 390, height: 844 },
-    deviceScaleFactor: 1,
-    isMobile: true,
-    hasTouch: true,
-    colorScheme: "light",
-    ignoreHTTPSErrors: true,
+  const mobileResult = await captureViewport({
+    url,
+    assetsDir,
+    config,
+    viewportName: "SP",
+    filename: "screenshot-mobile.jpg",
+    contextOptions: {
+      viewport: { width: 390, height: 844 },
+      deviceScaleFactor: 1,
+      isMobile: true,
+      hasTouch: true,
+      colorScheme: "light",
+      ignoreHTTPSErrors: true,
+      reducedMotion: "reduce",
+    },
+    collectOg: false,
   });
 
-  try {
-    const page = await mobile.newPage();
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
-    await waitForPage(page);
-    mobileAsset = "screenshot-mobile.jpg";
-    await page.screenshot({
-      path: join(assetsDir, mobileAsset),
-      type: "jpeg",
-      quality: 84,
-      fullPage: false,
-    });
-    notes.push(`SPスクリーンショットを保存: ${mobileAsset}`);
-  } catch (error) {
-    notes.push(`SP取得失敗: ${errorMessage(error)}`);
-  } finally {
-    await mobile.close();
-  }
+  notes.push(...mobileResult.notes);
 
-  return { ogAsset, desktopAsset, mobileAsset, notes };
+  return {
+    ogAsset,
+    desktopAsset: desktopResult.asset,
+    mobileAsset: mobileResult.asset,
+    notes,
+  };
 }
 
-async function waitForPage(page) {
-  await page.waitForTimeout(3_000);
+async function captureViewport({
+  url,
+  assetsDir,
+  config,
+  viewportName,
+  filename,
+  contextOptions,
+  collectOg,
+}) {
+  const notes = [];
+  let asset = null;
+  let ogAsset = null;
+  const context = await browser.newContext(contextOptions);
+
+  try {
+    const page = await context.newPage();
+    page.setDefaultTimeout(Math.min(config.timeoutMs, 15_000));
+
+    await page.goto(url, {
+      waitUntil: "domcontentloaded",
+      timeout: config.timeoutMs,
+    });
+
+    const preparation = await preparePage(page, config);
+    notes.push(...preparation.notes.map((note) => `${viewportName}: ${note}`));
+
+    if (collectOg) {
+      const ogImage = await page.locator('meta[property="og:image"]').first().getAttribute("content").catch(() => null)
+        ?? await page.locator('meta[name="twitter:image"]').first().getAttribute("content").catch(() => null);
+
+      if (ogImage) {
+        const resolvedOg = new URL(ogImage, page.url()).href;
+        ogAsset = await downloadImage(resolvedOg, assetsDir, "og-image");
+        if (ogAsset) notes.push(`OGP画像を保存: ${ogAsset}`);
+      }
+    }
+
+    asset = filename;
+    await page.screenshot({
+      path: join(assetsDir, asset),
+      type: "jpeg",
+      quality: 88,
+      fullPage: false,
+    });
+    notes.push(`${viewportName}スクリーンショットを保存: ${asset}`);
+  } catch (error) {
+    notes.push(`${viewportName}取得失敗: ${errorMessage(error)}`);
+  } finally {
+    await context.close();
+  }
+
+  return { asset, ogAsset, notes };
+}
+
+async function preparePage(page, config) {
+  const notes = [];
+
+  await page.waitForLoadState("networkidle", {
+    timeout: config.networkIdleTimeoutMs,
+  }).catch(() => {});
+
+  const consentResult = await dismissConsent(page, config.consentSelectors);
+  if (consentResult) notes.push(`Cookie同意を操作: ${consentResult}`);
+
+  for (const selector of config.click) {
+    const locator = page.locator(selector).first();
+    if (await locator.isVisible().catch(() => false)) {
+      await locator.click({ timeout: 3_000 }).catch(() => {});
+      notes.push(`指定要素をクリック: ${selector}`);
+      await page.waitForTimeout(350);
+    }
+  }
+
+  await page.waitForLoadState("networkidle", {
+    timeout: config.networkIdleTimeoutMs,
+  }).catch(() => {});
+
+  if (config.waitFor) {
+    await page.locator(config.waitFor).first().waitFor({
+      state: "visible",
+      timeout: config.timeoutMs,
+    });
+    notes.push(`表示待機完了: ${config.waitFor}`);
+  }
+
+  await waitForFonts(page);
+  await waitForImages(page);
+  await prepareVideos(page, config.videoTime);
+
+  if (config.delayMs > 0) {
+    await page.waitForTimeout(config.delayMs);
+  }
+
+  // 遅延ロードされたフォント・画像をもう一度確認する。
+  await waitForFonts(page);
+  await waitForImages(page);
   await page.evaluate(() => window.scrollTo(0, 0)).catch(() => {});
+  await hideConfiguredElements(page, config.hideSelectors);
+  await freezeMotion(page);
   await page.waitForTimeout(300);
+
+  return { notes };
+}
+
+async function dismissConsent(page, projectSelectors) {
+  const selectors = [...projectSelectors, ...COMMON_CONSENT_SELECTORS];
+
+  for (const selector of selectors) {
+    const locator = page.locator(selector).first();
+    if (!await locator.isVisible().catch(() => false)) continue;
+    await locator.click({ timeout: 2_500 }).catch(() => {});
+    await page.waitForTimeout(400);
+    return selector;
+  }
+
+  // Cookie/consent領域の中にある「同意」系buttonだけを対象にする。
+  const candidates = page.locator([
+    '[id*="cookie" i] button',
+    '[class*="cookie" i] button',
+    '[id*="consent" i] button',
+    '[class*="consent" i] button',
+    '[aria-label*="cookie" i] button',
+  ].join(","));
+
+  const count = Math.min(await candidates.count().catch(() => 0), 30);
+  const acceptedTexts = [
+    "accept",
+    "accept all",
+    "allow all",
+    "agree",
+    "i agree",
+    "ok",
+    "同意",
+    "同意する",
+    "すべて許可",
+    "許可する",
+    "承諾",
+  ];
+
+  for (let index = 0; index < count; index += 1) {
+    const candidate = candidates.nth(index);
+    if (!await candidate.isVisible().catch(() => false)) continue;
+    const text = normalizeButtonText(await candidate.innerText().catch(() => ""));
+    if (!acceptedTexts.some((accepted) => text === accepted || text.startsWith(`${accepted} `))) continue;
+    await candidate.click({ timeout: 2_500 }).catch(() => {});
+    await page.waitForTimeout(400);
+    return `text:${text}`;
+  }
+
+  return null;
+}
+
+async function waitForFonts(page) {
+  await page.evaluate(async () => {
+    if (!document.fonts?.ready) return;
+    await Promise.race([
+      document.fonts.ready,
+      new Promise((resolve) => setTimeout(resolve, 12_000)),
+    ]);
+  }).catch(() => {});
+}
+
+async function waitForImages(page) {
+  await page.evaluate(async () => {
+    const images = [...document.images];
+    for (const image of images) image.loading = "eager";
+
+    await Promise.allSettled(images.map(async (image) => {
+      if (!image.complete) {
+        await Promise.race([
+          new Promise((resolve) => {
+            image.addEventListener("load", resolve, { once: true });
+            image.addEventListener("error", resolve, { once: true });
+          }),
+          new Promise((resolve) => setTimeout(resolve, 10_000)),
+        ]);
+      }
+      if (typeof image.decode === "function") {
+        await Promise.race([
+          image.decode().catch(() => {}),
+          new Promise((resolve) => setTimeout(resolve, 5_000)),
+        ]);
+      }
+    }));
+  }).catch(() => {});
+}
+
+async function prepareVideos(page, videoTime) {
+  if (videoTime === null || videoTime === false) return;
+
+  await page.evaluate(async (targetTime) => {
+    const videos = [...document.querySelectorAll("video")];
+
+    await Promise.allSettled(videos.map(async (video) => {
+      video.muted = true;
+      video.preload = "auto";
+
+      if (video.readyState < HTMLMediaElement.HAVE_METADATA) {
+        await Promise.race([
+          new Promise((resolve) => {
+            video.addEventListener("loadedmetadata", resolve, { once: true });
+            video.addEventListener("error", resolve, { once: true });
+          }),
+          new Promise((resolve) => setTimeout(resolve, 10_000)),
+        ]);
+      }
+
+      const duration = Number.isFinite(video.duration) ? video.duration : 0;
+      const nextTime = duration > 0
+        ? Math.min(Math.max(Number(targetTime) || 0, 0), Math.max(duration - 0.05, 0))
+        : 0;
+
+      if (nextTime > 0 && Math.abs(video.currentTime - nextTime) > 0.05) {
+        try {
+          video.currentTime = nextTime;
+          await Promise.race([
+            new Promise((resolve) => video.addEventListener("seeked", resolve, { once: true })),
+            new Promise((resolve) => setTimeout(resolve, 5_000)),
+          ]);
+        } catch {
+          // seek不可のstream等は現在frameのまま撮影する。
+        }
+      }
+
+      if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+        await Promise.race([
+          new Promise((resolve) => {
+            video.addEventListener("loadeddata", resolve, { once: true });
+            video.addEventListener("error", resolve, { once: true });
+          }),
+          new Promise((resolve) => setTimeout(resolve, 8_000)),
+        ]);
+      }
+
+      video.pause();
+    }));
+  }, videoTime).catch(() => {});
+}
+
+async function hideConfiguredElements(page, selectors) {
+  if (selectors.length === 0) return;
+  await page.evaluate((values) => {
+    for (const selector of values) {
+      for (const element of document.querySelectorAll(selector)) {
+        element.style.setProperty("visibility", "hidden", "important");
+      }
+    }
+  }, selectors).catch(() => {});
+}
+
+async function freezeMotion(page) {
+  await page.addStyleTag({
+    content: `
+      *, *::before, *::after {
+        animation-play-state: paused !important;
+        caret-color: transparent !important;
+      }
+      html { scroll-behavior: auto !important; }
+    `,
+  }).catch(() => {});
 }
 
 async function collectRepositoryImage({ repository, assetsDir }) {
@@ -233,9 +517,11 @@ async function collectRepositoryImage({ repository, assetsDir }) {
   return null;
 }
 
-async function resolveWebsite(existingWebsiteUrl, repository) {
+async function resolveWebsite({ existingWebsiteUrl, repository, slug, captureConfig }) {
   const candidates = [];
+  if (typeof captureConfig.websiteUrl === "string") candidates.push(captureConfig.websiteUrl);
   if (typeof existingWebsiteUrl === "string") candidates.push(existingWebsiteUrl);
+  if (WEBSITE_OVERRIDES.has(slug)) candidates.push(WEBSITE_OVERRIDES.get(slug));
   if (repository?.metadata?.homepage) candidates.push(repository.metadata.homepage);
   if (repository) candidates.push(`https://${repository.owner}.github.io/${repository.repo}/`);
 
@@ -286,6 +572,76 @@ async function downloadImage(url, assetsDir, basename) {
   } catch {
     return null;
   }
+}
+
+async function loadCaptureConfig(projectDirectory, slug) {
+  const configPath = join(projectDirectory, "data/visual-capture.json");
+  let custom = {};
+
+  try {
+    custom = JSON.parse(await readFile(configPath, "utf8"));
+  } catch (error) {
+    if (!(error && typeof error === "object" && "code" in error && error.code === "ENOENT")) {
+      throw new Error(`${configPath}: visual-capture.jsonを読み込めません: ${errorMessage(error)}`);
+    }
+  }
+
+  if (!custom || typeof custom !== "object" || Array.isArray(custom)) {
+    throw new Error(`${configPath}: objectを指定してください`);
+  }
+
+  const config = {
+    ...DEFAULT_CAPTURE_CONFIG,
+    ...custom,
+    click: normalizeStringArray(custom.click, "click", configPath),
+    consentSelectors: normalizeStringArray(custom.consentSelectors, "consentSelectors", configPath),
+    hideSelectors: normalizeStringArray(custom.hideSelectors, "hideSelectors", configPath),
+  };
+
+  if (custom.websiteUrl !== undefined && typeof custom.websiteUrl !== "string") {
+    throw new Error(`${configPath}: websiteUrlはstringで指定してください`);
+  }
+  if (config.waitFor !== null && typeof config.waitFor !== "string") {
+    throw new Error(`${configPath}: waitForはstringまたはnullで指定してください`);
+  }
+  for (const key of ["delayMs", "timeoutMs", "networkIdleTimeoutMs"]) {
+    if (!Number.isFinite(config[key]) || config[key] < 0) {
+      throw new Error(`${configPath}: ${key}は0以上のnumberで指定してください`);
+    }
+  }
+  if (!["og", "desktop", "mobile", "repository", "keep", "none"].includes(config.hero)) {
+    throw new Error(`${configPath}: heroはog/desktop/mobile/repository/keep/noneのいずれかを指定してください`);
+  }
+  if (!(config.videoTime === null || config.videoTime === false || (Number.isFinite(config.videoTime) && config.videoTime >= 0))) {
+    throw new Error(`${configPath}: videoTimeは0以上のnumber、null、falseのいずれかを指定してください`);
+  }
+
+  if (!config.websiteUrl && WEBSITE_OVERRIDES.has(slug)) {
+    config.websiteUrl = WEBSITE_OVERRIDES.get(slug);
+  }
+
+  return config;
+}
+
+function normalizeStringArray(value, key, sourcePath) {
+  if (value === undefined) return [];
+  if (!Array.isArray(value) || value.some((item) => typeof item !== "string" || item.trim() === "")) {
+    throw new Error(`${sourcePath}: ${key}は空でないstringのarrayで指定してください`);
+  }
+  return value;
+}
+
+function selectHeroAsset(preference, assets) {
+  const fallback = [assets.ogAsset, assets.desktopAsset, assets.repositoryAsset, assets.mobileAsset].find(Boolean) ?? null;
+
+  return {
+    og: assets.ogAsset ?? assets.desktopAsset ?? assets.repositoryAsset ?? assets.mobileAsset,
+    desktop: assets.desktopAsset ?? assets.ogAsset ?? assets.repositoryAsset ?? assets.mobileAsset,
+    mobile: assets.mobileAsset ?? assets.ogAsset ?? assets.desktopAsset ?? assets.repositoryAsset,
+    repository: assets.repositoryAsset ?? assets.ogAsset ?? assets.desktopAsset ?? assets.mobileAsset,
+    keep: assets.existingHeroAsset ?? fallback,
+    none: assets.existingHeroAsset,
+  }[preference] ?? fallback;
 }
 
 function parseFrontmatter(source, sourcePath) {
@@ -348,6 +704,10 @@ function ensureTrailingSlash(url) {
   const parsed = new URL(url);
   if (!parsed.pathname.endsWith("/") && !extname(parsed.pathname)) parsed.pathname += "/";
   return parsed.href;
+}
+
+function normalizeButtonText(value) {
+  return value.trim().replace(/\s+/g, " ").toLowerCase();
 }
 
 function unique(values) {

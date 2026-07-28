@@ -7,6 +7,7 @@ import ProjectCard from "../components/ProjectCard.astro";
 import { processCycle } from "../data/process";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { getCompanies } from "../lib/companies";
+import { getProjectCardImage } from "../lib/project-assets";
 import { getPublishedProjects, type ProjectEntry } from "../lib/projects";
 
 const projects = await getPublishedProjects();
@@ -19,6 +20,7 @@ const featuredPersonalProjects = featuredProjects
   .filter(({ data }) => data.projectType === "personal" && !pickUpSlugs.has(data.slug))
   .slice(0, 3);
 const inProgressProject = projects.find(({ data }) => data.slug === "kaka-see");
+const inProgressImage = inProgressProject ? getProjectCardImage(inProgressProject) : undefined;
 
 const pointOnCircle = (angle: number, radius: number) => {
   const radians = (angle * Math.PI) / 180;
@@ -165,12 +167,12 @@ function projectStyle(project: ProjectEntry): string | undefined {
         </div>
         <article class="progress-project" style={projectStyle(inProgressProject)}>
           <a class="progress-project__media" href={`/projects/${inProgressProject.data.slug}/`} aria-label={`${inProgressProject.data.title}の詳細を見る`}>
-            {inProgressProject.data.heroImage ? (
+            {inProgressImage ? (
               <img
-                src={inProgressProject.data.heroImage.src}
-                alt={inProgressProject.data.heroImage.alt}
+                src={inProgressImage.src}
+                alt={inProgressImage.alt}
                 loading="lazy"
-                style={inProgressProject.data.heroImage.position ? `object-position:${inProgressProject.data.heroImage.position}` : undefined}
+                style={inProgressImage.position ? `object-position:${inProgressImage.position}` : undefined}
               />
             ) : (
               <span class="progress-project__placeholder" aria-hidden="true">

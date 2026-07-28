@@ -29,6 +29,9 @@ draft: false
 heroImage:
   asset: img/og-image.webp
   alt: 株式会社JSS コーポレートサイトの代表画像
+screenshots:
+  desktop: true
+  mobile: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
