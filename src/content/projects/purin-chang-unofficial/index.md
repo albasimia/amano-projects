@@ -27,6 +27,9 @@ websiteUrl: https://albasimia.github.io/purin_chang_unofficial/
 relatedProjects:
   - birthday-contents
 draft: false
+heroImage:
+  asset: img/og-image.png
+  alt: purin_chang_unofficialの代表画像
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

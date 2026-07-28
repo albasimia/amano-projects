@@ -27,7 +27,7 @@ websiteUrl: https://j-ss.jp/
 relatedProjects: []
 draft: false
 heroImage:
-  asset: img/og-image.webp
+  asset: img/screenshot-desktop.jpg
   alt: 株式会社JSS コーポレートサイトの代表画像
 screenshots:
   desktop: true
