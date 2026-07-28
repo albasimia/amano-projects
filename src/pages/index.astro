@@ -166,7 +166,12 @@ function projectStyle(project: ProjectEntry): string | undefined {
         <article class="progress-project" style={projectStyle(inProgressProject)}>
           <a class="progress-project__media" href={`/projects/${inProgressProject.data.slug}/`} aria-label={`${inProgressProject.data.title}の詳細を見る`}>
             {inProgressProject.data.heroImage ? (
-              <img src={inProgressProject.data.heroImage} alt="" loading="lazy" />
+              <img
+                src={inProgressProject.data.heroImage.src}
+                alt={inProgressProject.data.heroImage.alt}
+                loading="lazy"
+                style={inProgressProject.data.heroImage.position ? `object-position:${inProgressProject.data.heroImage.position}` : undefined}
+              />
             ) : (
               <span class="progress-project__placeholder" aria-hidden="true">
                 <span>FIELD NOTE</span>
