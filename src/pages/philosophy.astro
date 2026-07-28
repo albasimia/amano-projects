@@ -30,6 +30,7 @@ const makingPrinciples = [
 
 <SiteLayout
   pageClass="philosophy-page"
+  breadcrumbs={[{ label: "PHILOSOPHY" }]}
   meta={{
     title: "Philosophy",
     description:
@@ -105,9 +106,8 @@ const makingPrinciples = [
       </div>
       <div class="making-principles">
         {
-          makingPrinciples.map((principle, index) => (
+          makingPrinciples.map((principle) => (
             <article>
-              <span>{String(index + 1).padStart(2, "0")}</span>
               <p class="eyebrow">{principle.label}</p>
               <h3>{principle.title}</h3>
               <p>{principle.description}</p>
@@ -129,9 +129,11 @@ const makingPrinciples = [
         title="制作の循環"
         id="full-process-title"
       />
-      <p class="process-introduction">
-        心が動いた場所へ入り、体験を構想し、構造化し、実装し、実世界で問い直す。その経験を社会へ接続し、次の制作へ蓄積するための循環です。
-      </p>
+      <div class="process-introduction">
+        <p>
+          心が動いた場所へ入り、体験を構想し、構造化し、実装し、実世界で問い直す。その経験を社会へ接続し、次の制作へ蓄積するための循環です。
+        </p>
+      </div>
       <ol class="full-process">
         {
           processCycle.map(({ title, description }, index) => (
@@ -161,7 +163,7 @@ const makingPrinciples = [
           現実の中で確かめ、他者が扱える形へ構造化し、次の誰かが使い、問い直し、更新できる状態で渡していく。
         </p>
         <p>それが、僕がProjectを作る理由です。</p>
-        <ArrowLink href="/projects/">VIEW PROJECTS</ArrowLink>
+        <ArrowLink class="section-end-link" href="/projects/">VIEW PROJECTS</ArrowLink>
       </div>
     </Container>
   </Section>

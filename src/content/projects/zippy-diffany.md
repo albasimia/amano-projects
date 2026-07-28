@@ -8,9 +8,9 @@ status: development
 interfaces:
   - engineering
 fields:
-  - Developer Tool
+  - 開発ツール
   - Git
-  - Desktop App
+  - デスクトップアプリ
 technologies:
   - Node.js
   - Electron
@@ -27,25 +27,35 @@ relatedProjects: []
 draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 Web制作の納品で、2つのGitコミット間に含まれる変更ファイルだけを抽出し、ZIPへまとめる作業が必要でした。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 リポジトリと比較対象を指定するだけで、差分ファイルを確認し、必要なものだけZIPとして出力できる状態を目指します。
 
-## Conditions
+<p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
+
+## 成立条件
 
 - CLIとGUIの両方から利用できること
 - Git操作とZIP生成ロジックを共通化すること
 - クロスプラットフォームを想定すること
 - テスト可能な構造にすること
 
-## Implementation
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
+
+## 実装
 
 npm workspacesを使い、共通ライブラリ、CLI、Electronアプリを分離したモノレポとして構成しています。
 
-## Learning
+<p class="eyebrow project-prose__eyebrow">LEARNING</p>
+
+## 得られたこと
 
 同じユースケースでも、自動化用途のCLIと手動確認用途のGUIでは入口が異なります。ロジックを分離することで両方を支えられます。

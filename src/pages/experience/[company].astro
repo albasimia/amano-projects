@@ -1,0 +1,78 @@
+---
+import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import Container from "albasimia-ssg-core/components/Container.astro";
+import Section from "albasimia-ssg-core/components/Section.astro";
+import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
+import Tag from "albasimia-ssg-core/components/Tag.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { getCompanies, type CompanyEntry } from "../../lib/companies";
+
+export async function getStaticPaths() {
+  const companies = await getCompanies();
+
+  return companies.map((company) => ({
+    params: { company: company.data.slug },
+    props: { company },
+  }));
+}
+
+interface Props {
+  company: CompanyEntry;
+}
+
+const { company } = Astro.props;
+const { data } = company;
+---
+
+<SiteLayout
+  pageClass="company-experience-page"
+  breadcrumbs={[
+    { label: "EXPERIENCE", href: "/experience/" },
+    { label: data.company },
+  ]}
+  meta={{
+    title: data.company,
+    description: `${data.company}での職務経験。${data.summary}`,
+    canonicalPath: `/experience/${data.slug}/`,
+  }}
+>
+  <header class="page-hero page-hero--statement company-experience-hero">
+    <Container>
+      <ArrowLink href="/experience/">ALL EXPERIENCE</ArrowLink>
+      <p class="eyebrow">PROFESSIONAL EXPERIENCE</p>
+      <h1>{data.company}</h1>
+      <p>{data.period} / {data.label}</p>
+    </Container>
+  </header>
+
+  <Section class="section--muted" labelledby="experience-overview-title">
+    <Container>
+      <SectionHeader eyebrow="EXPERIENCE" title={data.summary} id="experience-overview-title" />
+      <ul class="company-experience-areas">
+        {data.areas.map((area) => (
+          <li><strong>{area}</strong></li>
+        ))}
+      </ul>
+    </Container>
+  </Section>
+
+  {data.works.length > 0 && (
+    <Section labelledby="selected-work-title">
+      <Container>
+        <SectionHeader eyebrow="SELECTED WORK" title="所属期間中の主な制作と経験" id="selected-work-title" />
+        <div class="company-work-list">
+          {data.works.map((work) => (
+            <article class:list={{ "company-work-list__linked": work.project }}>
+              <h3>{work.title}</h3>
+              {work.description && <p>{work.description}</p>}
+              <div class="company-work-list__footer">
+                <Tag>{data.shortName}</Tag>
+                {work.project && <ArrowLink href={`/projects/${work.project}/`}>VIEW PROJECT</ArrowLink>}
+              </div>
+            </article>
+          ))}
+        </div>
+      </Container>
+    </Section>
+  )}
+</SiteLayout>

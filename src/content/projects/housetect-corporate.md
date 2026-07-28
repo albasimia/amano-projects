@@ -5,12 +5,13 @@ summary: 住宅修繕、太陽光、害虫獣駆除など異なる事業を、�
 origin: 性質の異なる住宅関連サービスを、利用者に分かりやすい分類へ整理する必要があった。
 intention: 個別サービスを企業の信頼性と接続し、困りごとから適切な情報へ辿れる導線をつくる。
 status: completed
+projectType: client
 interfaces:
   - engineering
 fields:
-  - Client Work
-  - Corporate Website
-  - Service Design
+  - 受託制作
+  - コーポレートサイト
+  - サービス設計
 technologies:
   - WordPress
   - PHP
@@ -25,21 +26,29 @@ featured: false
 order: 210
 websiteUrl: https://housetect.co.jp/
 relatedProjects: []
-draft: true
+draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 リフォーム、蓄電池、太陽光、害虫獣駆除、防除用品、地震対策など、異なるサービスを一つのサイトで扱う必要がありました。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 利用者が自分の困りごとから入り、必要なサービスと企業情報へ自然に辿れる状態を目指しました。
 
-## Role
+<p class="eyebrow project-prose__eyebrow">ROLE</p>
+
+## 担当
 
 フリーランスとして実務制作を担当しました。
 
-## Publication Note
+<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
+
+## 公開に関する注記
 
 現行サイトには制作後のリニューアルや更新が含まれる可能性があるため、担当時点の範囲を確認してから公開します。

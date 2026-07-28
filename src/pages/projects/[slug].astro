@@ -20,6 +20,7 @@ interface Props {
 
 const { project, projects } = Astro.props;
 const { Content } = await render(project);
+const projectAccentStyle = project.data.accent ? `--color-accent:${project.data.accent}` : undefined;
 const period = projectPeriod(project);
 const related = project.data.relatedProjects
   .map((slug) => projects.find(({ data }) => data.slug === slug))
@@ -34,6 +35,10 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
 
 <SiteLayout
   pageClass="project-page"
+  breadcrumbs={[
+    { label: "PROJECTS", href: "/projects/" },
+    { label: project.data.title },
+  ]}
   meta={{
     title: project.data.title,
     description: project.data.summary,
@@ -41,7 +46,7 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
     openGraph: { type: "article" },
   }}
 >
-  <article>
+  <article style={projectAccentStyle}>
     <header class="project-hero">
       <Container>
         <ArrowLink href="/projects/">ALL PROJECTS</ArrowLink>

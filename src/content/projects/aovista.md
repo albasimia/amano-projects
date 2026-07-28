@@ -8,9 +8,9 @@ status: paused
 interfaces:
   - creative-to-engineering
 fields:
-  - Hardware
-  - Keyboard
-  - Interaction Design
+  - ハードウェア
+  - キーボード
+  - インタラクション設計
 technologies:
   - QMK
   - Vial
@@ -30,15 +30,21 @@ relatedProjects: []
 draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 一般的なキーボードでは、手の位置、親指の役割、カーソル操作が身体感覚と一致しませんでした。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 左右対称の姿勢を保ちながら、文字入力、カーソル操作、ショートカットを両手の自然な動きで行える状態を目指しました。
 
-## Conditions
+<p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
+
+## 成立条件
 
 - 左右分割であること
 - 片側にジョイスティックとエンコーダーを持つこと
@@ -46,22 +52,32 @@ draft: false
 - WindowsとmacOSの差を吸収すること
 - 初号機では無線や複雑な拡張を避けること
 
-## Decisions
+<p class="eyebrow project-prose__eyebrow">DECISIONS</p>
+
+## 判断
 
 初号機では身体性と配列の成立を優先し、RP2040、TRRS、有線接続、磁石連結を採用しました。
 
-## Implementation
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
+
+## 実装
 
 片側39キー、ジョイスティック、エンコーダーを備え、独自EmacsキーとOS Detectionを実装しました。
 
-## Verification
+<p class="eyebrow project-prose__eyebrow">VERIFICATION</p>
+
+## 検証
 
 実機を組み立て、キーボードとして動作するところまで確認しました。一方で、薄型基板による振動、配線、物理構造などの問題が重なりました。
 
-## Reconsideration
+<p class="eyebrow project-prose__eyebrow">RECONSIDERATION</p>
+
+## 前提の見直し
 
 生活状況と他Projectの優先度を考え、開発を無期限休止としました。
 
-## Learning
+<p class="eyebrow project-prose__eyebrow">LEARNING</p>
+
+## 得られたこと
 
 未完成でも、身体性、電子回路、ファームウェア、筐体設計を横断した検証から多くの設計知見を得ました。

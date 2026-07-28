@@ -6,13 +6,17 @@ import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
 
 const identities = [
-  { number: "01", label: "LEGAL IDENTITY", name: "天野 浩平", description: "契約、就職、職務経歴など、社会制度上の本人として接続するInterface。" },
-  { number: "02", label: "CREATIVE IDENTITY", name: "ｶﾀﾙｼｽﾜﾀﾘ", description: "DJ、イベント、農業、フィールドワークを通して、現実の場へ入り、体験と課題を観測するInterface。" },
-  { number: "03", label: "ENGINEERING IDENTITY", name: "albasimia", description: "観測した課題を構造化し、Web、IoT、Tool、Architectureとして実装するInterface。" },
+  { label: "LEGAL IDENTITY", name: "天野 浩平", description: "契約、就職、職務経歴など、社会制度上の本人として接続するInterface。" },
+  { label: "CREATIVE IDENTITY", name: "ｶﾀﾙｼｽﾜﾀﾘ", description: "DJ、イベント、農業、フィールドワークを通して、現実の場へ入り、体験と課題を観測するInterface。" },
+  { label: "ENGINEERING IDENTITY", name: "albasimia", description: "観測した課題を構造化し、Web、IoT、Tool、Architectureとして実装するInterface。" },
 ];
 ---
 
-<SiteLayout pageClass="about-page" meta={{ title: "About", description: "天野浩平と、社会へ接続する3つのInterface。", canonicalPath: "/about/" }}>
+<SiteLayout
+  pageClass="about-page"
+  breadcrumbs={[{ label: "ABOUT" }]}
+  meta={{ title: "About", description: "天野浩平と、社会へ接続する3つのInterface。", canonicalPath: "/about/" }}
+>
   <header class="about-profile-page">
     <Container>
       <p class="eyebrow">ABOUT</p>
@@ -32,7 +36,7 @@ const identities = [
         <div class="about-profile__body">
           <p class="about-profile__statement">作ること自体を、<br />目的にしない。</p>
           <p>現実の中で心が動き、既存の仕組みでは成立しない体験が見えた時、必要な構造を考え、実装します。</p>
-          <ArrowLink href="/philosophy/">PHILOSOPHY</ArrowLink>
+          <ArrowLink class="section-end-link" href="/philosophy/">PHILOSOPHY</ArrowLink>
         </div>
       </div>
     </Container>
@@ -44,7 +48,6 @@ const identities = [
       <div class="identity-list">
         {identities.map((identity) => (
           <article>
-            <span>{identity.number}</span>
             <div><p class="eyebrow">{identity.label}</p><h3>{identity.name}</h3></div>
             <p>{identity.description}</p>
           </article>

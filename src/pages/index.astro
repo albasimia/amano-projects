@@ -3,13 +3,21 @@ import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
 import Container from "albasimia-ssg-core/components/Container.astro";
 import Section from "albasimia-ssg-core/components/Section.astro";
 import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
-import HomeProjectCard from "../components/HomeProjectCard.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 import { processCycle } from "../data/process";
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { getCompanies } from "../lib/companies";
 import { getPublishedProjects, type ProjectEntry } from "../lib/projects";
 
 const projects = await getPublishedProjects();
-const featuredProjects = projects.filter(({ data }) => data.featured).slice(0, 4);
+const professionalExperiences = await getCompanies();
+const featuredClientProjects = projects.filter(({ data }) => data.clientFeatured).slice(0, 3);
+const featuredProjects = projects.filter(({ data }) => data.featured);
+const pickUpProjects = featuredProjects.slice(0, 3);
+const pickUpSlugs = new Set(pickUpProjects.map(({ data }) => data.slug));
+const featuredPersonalProjects = featuredProjects
+  .filter(({ data }) => data.projectType === "personal" && !pickUpSlugs.has(data.slug))
+  .slice(0, 3);
 const inProgressProject = projects.find(({ data }) => data.slug === "kaka-see");
 
 const pointOnCircle = (angle: number, radius: number) => {
@@ -32,16 +40,10 @@ const processSteps = processCycle.map((item, index) => {
   };
 });
 
-const professionalExperience = [
-  { title: "KAYAC", subtitle: "Interactive Frontend", description: "キャンペーンサイト、ゲーム型コンテンツ、インタラクティブ表現の実装。" },
-  { title: "SUBARU", subtitle: "Large-scale Website Operations", description: "大規模公式サイトの制作、長期運用、更新設計、CMS構築。" },
-  { title: "BOOKMATE", subtitle: "Requirements & System Design", description: "クライアントヒアリング、要件定義、業務システム設計と継続運用。" },
-];
-
 const identities = [
-  { number: "01", label: "LEGAL IDENTITY", name: "天野 浩平", description: "社会と契約する入口" },
-  { number: "02", label: "CREATIVE IDENTITY", name: "ｶﾀﾙｼｽﾜﾀﾘ", description: "現実を経験し、課題を観測する入口" },
-  { number: "03", label: "ENGINEERING IDENTITY", name: "albasimia", description: "課題を構造化し、実装する入口" },
+  { label: "LEGAL IDENTITY", name: "天野 浩平", description: "社会と契約する入口" },
+  { label: "CREATIVE IDENTITY", name: "ｶﾀﾙｼｽﾜﾀﾘ", description: "現実を経験し、課題を観測する入口" },
+  { label: "ENGINEERING IDENTITY", name: "albasimia", description: "課題を構造化し、実装する入口" },
 ];
 
 function projectStyle(project: ProjectEntry): string | undefined {
@@ -67,12 +69,11 @@ function projectStyle(project: ProjectEntry): string | undefined {
     <Container class="home-hero__inner">
       <h1 id="home-title">
         <span>作らなくていいなら</span>
-        <span>作りたくない。</span>
-        <span class="home-hero__break">でも作らずには</span>
-        <span>いられない。</span>
+        <span class="home-hero__accent-copy">作りたくない。</span>
+        <span class="home-hero__break">でも、作らずには</span>
+        <span class="home-hero__accent-copy">いられない。</span>
       </h1>
       <div class="home-hero__footer">
-        <p>Projects, process, and proof.</p>
         <div class="home-hero__links">
           <a class="home-hero__button home-hero__button--primary" href="/projects/">VIEW PROJECTS <span aria-hidden="true">→</span></a>
           <a class="home-hero__button" href="/about/">ABOUT</a>
@@ -80,6 +81,22 @@ function projectStyle(project: ProjectEntry): string | undefined {
       </div>
     </Container>
   </section>
+
+  <Section class="home-section home-about section--muted" labelledby="home-about-title">
+    <Container>
+      <div class="home-about__layout">
+        <figure class="home-about__portrait">
+          <img src="/images/about-profile.webp" alt="天野 浩平のプロフィール写真" width="853" height="1280" loading="lazy" />
+        </figure>
+        <div class="home-about__body">
+          <p class="eyebrow">ABOUT</p>
+          <h2 id="home-about-title">天野 浩平</h2>
+          <p>現実の中で心が動き、既存の仕組みでは成立しない体験が見えた時、必要な構造を考え、実装します。</p>
+          <ArrowLink class="section-end-link" href="/about/">VIEW ABOUT</ArrowLink>
+        </div>
+      </div>
+    </Container>
+  </Section>
 
   <Section class="home-section home-process" labelledby="process-title">
     <Container>
@@ -100,18 +117,42 @@ function projectStyle(project: ProjectEntry): string | undefined {
         </ol>
         <p class="process-cycle__center"><span>制作の循環</span></p>
       </div>
-      <ArrowLink href="/philosophy/#process">VIEW THE FULL PROCESS</ArrowLink>
+      <ArrowLink class="section-end-link" href="/philosophy/#process">VIEW THE FULL PROCESS</ArrowLink>
     </Container>
   </Section>
 
-  <Section class="home-section home-pickup" labelledby="pickup-title">
+  <Section class="home-section home-work" labelledby="work-title">
     <Container>
-      <div class="home-section-heading home-section-heading--inline">
-        <p class="eyebrow" id="pickup-title">PICK UP</p>
-        <ArrowLink href="/projects/">VIEW ALL</ArrowLink>
+      <SectionHeader eyebrow="PROJECTS" title="生まれるもの、生まれたもの" id="work-title" />
+
+      <div class="home-work-group">
+        <div class="home-section-heading">
+          <p class="eyebrow">PICK UP</p>
+        </div>
+        <div class="project-card-grid">
+          {pickUpProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+        <ArrowLink class="section-end-link" href="/projects/">VIEW ALL</ArrowLink>
       </div>
-      <div class="home-project-grid">
-        {featuredProjects.map((project) => <HomeProjectCard project={project} />)}
+
+      <div class="home-work-group">
+        <div class="home-section-heading">
+          <p class="eyebrow">CLIENT WORK</p>
+        </div>
+        <div class="project-card-grid">
+          {featuredClientProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+        <ArrowLink class="section-end-link" href="/projects/#client-work">VIEW ALL</ArrowLink>
+      </div>
+
+      <div class="home-work-group">
+        <div class="home-section-heading">
+          <p class="eyebrow">PERSONAL PROJECTS</p>
+        </div>
+        <div class="project-card-grid">
+          {featuredPersonalProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+        <ArrowLink class="section-end-link" href="/projects/#personal-projects">VIEW ALL</ArrowLink>
       </div>
     </Container>
   </Section>
@@ -141,7 +182,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
               <div><dt>CURRENT PHASE</dt><dd>Phase 0 — Sensor Reading</dd></div>
             </dl>
             <p>{inProgressProject.data.summary}</p>
-            <ArrowLink href={`/projects/${inProgressProject.data.slug}/`}>VIEW PROJECT</ArrowLink>
+            <ArrowLink class="section-end-link" href={`/projects/${inProgressProject.data.slug}/`}>VIEW PROJECT</ArrowLink>
           </div>
         </article>
       </Container>
@@ -154,16 +195,20 @@ function projectStyle(project: ProjectEntry): string | undefined {
         <p class="eyebrow" id="professional-title">PROFESSIONAL EXPERIENCE</p>
       </div>
       <div class="professional-list">
-        {professionalExperience.map((item, index) => (
-          <a href="/experience/" class="professional-item">
-            <span class="professional-item__number">{String(index + 1).padStart(2, "0")}</span>
-            <div><p>{item.subtitle}</p><h3>{item.title}</h3></div>
-            <p>{item.description}</p>
+        {professionalExperiences.map(({ data }) => (
+          <a href={`/experience/${data.slug}/`} class="professional-item">
+            <span class="professional-item__number">{data.number}</span>
+            <div>
+              <p>{data.label}</p>
+              <h3>{data.shortName}</h3>
+              <time>{data.period}</time>
+            </div>
+            <p>{data.summary}</p>
             <span aria-hidden="true">→</span>
           </a>
         ))}
       </div>
-      <ArrowLink href="/experience/">VIEW EXPERIENCE</ArrowLink>
+      <ArrowLink class="section-end-link" href="/experience/">VIEW EXPERIENCE</ArrowLink>
     </Container>
   </Section>
 
@@ -173,14 +218,13 @@ function projectStyle(project: ProjectEntry): string | undefined {
       <div class="identity-grid">
         {identities.map((identity) => (
           <article>
-            <span class="identity-grid__number">{identity.number}</span>
             <p class="eyebrow">{identity.label}</p>
             <h3>{identity.name}</h3>
             <p>{identity.description}</p>
           </article>
         ))}
       </div>
-      <ArrowLink href="/about/">ABOUT THESE INTERFACES</ArrowLink>
+      <ArrowLink class="section-end-link" href="/about/">ABOUT THESE INTERFACES</ArrowLink>
     </Container>
   </Section>
 </SiteLayout>

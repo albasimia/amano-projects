@@ -8,9 +8,9 @@ status: completed
 interfaces:
   - creative-to-engineering
 fields:
-  - Game
-  - Event
-  - Community
+  - ゲーム
+  - イベント
+  - コミュニティ
 technologies:
   - TypeScript
   - Phaser
@@ -28,29 +28,41 @@ relatedProjects:
 draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 誕生日当日だけでなく、2泊3日の名古屋オフ会全体をコンテンツとして扱うところから始まりました。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 移動、宿泊、交流の時間とゲーム内の育成が連動し、オフ会の記憶そのものがゲーム体験へ残る状態を目指しました。
 
-## Conditions
+<p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
+
+## 成立条件
 
 - ブラウザだけで動作すること
 - 複数日にまたがる進行を扱えること
 - 現地での行動とゲームを接続できること
 - 参加者が同じ文脈を共有できること
 
-## Implementation
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
+
+## 実装
 
 PhaserとTypeScriptを使ったブラウザ育成ゲームとして実装しました。
 
-## Verification
+<p class="eyebrow project-prose__eyebrow">VERIFICATION</p>
+
+## 検証
 
 2泊3日のオフ会中に実際に使用し、現実の時間とゲームの進行を重ねました。
 
-## Learning
+<p class="eyebrow project-prose__eyebrow">LEARNING</p>
+
+## 得られたこと
 
 Webコンテンツは画面内だけで完結せず、旅行やイベントの時間構造そのものと接続できます。

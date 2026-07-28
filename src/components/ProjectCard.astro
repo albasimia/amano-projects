@@ -1,8 +1,6 @@
 ---
 import type { ProjectEntry } from "../lib/projects";
 import { interfaceLabels, statusLabels } from "../lib/projects";
-import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
-import Tag from "albasimia-ssg-core/components/Tag.astro";
 
 interface Props {
   project: ProjectEntry;
@@ -11,21 +9,31 @@ interface Props {
 
 const { project, headingLevel = "h3" } = Astro.props;
 const Heading = headingLevel;
+const href = `/projects/${project.data.slug}/`;
+const style = project.data.accent ? `--project-accent:${project.data.accent}` : undefined;
 ---
 
-<article class="project-card">
-  <div class="project-card__index" aria-hidden="true">{String(project.data.order).padStart(2, "0")}</div>
-  <div class="project-card__content">
-    <div class="project-card__tags">
-      <Tag tone="accent">{statusLabels[project.data.status]}</Tag>
-      {project.data.interfaces.map((item) => <Tag>{interfaceLabels[item]}</Tag>)}
+<article class="project-card" style={style}>
+  <a class="project-card__link" href={href} aria-label={`${project.data.title}の詳細を見る`}>
+    <div class="project-card__visual">
+      {project.data.heroImage ? (
+        <img src={project.data.heroImage} alt="" loading="lazy" decoding="async" />
+      ) : (
+        <img src="/og.png" alt="" loading="lazy" decoding="async" />
+      )}
     </div>
-    <Heading><a href={`/projects/${project.data.slug}/`}>{project.data.title}</a></Heading>
-    <p class="project-card__origin">{project.data.origin}</p>
-    <p>{project.data.intention}</p>
-    <div class="project-card__fields" aria-label="分野">
-      {project.data.fields.map((field) => <span>{field}</span>)}
+    <div class="project-card__body">
+      <div class="project-card__badges">
+        <span class:list={["project-card__status", `project-card__status--${project.data.status}`]}>{statusLabels[project.data.status]}</span>
+        {project.data.interfaces.map((item) => <span>{interfaceLabels[item]}</span>)}
+      </div>
+      <p class="project-card__fields">
+        <span>FIELD</span>
+        <span>{project.data.fields.join(" / ")}</span>
+      </p>
+      <Heading>{project.data.title}</Heading>
+      <p class="project-card__summary">{project.data.summary}</p>
+      <span class="project-card__more">VIEW PROJECT <span aria-hidden="true">→</span></span>
     </div>
-    <ArrowLink href={`/projects/${project.data.slug}/`}>VIEW PROJECT</ArrowLink>
-  </div>
+  </a>
 </article>

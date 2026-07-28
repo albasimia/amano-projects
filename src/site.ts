@@ -14,12 +14,12 @@ export const site = defineSiteConfig({
     siteName: "アマノPROJECTS",
     locale: "ja_JP",
     image: "/og.png",
-    imageAlt: "アマノPROJECTS — OBSERVE / STRUCTURE / IMPLEMENT & VERIFY",
+    imageAlt: "アマノ PROJECTS",
   },
   twitter: {
     card: "summary_large_image",
     image: "/og.png",
-    imageAlt: "アマノPROJECTS — OBSERVE / STRUCTURE / IMPLEMENT & VERIFY",
+    imageAlt: "アマノ PROJECTS",
   },
   favicons: [
     { rel: "icon", href: "/og.png", type: "image/png" },

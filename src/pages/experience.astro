@@ -3,69 +3,18 @@ import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
 import Container from "albasimia-ssg-core/components/Container.astro";
 import Section from "albasimia-ssg-core/components/Section.astro";
 import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
-import Tag from "albasimia-ssg-core/components/Tag.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { getCompanies } from "../lib/companies";
+import { getPublishedProjects, type ProjectEntry } from "../lib/projects";
 
-const phases = [
-  {
-    number: "01",
-    label: "PHYSICAL AND IMMERSIVE MEDIA",
-    period: "2016–2017",
-    company: "株式会社ユニモト",
-    items: ["GearVRアプリ", "360°VR動画", "撮影・編集・リアルタイム通信"],
-  },
-  {
-    number: "02",
-    label: "INTERACTIVE FRONTEND",
-    period: "2017–2018",
-    company: "株式会社カヤック",
-    items: [
-      "キャンペーンサイト",
-      "Canvas / SVG",
-      "Vue.js / Firebase",
-      "インタラクティブコンテンツ",
-    ],
-  },
-  {
-    number: "03",
-    label: "SYSTEMS AND OPERATIONS",
-    period: "2019–2025",
-    company: "株式会社Bloomark",
-    items: [
-      "Webサイト運用",
-      "CMS",
-      "業務システム",
-      "要件定義",
-      "CI/CD",
-      "チーム運用",
-    ],
-  },
-];
-
-const professionalProjects = [
-  {
-    title: "クラロワ日本一決定戦",
-    description: "担当範囲と判断・工夫を整理中。",
-    technologies: ["Web", "Interactive"],
-  },
-  {
-    title: "SUBARU公式サイト",
-    description: "運用上の制約、担当範囲、改善内容を整理中。",
-    technologies: ["Web", "CMS", "Operation"],
-  },
-  {
-    title: "個人情報台帳管理システム",
-    description: "業務要件と設計上の判断を整理中。",
-    technologies: ["System", "Data", "Requirement"],
-  },
-  {
-    title: "社内向け勉強会・業務改善",
-    description: "技術展開と運用改善の記録を整理中。",
-    technologies: ["Guidance", "Workflow", "Documentation"],
-  },
-];
-
-const earlierProjects = ["へぇボタン", "Quizzool", "rice_caster"];
+const professionalExperiences = await getCompanies();
+const publishedProjects = await getPublishedProjects();
+const projectsBySlug = new Map(publishedProjects.map((project) => [project.data.slug, project]));
+const earlierProjectSlugs = ["hele-button", "quizzool", "rice-caster"];
+const earlierProjects = earlierProjectSlugs
+  .map((slug) => projectsBySlug.get(slug))
+  .filter((project): project is ProjectEntry => project !== undefined);
 
 const roots = [
   "映像",
@@ -137,6 +86,7 @@ const capabilities = [
 
 <SiteLayout
   pageClass="experience-page"
+  breadcrumbs={[{ label: "EXPERIENCE" }]}
   meta={{
     title: "Experience",
     description:
@@ -161,27 +111,22 @@ const capabilities = [
     <Container>
       <SectionHeader
         eyebrow="CAREER PHASES"
-        title="実装から構造へ――役割の拡張"
+        title={"実装から構造へ―― \n 役割の拡張"}
         id="career-title"
       />
-      <div class="career-phases">
+      <div class="professional-list">
         {
-          phases.map((phase) => (
-            <article>
-              <span class="career-phases__number">{phase.number}</span>
+          professionalExperiences.map(({ data }) => (
+            <a class="professional-item" href={`/experience/${data.slug}/`}>
+              <span class="professional-item__number">{data.number}</span>
               <div>
-                <>
-                  <p class="eyebrow">{phase.label}</p>
-                  <h3>{phase.company}</h3>
-                  <time>{phase.period}</time>
-                </>
+                <p>{data.label}</p>
+                <h3>{data.company}</h3>
+                <time>{data.period}</time>
               </div>
-              <ul>
-                {phase.items.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </article>
+              <p>{data.summary}</p>
+              <span aria-hidden="true">→</span>
+            </a>
           ))
         }
       </div>
@@ -208,31 +153,6 @@ const capabilities = [
     </Container>
   </Section>
 
-  <Section labelledby="professional-title">
-    <Container>
-      <SectionHeader
-        eyebrow="SELECTED PROFESSIONAL PROJECTS"
-        title="制約の中で成立する方法の選択"
-        id="professional-title"
-      />
-      <div class="professional-grid">
-        {
-          professionalProjects.map((project) => (
-            <article>
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              <div>
-                {project.technologies.map((technology) => (
-                  <Tag>{technology}</Tag>
-                ))}
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </Container>
-  </Section>
-
   <Section class="section--muted" labelledby="earlier-title">
     <Container>
       <SectionHeader
@@ -240,19 +160,9 @@ const capabilities = [
         title="現在につながる、以前の制作"
         id="earlier-title"
       />
-      <ul class="earlier-projects">
-        {
-          earlierProjects.map((project, index) => (
-            <li>
-              <>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{project}</strong>
-                <small>詳細を整理中</small>
-              </>
-            </li>
-          ))
-        }
-      </ul>
+      <div class="project-card-grid">
+        {earlierProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
     </Container>
   </Section>
 
@@ -279,7 +189,7 @@ const capabilities = [
           ))
         }
       </div>
-      <ArrowLink href="/projects/">PROJECTS</ArrowLink>
+      <ArrowLink class="section-end-link" href="/projects/">PROJECTS</ArrowLink>
     </Container>
   </Section>
 </SiteLayout>

@@ -8,9 +8,9 @@ status: operation
 interfaces:
   - creative-to-engineering
 fields:
-  - Music
-  - Input Device
-  - Desktop App
+  - 音楽
+  - 入力デバイス
+  - デスクトップアプリ
 technologies:
   - Swift
   - macOS
@@ -31,37 +31,53 @@ relatedProjects: []
 draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 大量の楽曲へCUEを設定する作業では、マウスとキーボードの往復が多く、DJプレイとは異なる準備作業の負担がありました。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 片手でダイヤルとキーを操作し、再生位置の移動、CUE設定、削除、再生を連続して行える状態を目指しました。
 
-## Conditions
+<p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
+
+## 成立条件
 
 - 1万円以内の既製デバイスを利用すること
 - macOS版rekordboxで動作すること
 - 無線または可搬性を保つこと
 - rekordbox本体を改変しないこと
 
-## Decisions
+<p class="eyebrow project-prose__eyebrow">DECISIONS</p>
+
+## 判断
 
 XPPen ACK05のHID入力を取得し、マウス操作またはMIDI操作へ変換する構成を採用しました。
 
-## Implementation
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
+
+## 実装
 
 Swift 6のmacOS CLIを基盤に、IOHIDからキーとダイヤル入力を取得します。設定はJSONで保持し、Universal Binaryとして配布しています。
 
-## Verification
+<p class="eyebrow project-prose__eyebrow">VERIFICATION</p>
+
+## 検証
 
 実際のrekordbox上でCUE仕込みに使用し、配布用アプリ、GitHub Releases、多言語ガイドまで整備しました。
 
-## Social Connection
+<p class="eyebrow project-prose__eyebrow">SOCIAL CONNECTION</p>
+
+## 社会との接続
 
 同じデバイスとrekordboxを利用するDJが導入できるよう、公開リポジトリとドキュメントを用意しています。
 
-## Learning
+<p class="eyebrow project-prose__eyebrow">LEARNING</p>
+
+## 得られたこと
 
 専用機器を新規制作しなくても、既製デバイスの入力特性を読み替えることで専用体験を作れます。

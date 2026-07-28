@@ -9,8 +9,8 @@ interfaces:
   - creative-to-engineering
 fields:
   - Web
-  - Identity
-  - Dance
+  - アイデンティティ
+  - ダンス
 technologies:
   - HTML
   - CSS
@@ -27,20 +27,28 @@ relatedProjects:
 draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 ダンス活動をしている友人の誕生日に、活動内容と人物像をまとめた非公式サイトを制作しました。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 本人の魅力や活動を、断片的なSNS投稿ではなく、ひとつの世界観として閲覧できる状態を目指しました。
 
-## Conditions
+<p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
+
+## 成立条件
 
 - 非公式サイトであることを明示すること
 - 本人の活動を尊重すること
 - 写真や名称の公開許可を確認すること
 
-## Publication Note
+<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
+
+## 公開に関する注記
 
 画像、名前、活動情報の公開範囲を確認する必要があるためdraftとします。
