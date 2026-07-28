@@ -1,6 +1,6 @@
 # Project Visuals Report
 
-Generated: 2026-07-28T17:00:17.243Z
+Generated: 2026-07-28T17:14:37.935Z
 
 | Project | Website | Repository | OGP | PC SS | SP SS | Hero | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ Generated: 2026-07-28T17:00:17.243Z
 | クラロワ日本一決定戦 | — | — | — | — | — | — | 変更なし |
 | CODE QUEST | — | — | — | — | — | — | 変更なし |
 | へぇボタン | [link](https://helebutton-6cf30.firebaseapp.com/) | [link](https://github.com/albasimia/hele-button) | — | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PC: 既存画像があるため取得をスキップ: screenshot-desktop.jpg / SP: 既存画像があるため取得をスキップ: screenshot-mobile.jpg / repository画像があるため取得をスキップ: repository-image.png |
-| House Tect Corporate Website | [link](https://housetect.co.jp/) | — | — | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | OGP画像を不採用: 546×60 / PC: スライダーを1枚目で固定: 1件 / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: スライダーを1枚目で固定: 1件 / SP: 開いていたmobile menuを閉じる: menu overlayを非表示: ul / SPスクリーンショットを保存: screenshot-mobile.jpg |
+| House Tect Corporate Website | [link](https://housetect.co.jp/) | — | — | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | OGP画像を不採用: 546×60 / PC: スライダーを1枚目で固定: 1件 / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: スライダーを1枚目で固定: 1件 / SP: 開いていたmobile menuを閉じる: selector:#mobile-menu (mobile-menu) / SPスクリーンショットを保存: screenshot-mobile.jpg |
 | 社内向け勉強会・業務改善 | — | — | — | — | — | — | 変更なし |
 | 椅子取りYouTube | — | [link](https://github.com/albasimia/isutori_youtube) | — | — | — | — | 変更なし |
 | 株式会社JSS コーポレートサイト | [link](https://j-ss.jp/) | — | og-image.webp | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PC: 既存画像があるため取得をスキップ: screenshot-desktop.jpg / OGP画像があるため取得をスキップ: og-image.webp / SP: 既存画像があるため取得をスキップ: screenshot-mobile.jpg |
