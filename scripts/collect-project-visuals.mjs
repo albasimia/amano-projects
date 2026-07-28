@@ -25,7 +25,7 @@ const DEFAULT_CAPTURE_CONFIG = Object.freeze({
   networkIdleTimeoutMs: 10_000,
   waitFor: null,
   videoTime: 1.5,
-  videoFrameFallback: true,
+  videoFrameFallback: false,
   hero: "og",
   click: [],
   consentSelectors: [],
@@ -607,58 +607,67 @@ async function prepareVideos(page, videoTime, frameFallback) {
 }
 
 async function extractVideoFrame(page, sourceUrl, targetTime) {
-  const response = await page.context().request.get(sourceUrl, {
-    timeout: 60_000,
-    failOnStatusCode: false,
-    headers: { "User-Agent": "amano-projects-visual-collector" },
-  });
-  if (!response.ok()) {
-    throw new Error(`video download failed: ${response.status()} ${sourceUrl}`);
-  }
-
-  const buffer = await response.body();
-  if (buffer.byteLength === 0 || buffer.byteLength > 150 * 1024 * 1024) {
-    throw new Error(`video size is invalid: ${buffer.byteLength}`);
-  }
-
   const directory = await mkdtemp(join(tmpdir(), "amano-project-video-"));
-  const extension = normalizeVideoExtension(extname(new URL(sourceUrl).pathname));
-  const inputPath = join(directory, `source${extension}`);
   const outputPath = join(directory, "frame.jpg");
+  const seekTime = String(Math.max(Number(targetTime) || 0, 0));
+
+  console.log(`[video-frame] extracting ${seekTime}s: ${sourceUrl}`);
 
   try {
-    await writeFile(inputPath, buffer);
+    // 動画全体をNode側へdownloadせず、FFmpegにURLを直接読ませる。
+    // -ssをinput前に置き、Range request可能な配信元では必要な位置まで高速seekする。
     await runCommand("ffmpeg", [
       "-hide_banner",
       "-loglevel", "error",
-      "-ss", String(Math.max(Number(targetTime) || 0, 0)),
-      "-i", inputPath,
+      "-rw_timeout", "20000000",
+      "-user_agent", "amano-projects-visual-collector",
+      "-ss", seekTime,
+      "-i", sourceUrl,
       "-frames:v", "1",
       "-q:v", "2",
       "-y",
       outputPath,
-    ]);
+    ], 45_000);
+
     const frame = await readFile(outputPath);
+    console.log(`[video-frame] extracted: ${sourceUrl}`);
     return `data:image/jpeg;base64,${frame.toString("base64")}`;
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
 }
 
-function runCommand(command, args) {
+function runCommand(command, args, timeoutMs = 45_000) {
   return new Promise((resolvePromise, rejectPromise) => {
     const child = spawn(command, args, { stdio: ["ignore", "ignore", "pipe"] });
     let stderr = "";
+    let settled = false;
+
+    const finish = (callback) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      callback();
+    };
+
+    const timer = setTimeout(() => {
+      child.kill("SIGKILL");
+      finish(() => rejectPromise(new Error(`${command} timed out after ${timeoutMs}ms`)));
+    }, timeoutMs);
+
     child.stderr.setEncoding("utf8");
-    child.stderr.on("data", (chunk) => { stderr += chunk; });
-    child.on("error", rejectPromise);
-    child.on("close", (code) => {
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk;
+      if (stderr.length > 16_000) stderr = stderr.slice(-16_000);
+    });
+    child.on("error", (error) => finish(() => rejectPromise(error)));
+    child.on("close", (code) => finish(() => {
       if (code === 0) {
         resolvePromise();
       } else {
         rejectPromise(new Error(`${command} exited with ${code}: ${stderr.trim()}`));
       }
-    });
+    }));
   });
 }
 
