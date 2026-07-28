@@ -471,13 +471,11 @@ main[class] .asc-tag {
 .philosophy-copy { width: min(100%, 45rem); margin-left: auto; }
 .philosophy-copy > p { margin: 0; font-size: clamp(1rem, 1.45vw, 1.12rem); line-height: 2; }
 .philosophy-copy > p + p { margin-top: 1.2rem; }
-.philosophy-quote,
-.philosophy-refrain { margin: clamp(3rem, 6vw, 5rem) 0 0; padding: clamp(1.5rem, 3vw, 2.5rem) 0 clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 3vw, 2.5rem); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); border-left: 2px solid var(--color-accent); font-size: clamp(1.45rem, 3vw, 2.4rem); font-weight: 620; line-height: 1.45; letter-spacing: -.04em; }
-.philosophy-subsection { margin-top: clamp(4rem, 8vw, 7rem); padding-top: clamp(2rem, 4vw, 3rem); border-top: 1px solid var(--color-border); }
-.philosophy-subsection h3 { max-width: 18ch; margin: 0 0 2rem; font-size: clamp(1.8rem, 4vw, 3.5rem); line-height: 1.12; letter-spacing: -.05em; }
-.philosophy-subsection p { margin: 0; font-size: clamp(1rem, 1.45vw, 1.12rem); line-height: 2; }
-.philosophy-subsection p + p { margin-top: 1.2rem; }
-.philosophy-refrain span { display: block; }
+.philosophy-principle__body { width: min(100%, 50rem); margin-left: auto; border-top: 1px solid var(--color-border); }
+.philosophy-principle__body section { padding-block: clamp(2.5rem, 5vw, 4.5rem); border-bottom: 1px solid var(--color-border); }
+.philosophy-principle__body h3 { max-width: 24ch; margin: 0 0 clamp(1.5rem, 3vw, 2.5rem); font-size: clamp(1.5rem, 2.8vw, 2.35rem); line-height: 1.25; letter-spacing: -.04em; }
+.philosophy-principle__body p { margin: 0; font-size: clamp(1rem, 1.45vw, 1.12rem); line-height: 2; }
+.philosophy-principle__body p + p { margin-top: 1.2rem; }
 .making-principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(4rem, 8vw, 7rem); border-top: 1px solid var(--color-border); }
 .making-principles article { min-width: 0; padding: clamp(1.5rem, 3vw, 2.5rem); border-bottom: 1px solid var(--color-border); }
 .making-principles article + article { border-left: 1px solid var(--color-border); }
@@ -695,8 +693,8 @@ main[class] .asc-tag {
   .philosophy-hero > .asc-container > .philosophy-hero__intro { margin-top: 2.5rem; font-size: 1rem; }
   .philosophy-section .asc-section-header > div h2 { max-width: none; font-size: clamp(2.1rem, 10vw, 3.2rem); line-height: 1.08; }
   .philosophy-copy { margin-left: 0; }
-  .philosophy-quote,
-  .philosophy-refrain { padding-left: 1rem; font-size: clamp(1.35rem, 7vw, 2rem); }
+  .philosophy-principle__body { margin-left: 0; }
+  .philosophy-principle__body h3 { max-width: none; font-size: clamp(1.45rem, 7vw, 2rem); }
   .making-principles { grid-template-columns: 1fr; }
   .making-principles article { padding-inline: 0; }
   .making-principles article + article { border-left: 0; }
