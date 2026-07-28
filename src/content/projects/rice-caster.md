@@ -8,9 +8,9 @@ status: completed
 interfaces:
   - creative-to-engineering
 fields:
-  - Streaming
-  - Desktop App
-  - Realtime
+  - 配信
+  - デスクトップアプリ
+  - リアルタイム
 technologies:
   - Electron
   - Puppeteer
@@ -26,28 +26,40 @@ relatedProjects: []
 draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 友人の配信でコメントを画面演出へ利用しようとした際、CSSだけでは件数制限や取得範囲の問題を解消できませんでした。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 配信サービスのコメントを独自に取得し、表示方法や演出を自由に制御できる状態を目指しました。
 
-## Conditions
+<p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
+
+## 成立条件
 
 - デスクトップで動作すること
 - 配信画面へ組み込みやすいこと
 - コメント取得と表示を分離すること
 
-## Decisions
+<p class="eyebrow project-prose__eyebrow">DECISIONS</p>
+
+## 判断
 
 単純なCSSカスタマイズから、Puppeteerでコメントを取得するElectronアプリへ再設計しました。
 
-## Implementation
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
+
+## 実装
 
 Electron、Puppeteer、Socket.IOを利用し、コメント取得と表示を接続しました。
 
-## Learning
+<p class="eyebrow project-prose__eyebrow">LEARNING</p>
+
+## 得られたこと
 
 表面的な装飾では解決できない制約を見つけた時、データ取得層から設計し直す必要があります。

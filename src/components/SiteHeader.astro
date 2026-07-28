@@ -1,31 +1,31 @@
 ---
-import ThemeSwitcher from "albasimia-ssg-core/components/ThemeSwitcher.astro";
-
 const pathname = Astro.url.pathname;
 const navigation = [
   { href: "/projects/", label: "PROJECTS", current: pathname.startsWith("/projects/") },
   { href: "/about/", label: "ABOUT", current: pathname.startsWith("/about/") },
+  { href: "/philosophy/", label: "PHILOSOPHY", current: pathname.startsWith("/philosophy/") },
   { href: "/experience/", label: "EXPERIENCE", current: pathname.startsWith("/experience/") },
 ];
 ---
 
 <header class="site-header">
-  <a class="site-brand" href="/" aria-label="AMANO PROJECT トップへ">
-    <span class="site-brand__primary">AMANO</span>
-    <span class="site-brand__secondary">PROJECT</span>
+  <a class="site-brand" href="/" aria-label="アマノPROJECTS トップへ">
+    <span class="site-brand__amano">アマノ</span><span class="site-brand__projects">PROJECTS</span>
   </a>
-  <div class="site-header__actions">
+  <nav class="site-navigation-desktop" aria-label="メインナビゲーション">
+    {navigation.map((item) => (
+      <a href={item.href} aria-current={item.current ? "page" : undefined}>{item.label}</a>
+    ))}
+  </nav>
+  <details class="site-navigation-mobile">
+    <summary aria-label="メニューを開閉する">
+      <span class="site-navigation__label">MENU</span>
+      <span class="site-navigation__icon" aria-hidden="true"><i></i><i></i><i></i></span>
+    </summary>
     <nav aria-label="メインナビゲーション">
       {navigation.map((item) => (
         <a href={item.href} aria-current={item.current ? "page" : undefined}>{item.label}</a>
       ))}
     </nav>
-    <ThemeSwitcher
-      storageKey="amano-project-theme"
-      groupLabel="表示テーマ"
-      lightLabel="ライトテーマ"
-      darkLabel="ダークテーマ"
-      autoLabel="端末設定に合わせる"
-    />
-  </div>
+  </details>
 </header>

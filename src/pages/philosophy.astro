@@ -1,0 +1,170 @@
+---
+import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import Container from "albasimia-ssg-core/components/Container.astro";
+import Section from "albasimia-ssg-core/components/Section.astro";
+import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
+import { processCycle } from "../data/process";
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const makingPrinciples = [
+  {
+    label: "EXPERIENCE",
+    title: "自分で確かめる。",
+    description:
+      "既存の答えをそのまま受け入れず、現場へ入り、実際の体験から考えます。",
+  },
+  {
+    label: "STRUCTURE",
+    title: "経験を、共有可能な構造へ変える。",
+    description:
+      "個人的な発見で終わらせず、情報、ルール、仕組み、プロダクトとして再利用できる形へ整理します。",
+  },
+  {
+    label: "INTERFACE",
+    title: "構造と人の接点を設計する。",
+    description:
+      "誰が、どこで、どのように触れるかを考え、画面、操作、言葉、場を組み合わせて、実際の体験として機能する形へ落とし込みます。",
+  },
+];
+---
+
+<SiteLayout
+  pageClass="philosophy-page"
+  breadcrumbs={[{ label: "PHILOSOPHY" }]}
+  meta={{
+    title: "Philosophy",
+    description:
+      "自分で確かめ、構造化し、次の人へ渡す。共同体と制作に対するアマノPROJECTSの考え方と、それを実践へ変える制作プロセス。",
+    canonicalPath: "/philosophy/",
+  }}
+>
+  <header class="page-hero page-hero--statement philosophy-hero">
+    <Container>
+      <p class="eyebrow">PHILOSOPHY</p>
+      <h1>
+        <span>構造化と継承</span>
+      </h1>
+      <p class="philosophy-hero__intro">
+        私たちは、名も残っていない多くの人々が積み重ねた、知識、技術、文化、営みの上に立っています。受け取ったものをただ信じるのではなく、自分の経験を通して確かめる。そこから得たものを、他者が扱える構造へ変え、自分の代で閉じずに継承していきます。
+      </p>
+    </Container>
+  </header>
+
+  <Section
+    class="philosophy-section philosophy-principle"
+    labelledby="principle-title"
+  >
+    <Container>
+      <SectionHeader
+        eyebrow="PRINCIPLE"
+        title="ゲマインシャフト主義"
+        id="principle-title"
+      />
+      <div class="philosophy-principle__body">
+        <section aria-labelledby="gemeinschaft-definition-title">
+          <h3 id="gemeinschaft-definition-title">ゲマインシャフトとは</h3>
+          <p>
+            ゲマインシャフトは、家族や近隣、友人関係のように、生活や経験を共有するなかで生まれる共同体を指す言葉です。
+          </p>
+          <p>
+            社会学者フェルディナント・テンニースは、契約や利害によって結ばれるゲゼルシャフトと対比して、この概念を示しました。
+          </p>
+        </section>
+        <section aria-labelledby="amano-gemeinschaft-title">
+          <h3 id="amano-gemeinschaft-title">
+            アマノPROJECTSにおけるゲマインシャフト主義
+          </h3>
+          <p>僕が目指しているのは、昔の共同体へ戻ることではありません。</p>
+          <p>
+            すでに存在する文化や営みを受け継ぎながら、人を仕組みに合わせるのではなく、その人たちに合う形へ仕組みを作り直す。
+          </p>
+          <p>
+            そして、小さな共同体がそれぞれの形を保ったまま続き、必要なときには別の共同体ともつながれる状態をつくる。
+          </p>
+          <p>
+            そのために、Web、イベント、音楽、農業、デバイスなど、必要な領域を越えて制作しています。
+          </p>
+        </section>
+      </div>
+    </Container>
+  </Section>
+
+  <Section class="philosophy-section section--muted" labelledby="making-title">
+    <Container>
+      <SectionHeader
+        eyebrow="MAKING"
+        title="作ること自体を、目的にしない"
+        id="making-title"
+      />
+      <div class="philosophy-copy philosophy-copy--making">
+        <p>
+          現実の中で心が動き、既存の仕組みでは成立しない体験が見えた時、必要な構造を考え、実装します。
+        </p>
+        <p>
+          作ることから始めるのではなく、実現したい体験と、それが成立する条件から考えます。
+        </p>
+      </div>
+      <div class="making-principles">
+        {
+          makingPrinciples.map((principle) => (
+            <article>
+              <p class="eyebrow">{principle.label}</p>
+              <h3>{principle.title}</h3>
+              <p>{principle.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+
+  <Section
+    id="process"
+    class="philosophy-section"
+    labelledby="full-process-title"
+  >
+    <Container>
+      <SectionHeader
+        eyebrow="PROCESS"
+        title="制作の循環"
+        id="full-process-title"
+      />
+      <div class="process-introduction">
+        <p>
+          心が動いた場所へ入り、体験を構想し、構造化し、実装し、実世界で問い直す。その経験を社会へ接続し、次の制作へ蓄積するための循環です。
+        </p>
+      </div>
+      <ol class="full-process">
+        {
+          processCycle.map(({ title, description }, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </Container>
+  </Section>
+
+  <Section
+    class="philosophy-section philosophy-closing section--muted"
+    labelledby="closing-title"
+  >
+    <Container>
+      <SectionHeader
+        eyebrow="CLOSING"
+        title="受け取ったものを、自分の代で閉じない"
+        id="closing-title"
+      />
+      <div class="philosophy-copy">
+        <p>
+          現実の中で確かめ、他者が扱える形へ構造化し、次の誰かが使い、問い直し、更新できる状態で渡していく。
+        </p>
+        <p>それが、僕がProjectを作る理由です。</p>
+        <ArrowLink class="section-end-link" href="/projects/">VIEW PROJECTS</ArrowLink>
+      </div>
+    </Container>
+  </Section>
+</SiteLayout>

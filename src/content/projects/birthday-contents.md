@@ -8,8 +8,8 @@ status: completed
 interfaces:
   - creative-to-engineering
 fields:
-  - Game
-  - Community
+  - ゲーム
+  - コミュニティ
   - Web
 technologies:
   - JavaScript
@@ -31,22 +31,30 @@ relatedProjects:
 draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 友人の誕生日を、その人の人物像や周囲のコミュニティごと表現するため、毎回異なる形式のWebコンテンツを制作しました。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 本人だけでなく、その場にいる友人たちが共通の記憶や関係性を通して参加できる体験を目指しました。
 
-## Conditions
+<p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
+
+## 成立条件
 
 - 誕生日当日に遊べること
 - 対象者固有の文脈を持つこと
 - ブラウザで動作すること
 - 内輪の情報を演出として扱いつつ、本人が楽しめること
 
-## Cases
+<p class="eyebrow project-prose__eyebrow">CASES</p>
+
+## 個別Project
 
 ### chana_birthday_2022
 
@@ -64,6 +72,8 @@ draft: false
 
 ダンス活動を行う友人のために、活動と人物像をまとめた非公式サイト。
 
-## Learning
+<p class="eyebrow project-prose__eyebrow">LEARNING</p>
+
+## 得られたこと
 
 同じ技術形式を繰り返すのではなく、対象者ごとに最も適したメディアと遊び方を選ぶことが重要でした。

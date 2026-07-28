@@ -1,4 +1,4 @@
-# AMANO PROJECT
+# アマノPROJECTS
 
 課題の発見、構造化、実装、検証までの過程を記録するポートフォリオサイトです。Astroで静的生成し、共通のSite Meta、BaseLayout、sitemapには`albasimia-ssg-core`（ASC）を利用します。
 

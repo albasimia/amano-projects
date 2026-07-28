@@ -1,0 +1,16 @@
+/* *** mixin *** */
+
+@use "variables";
+
+/* break point */
+@mixin pc-layout {
+	@media (min-width: variables.$pc_min_width) {
+		@content;
+	}
+}
+
+@mixin sp-layout {
+	@media (max-width: variables.$sp_max_width) {
+		@content;
+	}
+}

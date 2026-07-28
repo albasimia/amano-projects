@@ -1,31 +1,30 @@
 import { defineSiteConfig } from "albasimia-ssg-core/site-meta";
 
 export const site = defineSiteConfig({
-  name: "AMANO PROJECT",
+  name: "アマノPROJECTS",
   siteUrl: import.meta.env.SITE_URL ?? "http://localhost:4321",
   description: "課題を発見し、構造化し、実装するまでの過程を記録する天野浩平のポートフォリオ。",
   locale: "ja",
   title: {
-    default: "AMANO PROJECT",
+    default: "アマノPROJECTS",
     separator: " — ",
     position: "suffix",
   },
   openGraph: {
-    siteName: "AMANO PROJECT",
+    siteName: "アマノPROJECTS",
     locale: "ja_JP",
     image: "/og.png",
-    imageAlt: "AMANO PROJECT — OBSERVE / STRUCTURE / IMPLEMENT & VERIFY",
+    imageAlt: "アマノ PROJECTS",
   },
   twitter: {
     card: "summary_large_image",
     image: "/og.png",
-    imageAlt: "AMANO PROJECT — OBSERVE / STRUCTURE / IMPLEMENT & VERIFY",
+    imageAlt: "アマノ PROJECTS",
   },
   favicons: [
     { rel: "icon", href: "/og.png", type: "image/png" },
   ],
   themeColors: [
-    { color: "#f4f2ec", media: "(prefers-color-scheme: light)" },
-    { color: "#171717", media: "(prefers-color-scheme: dark)" },
+    { color: "#f4f2ec" },
   ],
 });

@@ -8,10 +8,10 @@ status: development
 interfaces:
   - creative-to-engineering
 fields:
-  - Music
-  - Library
-  - Search
-  - Service Design
+  - 音楽
+  - ライブラリ
+  - 検索
+  - サービス設計
 technologies:
   - Laravel
   - MariaDB
@@ -30,15 +30,21 @@ relatedProjects:
 draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 廃盤や高騰した音源を探す中で、購入以外に図書館という保存経路があることを発見しました。一方で、蔵書情報、広域利用、取り寄せ、郵送貸出などの条件は自治体ごとに分断されています。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 音源名から、どの図書館で借りられるか、どの順番で借りると効率がよいか、購入すべきか待つべきかを判断できる状態を目指します。
 
-## Conditions
+<p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
+
+## 成立条件
 
 - 公開情報だけを扱うこと
 - 図書館ごとの利用条件を区別すること
@@ -46,18 +52,26 @@ draft: false
 - レア音源の保存と利用を両立すること
 - 単なる検索結果ではなく、行動判断を支援すること
 
-## Decisions
+<p class="eyebrow project-prose__eyebrow">DECISIONS</p>
+
+## 判断
 
 中核機能を「カリタイリスト」とし、借りたい音源を保存して図書館ごとの回収効率や借り順を判断できる構成とします。
 
-## Implementation
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
+
+## 実装
 
 Laravel、MariaDBを中心に、図書館データ取得はPythonとGitHub Actionsによる定期更新を想定しています。
 
-## Social Connection
+<p class="eyebrow project-prose__eyebrow">SOCIAL CONNECTION</p>
+
+## 社会との接続
 
 音源を所有する人だけでなく、公共アーカイブを利用する人にも探索経路を開きます。
 
-## Learning
+<p class="eyebrow project-prose__eyebrow">LEARNING</p>
+
+## 得られたこと
 
 情報検索だけでなく、制度、移動、郵送、関連音源まで含めて行動全体を設計する必要があります。

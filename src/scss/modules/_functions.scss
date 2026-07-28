@@ -1,0 +1,43 @@
+// 記述例
+// PC：font-size: customClamp(00px, 00px, $pc_min_width, 1920px); // 画面幅最大1920pxの場合
+// SP：font-size: customClamp(00px, 00px, 320px, $sp_max_width); // 画面幅最小320pxの場合
+
+@use "sass:math";
+
+// 単位を削除する関数
+@function strip-unit($number) {
+    @if type-of($number) == 'number' and not math.is-unitless($number) {
+      @return math.div($number, $number * 0 + 1);
+    }
+    @return $number;
+}
+
+// フォントサイズのクランプ関数
+@function customClamp($minFontSize,$maxFontSize, $minViewport, $maxViewport) {
+
+    // 引数から単位を除去
+    $minFontSize: strip-unit($minFontSize);
+    $maxFontSize: strip-unit($maxFontSize);
+    $minViewport: strip-unit($minViewport);
+    $maxViewport: strip-unit($maxViewport);
+
+    //最大font-sizeから最小font-sizeを減算しフォントサイズの変化する幅を求める
+    $fontSizeRate: $maxFontSize - $minFontSize;
+    //最大viewportから最小viewportを減算しウィンドウの変化する幅を求めておく
+    $viewportRate: $maxViewport - $minViewport;
+
+    //フォントが変化する量をvw単位にする計算(小数点２桁で丸める)
+    $changingSize: math.div(math.round(math.div($fontSizeRate, $viewportRate) * 10000 ),100);
+
+    //フォントが変化しない部分をrem単位にする計算
+    $fixedSize: math.div(math.round(($minFontSize - math.div($fontSizeRate, $viewportRate) * $minViewport) * 62.5), 1000);
+
+    //最小フォントサイズをrem単位にする計算（小数点3桁で丸める）
+    $minRemFontSize: math.div(math.round($minFontSize * 62.5 ),1000);
+
+    //最大フォントサイズをrem単位にする計算（小数点３桁で丸める）
+    $maxRemFontSize: math.div(math.round($maxFontSize * 62.5),1000);
+
+    //出力
+    @return clamp(#{$minRemFontSize}rem, #{$fixedSize}rem + #{$changingSize}vw, #{$maxRemFontSize}rem);
+}
