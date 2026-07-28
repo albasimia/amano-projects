@@ -191,9 +191,11 @@ function projectStyle(project: ProjectEntry): string | undefined {
 
   <Section class="home-section home-professional" labelledby="professional-title">
     <Container>
-      <div class="home-section-heading">
-        <p class="eyebrow" id="professional-title">PROFESSIONAL EXPERIENCE</p>
-      </div>
+      <SectionHeader
+        eyebrow="PROFESSIONAL EXPERIENCE"
+        title={"実装から構造へ――\n役割の拡張"}
+        id="professional-title"
+      />
       <div class="professional-list">
         {professionalExperiences.map(({ data }) => (
           <a href={`/experience/${data.slug}/`} class="professional-item">
@@ -214,7 +216,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
 
   <Section class="home-section home-identities" labelledby="identities-title">
     <Container>
-      <SectionHeader eyebrow="IDENTITIES" title="ひとりの人間、三つのInterface" id="identities-title" />
+      <SectionHeader eyebrow="IDENTITIES" title="ひとりの人間、３つのInterface" id="identities-title" />
       <div class="identity-grid">
         {identities.map((identity) => (
           <article>
