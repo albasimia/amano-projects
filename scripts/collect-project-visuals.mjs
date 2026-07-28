@@ -56,6 +56,8 @@ const report = [];
 
 try {
   for (const entry of entries) {
+    const entrySlug = entry.directory.split(/[\\/]/).at(-1);
+    console.log(`[${entrySlug}] 開始`);
     const result = await processProject(entry);
     report.push(result);
     console.log(`[${result.slug}] ${result.notes.join(" / ") || "変更なし"}`);
@@ -480,63 +482,69 @@ async function waitForImages(page) {
 async function prepareVideos(page, videoTime, frameFallback) {
   if (videoTime === null || videoTime === false) return 0;
 
-  await page.evaluate(async (targetTime) => {
-    const videos = [...document.querySelectorAll("video")];
+  // FFmpeg fallbackを使わない場合だけ、browser内で動画を再生・seekする。
+  // video.play()はcodecや配信状態によってPromiseが未解決のまま残るため、
+  // 必ず短いtimeoutを付ける。
+  if (!frameFallback) {
+    await page.evaluate(async (targetTime) => {
+      const videos = [...document.querySelectorAll("video")];
 
-    await Promise.allSettled(videos.map(async (video) => {
-      video.muted = true;
-      video.preload = "auto";
-      video.setAttribute("playsinline", "");
+      await Promise.allSettled(videos.map(async (video) => {
+        video.muted = true;
+        video.preload = "auto";
+        video.setAttribute("playsinline", "");
 
-      try {
-        await video.play();
-      } catch {
-        // autoplay policyやcodec非対応時はffmpeg fallbackを使う。
-      }
-
-      if (video.readyState < HTMLMediaElement.HAVE_METADATA) {
         await Promise.race([
-          new Promise((resolve) => {
-            video.addEventListener("loadedmetadata", resolve, { once: true });
-            video.addEventListener("error", resolve, { once: true });
-          }),
-          new Promise((resolve) => setTimeout(resolve, 10_000)),
+          Promise.resolve(video.play()).catch(() => {}),
+          new Promise((resolve) => setTimeout(resolve, 1_500)),
         ]);
-      }
 
-      const duration = Number.isFinite(video.duration) ? video.duration : 0;
-      const nextTime = duration > 0
-        ? Math.min(Math.max(Number(targetTime) || 0, 0), Math.max(duration - 0.05, 0))
-        : 0;
-
-      if (nextTime > 0 && Math.abs(video.currentTime - nextTime) > 0.05) {
-        try {
-          video.currentTime = nextTime;
+        if (video.readyState < HTMLMediaElement.HAVE_METADATA) {
           await Promise.race([
-            new Promise((resolve) => video.addEventListener("seeked", resolve, { once: true })),
+            new Promise((resolve) => {
+              video.addEventListener("loadedmetadata", resolve, { once: true });
+              video.addEventListener("error", resolve, { once: true });
+            }),
+            new Promise((resolve) => setTimeout(resolve, 6_000)),
+          ]);
+        }
+
+        const duration = Number.isFinite(video.duration) ? video.duration : 0;
+        const nextTime = duration > 0
+          ? Math.min(Math.max(Number(targetTime) || 0, 0), Math.max(duration - 0.05, 0))
+          : 0;
+
+        if (nextTime > 0 && Math.abs(video.currentTime - nextTime) > 0.05) {
+          try {
+            video.currentTime = nextTime;
+            await Promise.race([
+              new Promise((resolve) => video.addEventListener("seeked", resolve, { once: true })),
+              new Promise((resolve) => setTimeout(resolve, 4_000)),
+            ]);
+          } catch {
+            // seek不可のstream等は現在frameのまま撮影する。
+          }
+        }
+
+        if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+          await Promise.race([
+            new Promise((resolve) => {
+              video.addEventListener("loadeddata", resolve, { once: true });
+              video.addEventListener("error", resolve, { once: true });
+            }),
             new Promise((resolve) => setTimeout(resolve, 5_000)),
           ]);
-        } catch {
-          // seek不可のstream等は現在frameのまま撮影する。
         }
-      }
 
-      if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
-        await Promise.race([
-          new Promise((resolve) => {
-            video.addEventListener("loadeddata", resolve, { once: true });
-            video.addEventListener("error", resolve, { once: true });
-          }),
-          new Promise((resolve) => setTimeout(resolve, 8_000)),
-        ]);
-      }
+        video.pause();
+      }));
+    }, videoTime).catch(() => {});
 
-      video.pause();
-    }));
-  }, videoTime).catch(() => {});
+    return 0;
+  }
 
-  if (!frameFallback) return 0;
-
+  // FFmpeg fallback時はbrowser内のvideo.play()を呼ばない。
+  // DOMからsource URLだけ取得し、指定秒数の静止画へ置換する。
   const candidates = await page.evaluate(() => {
     return [...document.querySelectorAll("video")].map((video, index) => {
       const rect = video.getBoundingClientRect();
@@ -550,14 +558,7 @@ async function prepareVideos(page, videoTime, frameFallback) {
         && style.display !== "none"
         && style.visibility !== "hidden"
         && Number.parseFloat(style.opacity || "1") > 0;
-      return {
-        index,
-        source,
-        visible,
-        readyState: video.readyState,
-        videoWidth: video.videoWidth,
-        videoHeight: video.videoHeight,
-      };
+      return { index, source, visible };
     }).filter((item) => item.visible && item.source);
   }).catch(() => []);
 
@@ -598,8 +599,8 @@ async function prepareVideos(page, videoTime, frameFallback) {
       }, { index: candidate.index, dataUrl }).catch(() => false);
 
       if (didReplace) replaced += 1;
-    } catch {
-      // ffmpegやdownloadに失敗した場合はbrowserが描画したvideoをそのまま使う。
+    } catch (error) {
+      console.warn(`[video-frame] failed: ${candidate.source}: ${errorMessage(error)}`);
     }
   }
 
@@ -886,7 +887,7 @@ async function collectRepositoryImage({ repository, assetsDir }) {
   const { owner, repo, metadata } = repository;
   const treeResponse = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/git/trees/${encodeURIComponent(metadata.default_branch)}?recursive=1`,
-    { headers: githubHeaders },
+    { headers: githubHeaders, signal: AbortSignal.timeout(30_000) },
   );
   if (!treeResponse.ok) return null;
 
@@ -901,7 +902,7 @@ async function collectRepositoryImage({ repository, assetsDir }) {
 
   for (const candidate of candidates.slice(0, 20)) {
     const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${encodeURIComponent(metadata.default_branch)}/${candidate.path.split("/").map(encodeURIComponent).join("/")}`;
-    const response = await fetch(rawUrl, { redirect: "follow" });
+    const response = await fetch(rawUrl, { redirect: "follow", signal: AbortSignal.timeout(30_000) });
     if (!response.ok) continue;
     const buffer = Buffer.from(await response.arrayBuffer());
     if (buffer.byteLength > MAX_ASSET_BYTES) continue;
@@ -944,6 +945,7 @@ async function checkWebsite(candidate) {
     const response = await fetch(url, {
       redirect: "follow",
       headers: { "User-Agent": "amano-projects-visual-collector" },
+      signal: AbortSignal.timeout(15_000),
     });
     if (!response.ok) return null;
     const contentType = response.headers.get("content-type") ?? "";
@@ -955,14 +957,14 @@ async function checkWebsite(candidate) {
 }
 
 async function fetchGitHubRepository(owner, repo) {
-  const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers: githubHeaders });
+  const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers: githubHeaders, signal: AbortSignal.timeout(15_000) });
   if (!response.ok) return null;
   return response.json();
 }
 
 async function downloadImage(url, assetsDir, basename) {
   try {
-    const response = await fetch(url, { redirect: "follow" });
+    const response = await fetch(url, { redirect: "follow", signal: AbortSignal.timeout(30_000) });
     if (!response.ok) return null;
     const buffer = Buffer.from(await response.arrayBuffer());
     if (buffer.byteLength > MAX_ASSET_BYTES) return null;
