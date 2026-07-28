@@ -31,6 +31,8 @@ const DEFAULT_CAPTURE_CONFIG = Object.freeze({
   desktopClick: [],
   mobileClick: [],
   closeMobileMenu: false,
+  mobileMenuClickAt: null,
+  mobileMenuOpenTexts: [],
   consentSelectors: [],
   hideSelectors: [],
   sliderMode: "first",
@@ -336,20 +338,63 @@ async function preparePage(page, config, viewportName) {
     await waitForImages(page);
   }
 
-  if (viewportName === "SP" && config.closeMobileMenu) {
-    const closedMenu = await closeOpenMobileMenu(page);
-    if (closedMenu) notes.push(`開いていたmobile menuを閉じる: ${closedMenu}`);
-  }
-
   await page.evaluate(() => window.scrollTo(0, 0)).catch(() => {});
   await hideConfiguredElements(page, config.hideSelectors);
   await freezeMotion(page);
+
+  // animation停止によってmenuの初期表示状態が変わるsiteがあるため、
+  // mobile menuの処理はfreezeMotion後に行う。
+  if (viewportName === "SP" && config.closeMobileMenu) {
+    const closedMenu = await closeOpenMobileMenu(page, {
+      clickAt: config.mobileMenuClickAt,
+      openTexts: config.mobileMenuOpenTexts,
+    });
+    if (closedMenu) notes.push(`開いていたmobile menuを閉じる: ${closedMenu}`);
+  }
+
   await page.waitForTimeout(300);
 
   return { notes };
 }
 
-async function closeOpenMobileMenu(page) {
+async function closeOpenMobileMenu(page, { clickAt = null, openTexts = [] } = {}) {
+  const normalizedTexts = openTexts.map((value) => value.trim().replace(/\s+/g, " ").toLowerCase());
+
+  const isOpenByText = async () => {
+    if (normalizedTexts.length === 0) return null;
+    return page.evaluate((texts) => {
+      const visible = (element) => {
+        if (!(element instanceof HTMLElement)) return false;
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return rect.width > 2
+          && rect.height > 2
+          && rect.bottom > 0
+          && rect.top < innerHeight
+          && style.display !== "none"
+          && style.visibility !== "hidden"
+          && Number.parseFloat(style.opacity || "1") > 0;
+      };
+      const labels = [...document.querySelectorAll("a, button, [role='button']")]
+        .filter(visible)
+        .map((element) => (element.textContent || "").trim().replace(/\s+/g, " ").toLowerCase());
+      const matched = texts.filter((text) => labels.includes(text));
+      return matched.length >= Math.min(3, texts.length) ? matched : null;
+    }, normalizedTexts).catch(() => null);
+  };
+
+  // Project別に座標が指定されている場合は、menuが開いていることをtextで確認してから
+  // hamburger位置を直接操作する。selectorがないdiv実装でも確実に扱える。
+  const matchedBeforeClick = await isOpenByText();
+  if (matchedBeforeClick && clickAt) {
+    await page.mouse.click(clickAt.x, clickAt.y).catch(() => {});
+    await page.waitForTimeout(700);
+    const matchedAfterClick = await isOpenByText();
+    if (!matchedAfterClick) {
+      return `座標(${clickAt.x}, ${clickAt.y})`;
+    }
+  }
+
   const result = await page.evaluate(() => {
     const isVisible = (element) => {
       if (!(element instanceof HTMLElement)) return false;
@@ -373,33 +418,21 @@ async function closeOpenMobileMenu(page) {
     ].join(","))].filter((element) => {
       if (!isVisible(element)) return false;
       const rect = element.getBoundingClientRect();
-      const style = getComputedStyle(element);
       const visibleLinks = [...element.querySelectorAll("a")].filter(isVisible).length;
-      const largeOverlay = rect.width * rect.height >= viewportArea * 0.42
-        && rect.width >= innerWidth * 0.65
-        && rect.height >= innerHeight * 0.5;
-      const overlayPosition = style.position === "fixed" || style.position === "absolute";
-      return visibleLinks >= 3 && largeOverlay && overlayPosition;
+      const largeOverlay = rect.width * rect.height >= viewportArea * 0.35
+        && rect.width >= innerWidth * 0.6
+        && rect.height >= innerHeight * 0.45;
+      return visibleLinks >= 3 && largeOverlay;
     });
 
     if (menuCandidates.length === 0) return null;
 
-    const controls = [...document.querySelectorAll([
-      "button",
-      "[role='button']",
-      "a[aria-expanded]",
-      "[class*='hamburger' i]",
-      "[class*='menu-trigger' i]",
-      "[class*='menu-button' i]",
-      "[class*='menu-btn' i]",
-      "[id*='menu-trigger' i]",
-      "[id*='menu-button' i]",
-      "[id*='menu-btn' i]",
-    ].join(","))].filter((element) => {
-      if (!isVisible(element)) return false;
-      const rect = element.getBoundingClientRect();
-      return rect.top < 140 && rect.right > innerWidth - 150;
-    });
+    const controls = [...document.querySelectorAll("button, [role='button'], a, [onclick], [tabindex]")]
+      .filter((element) => {
+        if (!isVisible(element)) return false;
+        const rect = element.getBoundingClientRect();
+        return rect.top < 120 && rect.right > innerWidth - 120;
+      });
 
     const score = (element) => {
       const value = [
@@ -408,13 +441,13 @@ async function closeOpenMobileMenu(page) {
         element.getAttribute("id"),
         element.textContent,
       ].filter(Boolean).join(" ").toLowerCase();
-
+      const rect = element.getBoundingClientRect();
       let points = 0;
       if (element.getAttribute("aria-expanded") === "true") points += 100;
       if (/(hamburger|menu-trigger|menu-button|menu-btn|nav-button|nav-btn)/.test(value)) points += 70;
       if (/(menu|メニュー|閉じる|close)/.test(value)) points += 40;
-      const rect = element.getBoundingClientRect();
-      if (rect.right > innerWidth - 80) points += 15;
+      if (rect.right > innerWidth - 70) points += 20;
+      if (rect.width >= 24 && rect.width <= 90 && rect.height >= 20 && rect.height <= 90) points += 15;
       return points;
     };
 
@@ -426,20 +459,59 @@ async function closeOpenMobileMenu(page) {
       || control.getAttribute("id")
       || control.getAttribute("class")
       || control.tagName.toLowerCase();
-
     control.click();
     return String(descriptor).trim().slice(0, 120);
   }).catch(() => null);
 
   if (result) {
     await page.waitForTimeout(700);
-    return result;
+    if (!await isOpenByText()) return result;
   }
 
-  // custom menuがselector上で判定できない場合の最後の手段。
-  // Escapeで閉じる実装だけを対象にし、画面内容には影響しない。
-  await page.keyboard.press("Escape").catch(() => {});
-  await page.waitForTimeout(300);
+  // clickで閉じられない場合は、指定されたmenu item群の共通祖先を撮影時だけ隠す。
+  // body/html/headerは対象外とし、menu overlayだけに限定する。
+  if (normalizedTexts.length > 0) {
+    const hidden = await page.evaluate((texts) => {
+      const visible = (element) => {
+        if (!(element instanceof HTMLElement)) return false;
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return rect.width > 2
+          && rect.height > 2
+          && rect.bottom > 0
+          && rect.top < innerHeight
+          && style.display !== "none"
+          && style.visibility !== "hidden"
+          && Number.parseFloat(style.opacity || "1") > 0;
+      };
+      const elements = [...document.querySelectorAll("a, button")].filter((element) => {
+        if (!visible(element)) return false;
+        const label = (element.textContent || "").trim().replace(/\s+/g, " ").toLowerCase();
+        return texts.includes(label);
+      });
+      if (elements.length < Math.min(3, texts.length)) return null;
+
+      let candidate = elements[0].parentElement;
+      while (candidate && candidate !== document.body && candidate !== document.documentElement) {
+        if (elements.every((element) => candidate.contains(element))) {
+          const rect = candidate.getBoundingClientRect();
+          const tag = candidate.tagName.toLowerCase();
+          if (tag !== "header" && rect.width >= innerWidth * 0.65 && rect.height >= innerHeight * 0.45) {
+            candidate.style.setProperty("display", "none", "important");
+            candidate.style.setProperty("visibility", "hidden", "important");
+            candidate.style.setProperty("opacity", "0", "important");
+            candidate.style.setProperty("pointer-events", "none", "important");
+            return candidate.id || candidate.className || tag;
+          }
+        }
+        candidate = candidate.parentElement;
+      }
+      return null;
+    }, normalizedTexts).catch(() => null);
+
+    if (hidden) return `menu overlayを非表示: ${String(hidden).trim().slice(0, 100)}`;
+  }
+
   return null;
 }
 
@@ -1167,6 +1239,7 @@ async function loadCaptureConfig(projectDirectory, slug) {
     click: normalizeStringArray(custom.click, "click", configPath),
     desktopClick: normalizeStringArray(custom.desktopClick, "desktopClick", configPath),
     mobileClick: normalizeStringArray(custom.mobileClick, "mobileClick", configPath),
+    mobileMenuOpenTexts: normalizeStringArray(custom.mobileMenuOpenTexts, "mobileMenuOpenTexts", configPath),
     consentSelectors: normalizeStringArray(custom.consentSelectors, "consentSelectors", configPath),
     hideSelectors: normalizeStringArray(custom.hideSelectors, "hideSelectors", configPath),
     sliderSelectors: normalizeStringArray(custom.sliderSelectors, "sliderSelectors", configPath),
@@ -1200,6 +1273,13 @@ async function loadCaptureConfig(projectDirectory, slug) {
   }
   if (typeof config.closeMobileMenu !== "boolean") {
     throw new Error(`${configPath}: closeMobileMenuはbooleanで指定してください`);
+  }
+  if (config.mobileMenuClickAt !== null) {
+    if (!config.mobileMenuClickAt || typeof config.mobileMenuClickAt !== "object" || Array.isArray(config.mobileMenuClickAt)
+      || !Number.isFinite(config.mobileMenuClickAt.x) || !Number.isFinite(config.mobileMenuClickAt.y)
+      || config.mobileMenuClickAt.x < 0 || config.mobileMenuClickAt.y < 0) {
+      throw new Error(`${configPath}: mobileMenuClickAtは{x, y}形式の0以上のnumberで指定してください`);
+    }
   }
 
   if (!config.websiteUrl && WEBSITE_OVERRIDES.has(slug)) {

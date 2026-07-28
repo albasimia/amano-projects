@@ -1,4 +1,15 @@
 {
   "hero": "desktop",
-  "closeMobileMenu": true
+  "closeMobileMenu": true,
+  "mobileMenuClickAt": {
+    "x": 358,
+    "y": 28
+  },
+  "mobileMenuOpenTexts": [
+    "TOP",
+    "会社概要",
+    "サービス",
+    "お知らせ",
+    "お問い合わせ"
+  ]
 }
