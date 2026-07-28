@@ -9,6 +9,7 @@ import { imageSize } from "image-size";
 const repositoryRoot = resolve(process.cwd());
 const projectsRoot = join(repositoryRoot, "src/content/projects");
 const reportPath = join(repositoryRoot, "docs/project-visuals-report.md");
+const requestedSlugs = new Set(process.argv.slice(2).map((value) => value.trim()).filter(Boolean));
 const githubToken = process.env.GITHUB_TOKEN?.trim();
 const githubHeaders = {
   Accept: "application/vnd.github+json",
@@ -32,6 +33,8 @@ const DEFAULT_CAPTURE_CONFIG = Object.freeze({
   desktopClick: [],
   mobileClick: [],
   closeMobileMenu: false,
+  mobileMenuSelector: null,
+  mobileMenuButtonSelector: null,
   mobileMenuClickAt: null,
   mobileMenuOpenTexts: [],
   consentSelectors: [],
@@ -56,7 +59,15 @@ const COMMON_CONSENT_SELECTORS = [
   "button[aria-label='すべて許可']",
 ];
 
-const entries = await listProjectEntries(projectsRoot);
+const allEntries = await listProjectEntries(projectsRoot);
+const entries = requestedSlugs.size === 0
+  ? allEntries
+  : allEntries.filter((entry) => requestedSlugs.has(entry.directory.split(/[\\/]/).at(-1)));
+if (requestedSlugs.size > 0 && entries.length !== requestedSlugs.size) {
+  const found = new Set(entries.map((entry) => entry.directory.split(/[\\/]/).at(-1)));
+  const missing = [...requestedSlugs].filter((slug) => !found.has(slug));
+  throw new Error(`指定されたProjectが見つかりません: ${missing.join(", ")}`);
+}
 const browser = await launchBrowser();
 const report = [];
 
@@ -72,8 +83,10 @@ try {
   await browser.close();
 }
 
-await mkdir(join(repositoryRoot, "docs"), { recursive: true });
-await writeFile(reportPath, renderReport(report), "utf8");
+if (requestedSlugs.size === 0) {
+  await mkdir(join(repositoryRoot, "docs"), { recursive: true });
+  await writeFile(reportPath, renderReport(report), "utf8");
+}
 
 async function processProject(entry) {
   const source = await readFile(entry.indexPath, "utf8");
@@ -387,6 +400,8 @@ async function preparePage(page, config, viewportName) {
   // mobile menuの処理はfreezeMotion後に行う。
   if (viewportName === "SP" && config.closeMobileMenu) {
     const closedMenu = await closeOpenMobileMenu(page, {
+      menuSelector: config.mobileMenuSelector,
+      buttonSelector: config.mobileMenuButtonSelector,
       clickAt: config.mobileMenuClickAt,
       openTexts: config.mobileMenuOpenTexts,
     });
@@ -398,8 +413,51 @@ async function preparePage(page, config, viewportName) {
   return { notes };
 }
 
-async function closeOpenMobileMenu(page, { clickAt = null, openTexts = [] } = {}) {
+async function closeOpenMobileMenu(page, {
+  menuSelector = null,
+  buttonSelector = null,
+  clickAt = null,
+  openTexts = [],
+} = {}) {
   const normalizedTexts = openTexts.map((value) => value.trim().replace(/\s+/g, " ").toLowerCase());
+
+  // Project側でmenuとbuttonを特定できる場合は、site固有の状態classを
+  // 撮影用DOMから確実に除去する。animation停止後でもmenuを残さない。
+  if (menuSelector) {
+    const forcedClosed = await page.evaluate(({ menuSelector: menuValue, buttonSelector: buttonValue }) => {
+      const menu = document.querySelector(menuValue);
+      if (!(menu instanceof HTMLElement)) return null;
+
+      const button = buttonValue ? document.querySelector(buttonValue) : null;
+      const openClasses = ["active", "is-active", "open", "is-open", "show", "is-show"];
+      for (const className of openClasses) {
+        menu.classList.remove(className);
+        if (button instanceof HTMLElement) button.classList.remove(className);
+      }
+
+      menu.setAttribute("aria-hidden", "true");
+      menu.style.setProperty("display", "none", "important");
+      menu.style.setProperty("visibility", "hidden", "important");
+      menu.style.setProperty("opacity", "0", "important");
+      menu.style.setProperty("pointer-events", "none", "important");
+
+      if (button instanceof HTMLElement) {
+        button.setAttribute("aria-expanded", "false");
+      }
+
+      for (const root of [document.documentElement, document.body]) {
+        for (const className of ["menu-open", "nav-open", "is-menu-open", "is-nav-open"]) {
+          root.classList.remove(className);
+        }
+        root.style.removeProperty("overflow");
+        root.style.removeProperty("position");
+      }
+
+      return menu.id || menu.className || menu.tagName.toLowerCase();
+    }, { menuSelector, buttonSelector }).catch(() => null);
+
+    if (forcedClosed) return `selector:${menuSelector} (${String(forcedClosed).trim().slice(0, 100)})`;
+  }
 
   const isOpenByText = async () => {
     if (normalizedTexts.length === 0) return null;
@@ -783,7 +841,7 @@ async function prepareVideos(page, videoTime, frameFallback) {
   let replaced = 0;
   for (const candidate of candidates) {
     try {
-      const dataUrl = await extractVideoFrame(page, candidate.source, videoTime);
+      const dataUrl = await extractVideoFrame(candidate.source, videoTime);
       const didReplace = await page.evaluate(({ index, dataUrl }) => {
         const video = [...document.querySelectorAll("video")][index];
         if (!video) return false;
@@ -825,7 +883,7 @@ async function prepareVideos(page, videoTime, frameFallback) {
   return replaced;
 }
 
-async function extractVideoFrame(page, sourceUrl, targetTime) {
+async function extractVideoFrame(sourceUrl, targetTime) {
   const directory = await mkdtemp(join(tmpdir(), "amano-project-video-"));
   const outputPath = join(directory, "frame.jpg");
   const seekTime = String(Math.max(Number(targetTime) || 0, 0));
@@ -888,13 +946,6 @@ function runCommand(command, args, timeoutMs = 45_000) {
       }
     }));
   });
-}
-
-function normalizeVideoExtension(extension) {
-  const normalized = extension.toLowerCase();
-  return [".mp4", ".webm", ".mov", ".m4v", ".ogv"].includes(normalized)
-    ? normalized
-    : ".mp4";
 }
 
 async function hideConfiguredElements(page, selectors) {
@@ -1289,25 +1340,6 @@ async function removeAssetVariants(directory, basename) {
     .map((entry) => rm(join(directory, entry.name), { force: true })));
 }
 
-async function downloadImage(url, assetsDir, basename) {
-  try {
-    const response = await fetch(url, { redirect: "follow", signal: AbortSignal.timeout(30_000) });
-    if (!response.ok) return null;
-    const buffer = Buffer.from(await response.arrayBuffer());
-    if (buffer.byteLength > MAX_ASSET_BYTES) return null;
-
-    let extension = extensionFromContentType(response.headers.get("content-type"));
-    if (!extension) extension = normalizeExtension(extname(new URL(response.url || url).pathname));
-    if (!IMAGE_EXTENSIONS.has(extension)) return null;
-
-    const filename = `${basename}${extension}`;
-    await writeFile(join(assetsDir, filename), buffer);
-    return filename;
-  } catch {
-    return null;
-  }
-}
-
 async function loadCaptureConfig(projectDirectory, slug) {
   const configPath = join(projectDirectory, "data/visual-capture.json");
   let custom = {};
@@ -1367,6 +1399,11 @@ async function loadCaptureConfig(projectDirectory, slug) {
   }
   if (typeof config.closeMobileMenu !== "boolean") {
     throw new Error(`${configPath}: closeMobileMenuはbooleanで指定してください`);
+  }
+  for (const key of ["mobileMenuSelector", "mobileMenuButtonSelector"]) {
+    if (config[key] !== null && (typeof config[key] !== "string" || config[key].trim() === "")) {
+      throw new Error(`${configPath}: ${key}は空でないstringまたはnullで指定してください`);
+    }
   }
   if (config.mobileMenuClickAt !== null) {
     if (!config.mobileMenuClickAt || typeof config.mobileMenuClickAt !== "object" || Array.isArray(config.mobileMenuClickAt)
