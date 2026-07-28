@@ -19,8 +19,8 @@ const makingPrinciples = [
   },
   {
     label: "INTERFACE",
-    title: "名前はUIである。",
-    description: "名前は対象を説明するだけではありません。人が何を期待し、どのように関わるかを変え、その後の行動を方向づけます。",
+    title: "人が触れる入口を設計する。",
+    description: "名前は、対象を説明するだけのものではありません。何として認識され、どう手に取られるかを変えるUIの一部として設計します。",
   },
 ];
 ---
@@ -29,7 +29,7 @@ const makingPrinciples = [
   pageClass="philosophy-page"
   meta={{
     title: "Philosophy",
-    description: "自分で確かめ、構造化し、次世代に渡す。人間、共同体、制作に対するアマノPJの哲学と、それを実践へ変える制作プロセス。",
+    description: "自分で確かめ、構造化し、次の人へ渡す。共同体と制作に対するアマノPROJECTSの考え方と、それを実践へ変える制作プロセス。",
     canonicalPath: "/philosophy/",
   }}
 >
@@ -67,7 +67,7 @@ const makingPrinciples = [
 
   <Section class="philosophy-section section--muted" labelledby="making-title">
     <Container>
-      <SectionHeader eyebrow="04 — MAKING" title="作ること自体を、目的にはしない" id="making-title" />
+      <SectionHeader eyebrow="MAKING" title="作ること自体を、目的にはしない" id="making-title" />
       <div class="philosophy-copy philosophy-copy--making">
         <p>現実の中で心が動き、既存の仕組みでは成立しない体験が見えた時、必要な構造を考え、実装します。</p>
         <p>作ることから始めるのではなく、実現したい体験と、それが成立する条件から考えます。</p>
@@ -87,7 +87,7 @@ const makingPrinciples = [
 
   <Section id="process" class="philosophy-section" labelledby="full-process-title">
     <Container>
-      <SectionHeader eyebrow="05 — PHILOSOPHY IN PRACTICE" title="哲学から、制作の循環へ" id="full-process-title" />
+      <SectionHeader eyebrow="PROCESS" title="制作の循環" id="full-process-title" />
       <p class="process-introduction">心が動いた場所へ入り、体験を構想し、構造化し、実装し、実世界で問い直す。その経験を社会へ接続し、次の制作へ蓄積するための循環です。</p>
       <ol class="full-process">
         {processCycle.map(({ title, description }, index) => (
@@ -103,10 +103,10 @@ const makingPrinciples = [
 
   <Section class="philosophy-section philosophy-closing section--muted" labelledby="closing-title">
     <Container>
-      <SectionHeader eyebrow="06 — CLOSING" title="受け取ったものを、自分の代で閉じない" id="closing-title" />
+      <SectionHeader eyebrow="CLOSING" title="受け取ったものを、自分の代で閉じない" id="closing-title" />
       <div class="philosophy-copy">
         <p>現実の中で確かめ、他者が扱える形へ構造化し、次の誰かが使い、問い直し、更新できる状態で渡していく。</p>
-        <p>それが、私がProjectを作る理由です。</p>
+        <p>それが、僕がProjectを作る理由です。</p>
         <ArrowLink href="/projects/">VIEW PROJECTS</ArrowLink>
       </div>
     </Container>
