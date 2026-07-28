@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { extname, join, resolve } from "node:path";
 import { spawn } from "node:child_process";
@@ -28,6 +28,9 @@ const DEFAULT_CAPTURE_CONFIG = Object.freeze({
   videoFrameFallback: false,
   hero: "og",
   click: [],
+  desktopClick: [],
+  mobileClick: [],
+  closeMobileMenu: false,
   consentSelectors: [],
   hideSelectors: [],
   sliderMode: "first",
@@ -246,7 +249,7 @@ async function captureViewport({
       timeout: config.timeoutMs,
     });
 
-    const preparation = await preparePage(page, config);
+    const preparation = await preparePage(page, config, viewportName);
     notes.push(...preparation.notes.map((note) => `${viewportName}: ${note}`));
 
     if (collectOg) {
@@ -255,8 +258,10 @@ async function captureViewport({
 
       if (ogImage) {
         const resolvedOg = new URL(ogImage, page.url()).href;
-        ogAsset = await downloadImage(resolvedOg, assetsDir, "og-image");
+        const downloadedOg = await downloadOgImage(resolvedOg, assetsDir);
+        ogAsset = downloadedOg.asset;
         if (ogAsset) notes.push(`OGP画像を保存: ${ogAsset}`);
+        if (downloadedOg.note) notes.push(downloadedOg.note);
       }
     }
 
@@ -277,7 +282,7 @@ async function captureViewport({
   return { asset, ogAsset, notes };
 }
 
-async function preparePage(page, config) {
+async function preparePage(page, config, viewportName) {
   const notes = [];
 
   await page.waitForLoadState("networkidle", {
@@ -287,7 +292,8 @@ async function preparePage(page, config) {
   const consentResult = await dismissConsent(page, config.consentSelectors);
   if (consentResult) notes.push(`Cookie同意を操作: ${consentResult}`);
 
-  for (const selector of config.click) {
+  const viewportClicks = viewportName === "SP" ? config.mobileClick : config.desktopClick;
+  for (const selector of [...config.click, ...viewportClicks]) {
     const locator = page.locator(selector).first();
     if (await locator.isVisible().catch(() => false)) {
       await locator.click({ timeout: 3_000 }).catch(() => {});
@@ -330,12 +336,111 @@ async function preparePage(page, config) {
     await waitForImages(page);
   }
 
+  if (viewportName === "SP" && config.closeMobileMenu) {
+    const closedMenu = await closeOpenMobileMenu(page);
+    if (closedMenu) notes.push(`開いていたmobile menuを閉じる: ${closedMenu}`);
+  }
+
   await page.evaluate(() => window.scrollTo(0, 0)).catch(() => {});
   await hideConfiguredElements(page, config.hideSelectors);
   await freezeMotion(page);
   await page.waitForTimeout(300);
 
   return { notes };
+}
+
+async function closeOpenMobileMenu(page) {
+  const result = await page.evaluate(() => {
+    const isVisible = (element) => {
+      if (!(element instanceof HTMLElement)) return false;
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return rect.width > 2
+        && rect.height > 2
+        && style.display !== "none"
+        && style.visibility !== "hidden"
+        && Number.parseFloat(style.opacity || "1") > 0;
+    };
+
+    const viewportArea = innerWidth * innerHeight;
+    const menuCandidates = [...document.querySelectorAll([
+      "nav",
+      "[role='navigation']",
+      "[class*='menu' i]",
+      "[class*='nav' i]",
+      "[id*='menu' i]",
+      "[id*='nav' i]",
+    ].join(","))].filter((element) => {
+      if (!isVisible(element)) return false;
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      const visibleLinks = [...element.querySelectorAll("a")].filter(isVisible).length;
+      const largeOverlay = rect.width * rect.height >= viewportArea * 0.42
+        && rect.width >= innerWidth * 0.65
+        && rect.height >= innerHeight * 0.5;
+      const overlayPosition = style.position === "fixed" || style.position === "absolute";
+      return visibleLinks >= 3 && largeOverlay && overlayPosition;
+    });
+
+    if (menuCandidates.length === 0) return null;
+
+    const controls = [...document.querySelectorAll([
+      "button",
+      "[role='button']",
+      "a[aria-expanded]",
+      "[class*='hamburger' i]",
+      "[class*='menu-trigger' i]",
+      "[class*='menu-button' i]",
+      "[class*='menu-btn' i]",
+      "[id*='menu-trigger' i]",
+      "[id*='menu-button' i]",
+      "[id*='menu-btn' i]",
+    ].join(","))].filter((element) => {
+      if (!isVisible(element)) return false;
+      const rect = element.getBoundingClientRect();
+      return rect.top < 140 && rect.right > innerWidth - 150;
+    });
+
+    const score = (element) => {
+      const value = [
+        element.getAttribute("aria-label"),
+        element.getAttribute("class"),
+        element.getAttribute("id"),
+        element.textContent,
+      ].filter(Boolean).join(" ").toLowerCase();
+
+      let points = 0;
+      if (element.getAttribute("aria-expanded") === "true") points += 100;
+      if (/(hamburger|menu-trigger|menu-button|menu-btn|nav-button|nav-btn)/.test(value)) points += 70;
+      if (/(menu|メニュー|閉じる|close)/.test(value)) points += 40;
+      const rect = element.getBoundingClientRect();
+      if (rect.right > innerWidth - 80) points += 15;
+      return points;
+    };
+
+    controls.sort((a, b) => score(b) - score(a));
+    const control = controls[0];
+    if (!control || score(control) <= 0) return null;
+
+    const descriptor = control.getAttribute("aria-label")
+      || control.getAttribute("id")
+      || control.getAttribute("class")
+      || control.tagName.toLowerCase();
+
+    control.click();
+    return String(descriptor).trim().slice(0, 120);
+  }).catch(() => null);
+
+  if (result) {
+    await page.waitForTimeout(700);
+    return result;
+  }
+
+  // custom menuがselector上で判定できない場合の最後の手段。
+  // Escapeで閉じる実装だけを対象にし、画面内容には影響しない。
+  await page.keyboard.press("Escape").catch(() => {});
+  await page.waitForTimeout(300);
+  return null;
 }
 
 async function dismissConsent(page, projectSelectors) {
@@ -962,6 +1067,65 @@ async function fetchGitHubRepository(owner, repo) {
   return response.json();
 }
 
+async function downloadOgImage(url, assetsDir) {
+  try {
+    const response = await fetch(url, {
+      redirect: "follow",
+      signal: AbortSignal.timeout(30_000),
+    });
+    if (!response.ok) return { asset: null, note: null };
+
+    const buffer = Buffer.from(await response.arrayBuffer());
+    if (buffer.byteLength === 0 || buffer.byteLength > MAX_ASSET_BYTES) {
+      return { asset: null, note: "OGP画像を不採用: file sizeが不正" };
+    }
+
+    let extension = extensionFromContentType(response.headers.get("content-type"));
+    if (!extension) extension = normalizeExtension(extname(new URL(response.url || url).pathname));
+    if (!IMAGE_EXTENSIONS.has(extension)) {
+      return { asset: null, note: "OGP画像を不採用: 未対応形式" };
+    }
+
+    let dimensions;
+    try {
+      dimensions = imageSize(buffer);
+    } catch {
+      return { asset: null, note: "OGP画像を不採用: 寸法を取得できない" };
+    }
+
+    const width = dimensions.width ?? 0;
+    const height = dimensions.height ?? 0;
+    const aspectRatio = height > 0 ? width / height : 0;
+    const representative = width >= 480
+      && height >= 240
+      && aspectRatio >= 0.75
+      && aspectRatio <= 3;
+
+    if (!representative) {
+      await removeAssetVariants(assetsDir, "og-image");
+      return {
+        asset: null,
+        note: `OGP画像を不採用: ${width}×${height}`,
+      };
+    }
+
+    await removeAssetVariants(assetsDir, "og-image");
+    const filename = `og-image${extension}`;
+    await writeFile(join(assetsDir, filename), buffer);
+    return { asset: filename, note: null };
+  } catch {
+    return { asset: null, note: null };
+  }
+}
+
+async function removeAssetVariants(directory, basename) {
+  const entries = await readdir(directory, { withFileTypes: true }).catch(() => []);
+  await Promise.all(entries
+    .filter((entry) => entry.isFile())
+    .filter((entry) => entry.name === basename || entry.name.startsWith(`${basename}.`))
+    .map((entry) => rm(join(directory, entry.name), { force: true })));
+}
+
 async function downloadImage(url, assetsDir, basename) {
   try {
     const response = await fetch(url, { redirect: "follow", signal: AbortSignal.timeout(30_000) });
@@ -1001,6 +1165,8 @@ async function loadCaptureConfig(projectDirectory, slug) {
     ...DEFAULT_CAPTURE_CONFIG,
     ...custom,
     click: normalizeStringArray(custom.click, "click", configPath),
+    desktopClick: normalizeStringArray(custom.desktopClick, "desktopClick", configPath),
+    mobileClick: normalizeStringArray(custom.mobileClick, "mobileClick", configPath),
     consentSelectors: normalizeStringArray(custom.consentSelectors, "consentSelectors", configPath),
     hideSelectors: normalizeStringArray(custom.hideSelectors, "hideSelectors", configPath),
     sliderSelectors: normalizeStringArray(custom.sliderSelectors, "sliderSelectors", configPath),
@@ -1031,6 +1197,9 @@ async function loadCaptureConfig(projectDirectory, slug) {
   }
   if (typeof config.videoFrameFallback !== "boolean") {
     throw new Error(`${configPath}: videoFrameFallbackはbooleanで指定してください`);
+  }
+  if (typeof config.closeMobileMenu !== "boolean") {
+    throw new Error(`${configPath}: closeMobileMenuはbooleanで指定してください`);
   }
 
   if (!config.websiteUrl && WEBSITE_OVERRIDES.has(slug)) {
