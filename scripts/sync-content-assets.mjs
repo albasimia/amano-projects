@@ -10,11 +10,21 @@ const collections = [
     entryFile: "index.md",
     validateAssets(frontmatter, catalog, slug, sourcePath) {
       const heroImage = frontmatter.heroImage;
+<<<<<<< HEAD
       if (heroImage === undefined) return;
       if (!isRecord(heroImage) || typeof heroImage.asset !== "string") {
         throw new Error(`${sourcePath}: heroImage.assetを指定してください`);
       }
       catalog.resolve(slug, heroImage.asset);
+=======
+      if (heroImage !== undefined) {
+        if (!isRecord(heroImage) || typeof heroImage.asset !== "string") {
+          throw new Error(`${sourcePath}: heroImage.assetを指定してください`);
+        }
+        catalog.resolve(slug, heroImage.asset);
+      }
+      validateScreenshots(frontmatter, catalog, slug, sourcePath);
+>>>>>>> origin/chore/project-visuals
     },
   },
   {
@@ -58,3 +68,27 @@ console.log(`${assetCount} content assets synced`);
 function isRecord(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
+<<<<<<< HEAD
+=======
+
+function validateScreenshots(frontmatter, catalog, slug, sourcePath) {
+  const screenshots = frontmatter.screenshots;
+  if (screenshots === undefined) return;
+  if (!isRecord(screenshots)) {
+    throw new Error(`${sourcePath}: screenshotsはobjectで指定してください`);
+  }
+  for (const kind of ["desktop", "mobile"]) {
+    const visible = screenshots[kind];
+    if (visible !== undefined && typeof visible !== "boolean") {
+      throw new Error(`${sourcePath}: screenshots.${kind}はbooleanで指定してください`);
+    }
+    if (visible === true && !findConventionalAsset(catalog, slug, `img/screenshot-${kind}`)) {
+      throw new Error(`${sourcePath}: screenshots.${kind}に対応する画像がありません`);
+    }
+  }
+}
+
+function findConventionalAsset(catalog, slug, stem) {
+  return catalog.assets.find((asset) => asset.entryName === slug && asset.relativePath.startsWith(`${stem}.`));
+}
+>>>>>>> origin/chore/project-visuals

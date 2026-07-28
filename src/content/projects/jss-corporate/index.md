@@ -26,6 +26,12 @@ order: 190
 websiteUrl: https://j-ss.jp/
 relatedProjects: []
 draft: false
+heroImage:
+  asset: img/screenshot-desktop.jpg
+  alt: 株式会社JSS コーポレートサイトの代表画像
+screenshots:
+  desktop: true
+  mobile: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

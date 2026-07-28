@@ -25,6 +25,13 @@ repositoryUrl: https://github.com/albasimia/love_mako
 relatedProjects:
   - birthday-contents
 draft: false
+websiteUrl: https://albasimia.github.io/love_mako/
+heroImage:
+  asset: img/og-image.png
+  alt: love_makoの代表画像
+screenshots:
+  desktop: true
+  mobile: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

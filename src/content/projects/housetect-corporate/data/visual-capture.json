@@ -1,0 +1,7 @@
+{
+  "force": true,
+  "hero": "desktop",
+  "closeMobileMenu": true,
+  "mobileMenuSelector": "#mobile-menu",
+  "mobileMenuButtonSelector": "#menu-toggle"
+}

@@ -27,12 +27,17 @@ roles:
 featured: true
 order: 10
 startedAt: "2025"
-repositoryUrl: https://github.com/albasimia/catharsiswatari-events
 websiteUrl: https://catharsiswatari-events.pages.dev/
 relatedProjects:
   - yasai-toretore
   - albasimia-ssg-core
 draft: false
+heroImage:
+  asset: img/og-image.webp
+  alt: ワタリEAの代表画像
+screenshots:
+  desktop: true
+  mobile: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

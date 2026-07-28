@@ -7,6 +7,7 @@ import MetaList from "albasimia-ssg-core/components/MetaList.astro";
 import Tag from "albasimia-ssg-core/components/Tag.astro";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import { getPublishedProjects, interfaceLabels, projectPeriod, statusLabels, type ProjectEntry } from "../../lib/projects";
+import { getProjectScreenshots } from "../../lib/project-assets";
 
 export async function getStaticPaths() {
   const projects = await getPublishedProjects();
@@ -22,6 +23,7 @@ const { project, projects } = Astro.props;
 const { Content } = await render(project);
 const projectAccentStyle = project.data.accent ? `--color-accent:${project.data.accent}` : undefined;
 const period = projectPeriod(project);
+const screenshots = getProjectScreenshots(project);
 const related = project.data.relatedProjects
   .map((slug) => projects.find(({ data }) => data.slug === slug))
   .filter((entry): entry is ProjectEntry => entry !== undefined);
@@ -58,6 +60,21 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
         <p class="project-hero__summary">{project.data.summary}</p>
       </Container>
     </header>
+
+    {screenshots.length > 0 && (
+      <section class="project-screenshots" aria-label="Project screenshots">
+        <Container>
+          <div class:list={["project-screenshots__grid", { "project-screenshots__grid--single": screenshots.length === 1 }]}>
+            {screenshots.map((screenshot) => (
+              <figure class:list={["project-screenshot", `project-screenshot--${screenshot.kind}`]}>
+                <figcaption>{screenshot.label}</figcaption>
+                <img src={screenshot.src} alt={screenshot.alt} loading="eager" decoding="async" />
+              </figure>
+            ))}
+          </div>
+        </Container>
+      </section>
+    )}
 
     <Container class="project-overview">
       <div>

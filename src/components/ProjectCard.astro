@@ -1,6 +1,7 @@
 ---
 import type { ProjectEntry } from "../lib/projects";
 import { interfaceLabels, statusLabels } from "../lib/projects";
+import { getProjectCardImage } from "../lib/project-assets";
 
 interface Props {
   project: ProjectEntry;
@@ -11,11 +12,13 @@ const { project, headingLevel = "h3" } = Astro.props;
 const Heading = headingLevel;
 const href = `/projects/${project.data.slug}/`;
 const style = project.data.accent ? `--project-accent:${project.data.accent}` : undefined;
+const cardImage = getProjectCardImage(project);
 ---
 
 <article class="project-card" style={style}>
   <a class="project-card__link" href={href} aria-label={`${project.data.title}の詳細を見る`}>
     <div class="project-card__visual">
+<<<<<<< HEAD
       {project.data.heroImage ? (
         <img
           src={project.data.heroImage.src}
@@ -23,6 +26,15 @@ const style = project.data.accent ? `--project-accent:${project.data.accent}` : 
           loading="lazy"
           decoding="async"
           style={project.data.heroImage.position ? `object-position:${project.data.heroImage.position}` : undefined}
+=======
+      {cardImage ? (
+        <img
+          src={cardImage.src}
+          alt={cardImage.alt}
+          loading="lazy"
+          decoding="async"
+          style={cardImage.position ? `object-position:${cardImage.position}` : undefined}
+>>>>>>> origin/chore/project-visuals
         />
       ) : (
         <img src="/og.png" alt="" loading="lazy" decoding="async" />
