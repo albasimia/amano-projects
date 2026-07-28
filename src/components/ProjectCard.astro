@@ -17,7 +17,13 @@ const style = project.data.accent ? `--project-accent:${project.data.accent}` : 
   <a class="project-card__link" href={href} aria-label={`${project.data.title}の詳細を見る`}>
     <div class="project-card__visual">
       {project.data.heroImage ? (
-        <img src={project.data.heroImage} alt="" loading="lazy" decoding="async" />
+        <img
+          src={project.data.heroImage.src}
+          alt={project.data.heroImage.alt}
+          loading="lazy"
+          decoding="async"
+          style={project.data.heroImage.position ? `object-position:${project.data.heroImage.position}` : undefined}
+        />
       ) : (
         <img src="/og.png" alt="" loading="lazy" decoding="async" />
       )}
