@@ -27,6 +27,8 @@ const DEFAULT_CAPTURE_CONFIG = Object.freeze({
   click: [],
   consentSelectors: [],
   hideSelectors: [],
+  sliderMode: "first",
+  sliderSelectors: [],
 });
 
 // repositoryUrlを持たないProjectや、GitHub上のrepository名とslugが異なるProject用。
@@ -45,10 +47,7 @@ const COMMON_CONSENT_SELECTORS = [
 ];
 
 const entries = await listProjectEntries(projectsRoot);
-const browser = await chromium.launch({
-  channel: "chrome",
-  headless: true,
-});
+const browser = await launchBrowser();
 const report = [];
 
 try {
@@ -303,6 +302,7 @@ async function preparePage(page, config) {
     notes.push(`表示待機完了: ${config.waitFor}`);
   }
 
+  await activateLazyVisuals(page);
   await waitForFonts(page);
   await waitForImages(page);
   await prepareVideos(page, config.videoTime);
@@ -314,6 +314,15 @@ async function preparePage(page, config) {
   // 遅延ロードされたフォント・画像をもう一度確認する。
   await waitForFonts(page);
   await waitForImages(page);
+
+  const stabilizedSliderCount = await stabilizeSliders(page, config);
+  if (stabilizedSliderCount > 0) {
+    notes.push(`スライダーを1枚目で固定: ${stabilizedSliderCount}件`);
+    // 1枚目へ戻したことでlazy loadが始まる場合がある。
+    await activateLazyVisuals(page);
+    await waitForImages(page);
+  }
+
   await page.evaluate(() => window.scrollTo(0, 0)).catch(() => {});
   await hideConfiguredElements(page, config.hideSelectors);
   await freezeMotion(page);
@@ -368,6 +377,64 @@ async function dismissConsent(page, projectSelectors) {
   }
 
   return null;
+}
+
+async function activateLazyVisuals(page) {
+  await page.evaluate(() => {
+    const sourceAttributes = ["data-src", "data-lazy", "data-original", "data-lazy-src"];
+    const srcsetAttributes = ["data-srcset", "data-lazy-srcset"];
+    const backgroundAttributes = ["data-background", "data-bg", "data-bg-src", "data-lazy-bg"];
+
+    for (const image of document.querySelectorAll("img")) {
+      if (!image.getAttribute("src")) {
+        const source = sourceAttributes.map((name) => image.getAttribute(name)).find(Boolean);
+        if (source) image.setAttribute("src", source);
+      }
+      if (!image.getAttribute("srcset")) {
+        const srcset = srcsetAttributes.map((name) => image.getAttribute(name)).find(Boolean);
+        if (srcset) image.setAttribute("srcset", srcset);
+      }
+      image.loading = "eager";
+    }
+
+    for (const sourceElement of document.querySelectorAll("source")) {
+      if (!sourceElement.getAttribute("srcset")) {
+        const srcset = srcsetAttributes.map((name) => sourceElement.getAttribute(name)).find(Boolean);
+        if (srcset) sourceElement.setAttribute("srcset", srcset);
+      }
+      if (!sourceElement.getAttribute("src")) {
+        const source = sourceAttributes.map((name) => sourceElement.getAttribute(name)).find(Boolean);
+        if (source) sourceElement.setAttribute("src", source);
+      }
+    }
+
+    for (const element of document.querySelectorAll(backgroundAttributes.map((name) => `[${name}]`).join(","))) {
+      const background = backgroundAttributes.map((name) => element.getAttribute(name)).find(Boolean);
+      if (background && getComputedStyle(element).backgroundImage === "none") {
+        element.style.setProperty("background-image", `url("${background.replaceAll('"', '\\"')}")`, "important");
+      }
+    }
+
+    for (const video of document.querySelectorAll("video")) {
+      let changed = false;
+      if (!video.getAttribute("src")) {
+        const source = sourceAttributes.map((name) => video.getAttribute(name)).find(Boolean);
+        if (source) {
+          video.setAttribute("src", source);
+          changed = true;
+        }
+      }
+      for (const sourceElement of video.querySelectorAll("source")) {
+        if (sourceElement.getAttribute("src")) continue;
+        const source = sourceAttributes.map((name) => sourceElement.getAttribute(name)).find(Boolean);
+        if (source) {
+          sourceElement.setAttribute("src", source);
+          changed = true;
+        }
+      }
+      if (changed) video.load();
+    }
+  }).catch(() => {});
 }
 
 async function waitForFonts(page) {
@@ -468,11 +535,187 @@ async function hideConfiguredElements(page, selectors) {
   }, selectors).catch(() => {});
 }
 
+async function stabilizeSliders(page, config) {
+  if (config.sliderMode === "none") return 0;
+
+  return page.evaluate(({ mode, explicitSelectors }) => {
+    let stabilized = 0;
+    const handledRoots = new Set();
+
+    function forceFirst(slides, preferred = null) {
+      const uniqueSlides = [...new Set(slides)].filter((element) => element instanceof HTMLElement);
+      if (uniqueSlides.length < 2) return false;
+
+      const first = preferred && uniqueSlides.includes(preferred) ? preferred : uniqueSlides[0];
+      for (const slide of uniqueSlides) {
+        const active = slide === first;
+        slide.style.setProperty("animation", "none", "important");
+        slide.style.setProperty("transition", "none", "important");
+        slide.style.setProperty("transform", "none", "important");
+        slide.style.setProperty("opacity", active ? "1" : "0", "important");
+        slide.style.setProperty("visibility", active ? "visible" : "hidden", "important");
+        slide.style.setProperty("pointer-events", active ? "auto" : "none", "important");
+        slide.style.setProperty("z-index", active ? "2" : "0", "important");
+        if (active) {
+          slide.removeAttribute("hidden");
+          slide.setAttribute("aria-hidden", "false");
+          if (getComputedStyle(slide).display === "none") {
+            slide.style.setProperty("display", "block", "important");
+          }
+        } else {
+          slide.setAttribute("aria-hidden", "true");
+        }
+      }
+      return true;
+    }
+
+    function resetTrack(root) {
+      for (const selector of [
+        ".swiper-wrapper",
+        ".slick-track",
+        ".splide__list",
+        ".glide__slides",
+        "[class*='slider-track' i]",
+        "[class*='slide-track' i]",
+      ]) {
+        for (const track of root.querySelectorAll(selector)) {
+          track.style.setProperty("transform", "translate3d(0, 0, 0)", "important");
+          track.style.setProperty("transition", "none", "important");
+        }
+      }
+    }
+
+    // Swiper
+    for (const root of document.querySelectorAll(".swiper, .swiper-container")) {
+      try {
+        root.swiper?.autoplay?.stop?.();
+        if (typeof root.swiper?.slideToLoop === "function") root.swiper.slideToLoop(0, 0, false);
+        else root.swiper?.slideTo?.(0, 0, false);
+      } catch {}
+
+      const slides = [...root.querySelectorAll(".swiper-slide")];
+      const first = root.querySelector('.swiper-slide[data-swiper-slide-index="0"]:not(.swiper-slide-duplicate)')
+        ?? slides.find((slide) => !slide.classList.contains("swiper-slide-duplicate"))
+        ?? slides[0];
+      resetTrack(root);
+      if (forceFirst(slides, first)) stabilized += 1;
+      handledRoots.add(root);
+    }
+
+    // Slick
+    for (const root of document.querySelectorAll(".slick-slider, .slick-initialized")) {
+      try {
+        const jq = window.jQuery;
+        if (jq && jq(root).hasClass("slick-initialized")) {
+          jq(root).slick("slickPause");
+          jq(root).slick("slickGoTo", 0, true);
+        }
+      } catch {}
+
+      const slides = [...root.querySelectorAll(".slick-slide")];
+      const first = root.querySelector('.slick-slide[data-slick-index="0"]:not(.slick-cloned)')
+        ?? slides.find((slide) => !slide.classList.contains("slick-cloned"))
+        ?? slides[0];
+      resetTrack(root);
+      if (forceFirst(slides, first)) stabilized += 1;
+      handledRoots.add(root);
+    }
+
+    // Splide
+    for (const root of document.querySelectorAll(".splide")) {
+      try {
+        root.splide?.Components?.Autoplay?.pause?.();
+        root.splide?.go?.(0);
+      } catch {}
+
+      const slides = [...root.querySelectorAll(".splide__slide")];
+      const first = slides.find((slide) => !slide.classList.contains("is-clone")) ?? slides[0];
+      resetTrack(root);
+      if (forceFirst(slides, first)) stabilized += 1;
+      handledRoots.add(root);
+    }
+
+    // Flickity
+    for (const root of document.querySelectorAll(".flickity-enabled")) {
+      try {
+        const instance = window.Flickity?.data?.(root);
+        instance?.stopPlayer?.();
+        instance?.select?.(0, false, true);
+      } catch {}
+
+      const slides = [...root.querySelectorAll(".carousel-cell, .flickity-slider > *")];
+      resetTrack(root);
+      if (forceFirst(slides)) stabilized += 1;
+      handledRoots.add(root);
+    }
+
+    // Project別に指定されたslide selector。
+    for (const selector of explicitSelectors) {
+      const slides = [...document.querySelectorAll(selector)];
+      if (forceFirst(slides)) stabilized += 1;
+    }
+
+    if (mode !== "first") return stabilized;
+
+    // library名を持たないmain visual用の限定的なfallback。
+    const rootSelectors = [
+      "[class*='mainvisual' i]",
+      "[class*='main-visual' i]",
+      "[class*='main_visual' i]",
+      "[class*='hero-slider' i]",
+      "[class*='mv-slider' i]",
+      "[class*='mv_slider' i]",
+      "[class*='slideshow' i]",
+      "[id*='mainvisual' i]",
+      "[id*='main-visual' i]",
+      "[id*='hero-slider' i]",
+      "[id*='mv-slider' i]",
+    ];
+
+    for (const root of document.querySelectorAll(rootSelectors.join(","))) {
+      if (handledRoots.has(root)) continue;
+      const rect = root.getBoundingClientRect();
+      if (rect.width < innerWidth * 0.45 || rect.height < innerHeight * 0.25) continue;
+      if (rect.bottom < 0 || rect.top > innerHeight) continue;
+
+      const descendants = [...root.querySelectorAll([
+        ":scope > li",
+        ":scope > div",
+        ":scope > ul > li",
+        ":scope > div > div",
+        "[class*='slide' i]",
+      ].join(","))];
+
+      const slides = descendants.filter((element) => {
+        if (!(element instanceof HTMLElement)) return false;
+        const style = getComputedStyle(element);
+        const itemRect = element.getBoundingClientRect();
+        const hasVisual = style.backgroundImage !== "none"
+          || Boolean(element.querySelector("img, picture, video"));
+        const largeEnough = itemRect.width >= rect.width * 0.55
+          && itemRect.height >= rect.height * 0.45;
+        return hasVisual && (largeEnough || style.position === "absolute");
+      });
+
+      if (forceFirst(slides)) {
+        resetTrack(root);
+        stabilized += 1;
+      }
+    }
+
+    return stabilized;
+  }, {
+    mode: config.sliderMode,
+    explicitSelectors: config.sliderSelectors,
+  }).catch(() => 0);
+}
+
 async function freezeMotion(page) {
   await page.addStyleTag({
     content: `
       *, *::before, *::after {
-        animation-play-state: paused !important;
+        animation: none !important;
+        transition: none !important;
         caret-color: transparent !important;
       }
       html { scroll-behavior: auto !important; }
@@ -599,6 +842,7 @@ async function loadCaptureConfig(projectDirectory, slug) {
     click: normalizeStringArray(custom.click, "click", configPath),
     consentSelectors: normalizeStringArray(custom.consentSelectors, "consentSelectors", configPath),
     hideSelectors: normalizeStringArray(custom.hideSelectors, "hideSelectors", configPath),
+    sliderSelectors: normalizeStringArray(custom.sliderSelectors, "sliderSelectors", configPath),
   };
 
   if (custom.websiteUrl !== undefined && typeof custom.websiteUrl !== "string") {
@@ -614,6 +858,9 @@ async function loadCaptureConfig(projectDirectory, slug) {
   }
   if (!["og", "desktop", "mobile", "repository", "keep", "none"].includes(config.hero)) {
     throw new Error(`${configPath}: heroはog/desktop/mobile/repository/keep/noneのいずれかを指定してください`);
+  }
+  if (!["first", "api-only", "none"].includes(config.sliderMode)) {
+    throw new Error(`${configPath}: sliderModeはfirst/api-only/noneのいずれかを指定してください`);
   }
   if (!(config.videoTime === null || config.videoTime === false || (Number.isFinite(config.videoTime) && config.videoTime >= 0))) {
     throw new Error(`${configPath}: videoTimeは0以上のnumber、null、falseのいずれかを指定してください`);
@@ -645,6 +892,14 @@ function selectHeroAsset(preference, assets) {
     keep: assets.existingHeroAsset ?? fallback,
     none: assets.existingHeroAsset,
   }[preference] ?? fallback;
+}
+
+async function launchBrowser() {
+  try {
+    return await chromium.launch({ channel: "chrome", headless: true });
+  } catch {
+    return chromium.launch({ headless: true });
+  }
 }
 
 function parseFrontmatter(source, sourcePath) {
