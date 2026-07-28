@@ -545,7 +545,7 @@ Creative IdentityとEngineering Identityがどう関与したかを示す。
 ## Statement
 
 ```text
-私は、作ること自体を目的にはしていません。
+私は、作ること自体を目的にしていません。
 
 現実の中で心が動き、
 既存の仕組みでは成立しない体験が見えた時、
