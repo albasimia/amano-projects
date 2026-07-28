@@ -24,6 +24,10 @@ order: 120
 relatedProjects:
   - birthday-contents
 draft: false
+websiteUrl: https://albasimia.github.io/chachamaru_birthday/
+heroImage:
+  asset: img/og-image.png
+  alt: chachamaru_birthdayの代表画像
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
