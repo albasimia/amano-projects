@@ -29,6 +29,9 @@ websiteUrl: https://technonex.co.jp/
 relatedProjects:
   - tatsujin-lab
 draft: false
+heroImage:
+  asset: img/screenshot-desktop.jpg
+  alt: TechnoLabo Corporate Websiteの代表画像
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

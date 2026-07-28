@@ -23,7 +23,6 @@ roles:
 featured: false
 order: 160
 startedAt: "2026"
-repositoryUrl: https://github.com/albasimia/Watarino-Tsuno-Gothic
 relatedProjects:
   - karirenjan
 draft: false

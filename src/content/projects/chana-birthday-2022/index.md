@@ -26,6 +26,10 @@ repositoryUrl: https://github.com/albasimia/chana_birthday_2022
 relatedProjects:
   - birthday-contents
 draft: false
+websiteUrl: https://albasimia.github.io/chana_birthday_2022/
+heroImage:
+  asset: img/og-image.png
+  alt: chana_birthday_2022の代表画像
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

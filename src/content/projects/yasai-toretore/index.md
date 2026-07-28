@@ -27,6 +27,9 @@ relatedProjects:
   - watari-ea
   - kaka-see
 draft: false
+heroImage:
+  asset: img/og-image.webp
+  alt: やさいとれとれ祭りの代表画像
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

@@ -21,7 +21,6 @@ roles:
   - プロンプト設計
 featured: false
 order: 180
-repositoryUrl: https://github.com/albasimia/watarinschaft
 relatedProjects: []
 draft: false
 ---

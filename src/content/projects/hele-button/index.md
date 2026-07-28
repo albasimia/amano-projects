@@ -26,6 +26,9 @@ websiteUrl: https://helebutton-6cf30.firebaseapp.com/
 relatedProjects:
   - isutori-youtube
 draft: false
+heroImage:
+  asset: img/screenshot-desktop.jpg
+  alt: へぇボタンの代表画像
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

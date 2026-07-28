@@ -29,6 +29,9 @@ repositoryUrl: https://github.com/albasimia/OverCUE
 websiteUrl: https://albasimia.github.io/OverCUE/
 relatedProjects: []
 draft: false
+heroImage:
+  asset: img/og-image.png
+  alt: OverCUEの代表画像
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
