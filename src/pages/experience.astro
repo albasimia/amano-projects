@@ -21,6 +21,8 @@ const professionalProjects = [
 
 const earlierProjects = ["へぇボタン", "Quizzool", "rice_caster"];
 
+const roots = ["映像", "Web技術", "インタラクティブ表現", "業務システム", "要件定義と運用設計", "現実世界を含むProject"];
+
 const capabilities = [
   { label: "OBSERVE", items: ["Client Interview", "Field Observation", "Operational Analysis", "User Experience"] },
   { label: "STRUCTURE", items: ["Requirement Definition", "Information Architecture", "System Design", "Data Design", "Technical Selection"] },
@@ -52,6 +54,15 @@ const capabilities = [
           </article>
         ))}
       </div>
+    </Container>
+  </Section>
+
+  <Section labelledby="roots-title">
+    <Container>
+      <SectionHeader eyebrow="ROOTS" title="制作の領域は、連続している。" id="roots-title" />
+      <ol class="roots-list">
+        {roots.map((root, index) => <li><span>{String(index + 1).padStart(2, "0")}</span>{root}</li>)}
+      </ol>
     </Container>
   </Section>
 
