@@ -1,6 +1,6 @@
 # Project Visuals Report
 
-Generated: 2026-07-28T14:31:38.320Z
+Generated: 2026-07-28T14:57:52.596Z
 
 | Project | Website | Repository | OGP | PC SS | SP SS | Hero | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -15,10 +15,10 @@ Generated: 2026-07-28T14:31:38.320Z
 | クラロワ日本一決定戦 | — | — | — | — | — | — | 変更なし |
 | CODE QUEST | — | — | — | — | — | — | 変更なし |
 | へぇボタン | [link](https://helebutton-6cf30.firebaseapp.com/) | [link](https://github.com/albasimia/hele-button) | — | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PCスクリーンショットを保存: screenshot-desktop.jpg / SPスクリーンショットを保存: screenshot-mobile.jpg / repository画像を保存: repository-image.png |
-| House Tect Corporate Website | [link](https://housetect.co.jp/) | — | og-image.png | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.png | OGP画像を保存: og-image.png / PCスクリーンショットを保存: screenshot-desktop.jpg / SPスクリーンショットを保存: screenshot-mobile.jpg |
+| House Tect Corporate Website | [link](https://housetect.co.jp/) | — | og-image.png | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.png | PC: スライダーを1枚目で固定: 1件 / OGP画像を保存: og-image.png / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: スライダーを1枚目で固定: 1件 / SPスクリーンショットを保存: screenshot-mobile.jpg |
 | 社内向け勉強会・業務改善 | — | — | — | — | — | — | 変更なし |
 | 椅子取りYouTube | — | [link](https://github.com/albasimia/isutori_youtube) | — | — | — | — | 変更なし |
-| 株式会社JSS コーポレートサイト | [link](https://j-ss.jp/) | — | og-image.webp | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.webp | PC: 指定要素をクリック: text=合意して続行 / OGP画像を保存: og-image.webp / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: 指定要素をクリック: text=合意して続行 / SPスクリーンショットを保存: screenshot-mobile.jpg |
+| 株式会社JSS コーポレートサイト | [link](https://j-ss.jp/) | — | og-image.webp | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.webp | PC: 指定要素をクリック: text=合意して続行 / PC: スライダーを1枚目で固定: 1件 / OGP画像を保存: og-image.webp / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: 指定要素をクリック: text=合意して続行 / SP: スライダーを1枚目で固定: 1件 / SPスクリーンショットを保存: screenshot-mobile.jpg |
 | kaka-see | — | — | — | — | — | — | 変更なし |
 | カリレンジャン | — | — | — | — | — | — | 変更なし |
 | KAYAC Interactive Campaigns | — | — | — | — | — | — | 変更なし |
@@ -29,7 +29,7 @@ Generated: 2026-07-28T14:31:38.320Z
 | rice_caster | — | [link](https://github.com/albasimia/rice_caster) | — | — | — | — | 変更なし |
 | 就活自由形 | — | — | — | — | — | — | 変更なし |
 | SUBARU Official Website Operations | — | — | — | — | — | — | 変更なし |
-| 達人育成LABO | [link](https://tatsujin-lab.com/) | — | — | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PCスクリーンショットを保存: screenshot-desktop.jpg / SPスクリーンショットを保存: screenshot-mobile.jpg |
+| 達人育成LABO | [link](https://tatsujin-lab.com/) | — | — | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PC: スライダーを1枚目で固定: 4件 / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: スライダーを1枚目で固定: 4件 / SPスクリーンショットを保存: screenshot-mobile.jpg |
 | TechnoLabo Corporate Website | [link](https://technonex.co.jp/) | — | — | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PCスクリーンショットを保存: screenshot-desktop.jpg / SPスクリーンショットを保存: screenshot-mobile.jpg |
 | ワタリEA | [link](https://catharsiswatari-events.pages.dev/) | — | og-image.webp | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.webp | OGP画像を保存: og-image.webp / PCスクリーンショットを保存: screenshot-desktop.jpg / SPスクリーンショットを保存: screenshot-mobile.jpg |
 | Watarino Tsuno Gothic | — | — | — | — | — | — | 変更なし |
