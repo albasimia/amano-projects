@@ -1,5 +1,6 @@
 node_modules/
 dist/
+backup/
 .astro/
 public/images/projects/
 public/images/companies/
@@ -10,3 +11,4 @@ public/images/companies/
 
 .DS_Store
 *.log
+/amano-projects-dist.zip

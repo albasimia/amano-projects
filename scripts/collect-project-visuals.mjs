@@ -45,7 +45,10 @@ const COMMON_CONSENT_SELECTORS = [
 ];
 
 const entries = await listProjectEntries(projectsRoot);
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({
+  channel: "chrome",
+  headless: true,
+});
 const report = [];
 
 try {
