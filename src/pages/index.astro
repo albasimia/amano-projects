@@ -1,85 +1,222 @@
 ---
-import ProjectCard from "../components/ProjectCard.astro";
 import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
 import Container from "albasimia-ssg-core/components/Container.astro";
 import Section from "albasimia-ssg-core/components/Section.astro";
 import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { processCycle } from "../data/process";
 import SiteLayout from "../layouts/SiteLayout.astro";
-import { getPublishedProjects } from "../lib/projects";
+import { getCompanies } from "../lib/companies";
+import { getPublishedProjects, type ProjectEntry } from "../lib/projects";
 
 const projects = await getPublishedProjects();
+const professionalExperiences = await getCompanies();
+const featuredClientProjects = projects.filter(({ data }) => data.clientFeatured).slice(0, 3);
 const featuredProjects = projects.filter(({ data }) => data.featured);
+const pickUpProjects = featuredProjects.slice(0, 3);
+const pickUpSlugs = new Set(pickUpProjects.map(({ data }) => data.slug));
+const featuredPersonalProjects = featuredProjects
+  .filter(({ data }) => data.projectType === "personal" && !pickUpSlugs.has(data.slug))
+  .slice(0, 3);
+const inProgressProject = projects.find(({ data }) => data.slug === "kaka-see");
 
-const process = [
-  { number: "01", label: "OBSERVE", title: "心が動く／課題を発見する", description: "現実の場へ入り、既存の仕組みでは拾われない違和感や可能性を観測する。" },
-  { number: "02", label: "STRUCTURE", title: "体験と成立条件を構造化する", description: "どうなれば自然かを先に描き、必要な条件、境界、技術を整理する。" },
-  { number: "03", label: "IMPLEMENT & VERIFY", title: "実装し、現実世界で検証する", description: "領域を越えて形にし、実際の利用と運用から前提を問い直す。" },
-];
+const pointOnCircle = (angle: number, radius: number) => {
+  const radians = (angle * Math.PI) / 180;
+  return { x: 50 + radius * Math.cos(radians), y: 50 + radius * Math.sin(radians) };
+};
+
+const processSteps = processCycle.map((item, index) => {
+  const stepAngle = 360 / processCycle.length;
+  const nodeAngle = -90 + index * stepAngle;
+  const start = pointOnCircle(nodeAngle + 4, 38);
+  const end = pointOnCircle(nodeAngle + stepAngle - 4, 38);
+  const node = pointOnCircle(nodeAngle, 44);
+
+  return {
+    ...item,
+    number: String(index + 1).padStart(2, "0"),
+    path: `M ${start.x.toFixed(3)} ${start.y.toFixed(3)} A 38 38 0 0 1 ${end.x.toFixed(3)} ${end.y.toFixed(3)}`,
+    style: `--node-x:${node.x.toFixed(3)}%;--node-y:${node.y.toFixed(3)}%`,
+  };
+});
 
 const identities = [
   { label: "LEGAL IDENTITY", name: "天野 浩平", description: "社会と契約する入口" },
   { label: "CREATIVE IDENTITY", name: "ｶﾀﾙｼｽﾜﾀﾘ", description: "現実を経験し、課題を観測する入口" },
   { label: "ENGINEERING IDENTITY", name: "albasimia", description: "課題を構造化し、実装する入口" },
 ];
+
+function projectStyle(project: ProjectEntry): string | undefined {
+  return project.data.accent ? `--project-accent:${project.data.accent}` : undefined;
+}
 ---
 
 <SiteLayout
   pageClass="home-page"
-  meta={{ titleMode: "absolute", title: "AMANO PROJECT", canonicalPath: "/" }}
+  meta={{ titleMode: "absolute", title: "アマノPROJECTS", canonicalPath: "/" }}
 >
-  <section class="home-hero" aria-labelledby="home-title">
+  <section id="top" class="home-hero" aria-labelledby="home-title">
+    <picture class="home-hero__media">
+      <source media="(max-width: 767px)" srcset="/images/home-hero-mobile.jpg" />
+      <img
+        src="/images/home-hero-desktop.jpg"
+        width="1280"
+        height="720"
+        alt="MacBook、自作キーボード、ACK05、ヘッドフォン、はんだごてが置かれた制作環境"
+        fetchpriority="high"
+      />
+    </picture>
     <Container class="home-hero__inner">
-      <div class="home-hero__meta">
-        <p>AMANO PROJECT</p>
-        <p>Web Engineer / Frontend Developer</p>
-      </div>
       <h1 id="home-title">
         <span>作らなくていいなら</span>
-        <strong>作りたくない。</strong>
-        <span>でも作らずには</span>
-        <strong>いられない。</strong>
+        <span class="home-hero__accent-copy">作りたくない。</span>
+        <span class="home-hero__break">でも、作らずには</span>
+        <span class="home-hero__accent-copy">いられない。</span>
       </h1>
       <div class="home-hero__footer">
-        <p>現実の中で心が動いたことから課題を見つけ、<br />体験を構想し、成立条件を整理し、<br />必要な技術と領域を越境して実装する。</p>
-        <p>アマノPJは、その過程を記録するポートフォリオです。</p>
         <div class="home-hero__links">
-          <ArrowLink href="/projects/">PROJECTS</ArrowLink>
-          <ArrowLink href="/about/">ABOUT</ArrowLink>
+          <a class="home-hero__button home-hero__button--primary" href="/projects/">VIEW PROJECTS <span aria-hidden="true">→</span></a>
+          <a class="home-hero__button" href="/about/">ABOUT</a>
         </div>
       </div>
     </Container>
   </section>
 
-  <Section labelledby="process-title">
+  <Section class="home-section home-about section--muted" labelledby="home-about-title">
     <Container>
-      <SectionHeader eyebrow="PROCESS" title="Experience becomes structure." id="process-title" description="制作は、成果物ではなく循環として続いていく。" />
-      <ol class="process-list">
-        {process.map((item) => (
-          <li>
-            <span class="process-list__number">{item.number}</span>
-            <p class="eyebrow">{item.label}</p>
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </li>
-        ))}
-      </ol>
-      <ArrowLink href="/about/">VIEW THE FULL PROCESS</ArrowLink>
-    </Container>
-  </Section>
-
-  <Section class="section--muted" labelledby="featured-title">
-    <Container>
-      <SectionHeader eyebrow="FEATURED PROJECTS" title="課題と制作過程" id="featured-title" description="完成物の裏側にある、発端、判断、実装、検証を辿る。" />
-      <div class="project-list project-list--featured">
-        {featuredProjects.map((project) => <ProjectCard project={project} />)}
+      <div class="home-about__layout">
+        <figure class="home-about__portrait">
+          <img src="/images/about-profile.webp" alt="天野 浩平のプロフィール写真" width="853" height="1280" loading="lazy" />
+        </figure>
+        <div class="home-about__body">
+          <p class="eyebrow">ABOUT</p>
+          <h2 id="home-about-title">天野 浩平</h2>
+          <p>現実の中で心が動き、既存の仕組みでは成立しない体験が見えた時、必要な構造を考え、実装します。</p>
+          <ArrowLink class="section-end-link" href="/about/">VIEW ABOUT</ArrowLink>
+        </div>
       </div>
-      <ArrowLink href="/projects/">ALL PROJECTS</ArrowLink>
     </Container>
   </Section>
 
-  <Section labelledby="identities-title">
+  <Section class="home-section home-process" labelledby="process-title">
     <Container>
-      <SectionHeader eyebrow="IDENTITIES" title="One person, different interfaces." id="identities-title" />
+      <SectionHeader eyebrow="PROCESS" title="経験が、構造になる" id="process-title" />
+      <div class="process-cycle">
+        <svg class="process-cycle__track" viewBox="0 0 100 100" aria-hidden="true">
+          <defs>
+            <marker id="process-arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+              <path d="M0,0 L5,2.5 L0,5 Z"></path>
+            </marker>
+          </defs>
+          {processSteps.map((item) => <path d={item.path} marker-end="url(#process-arrow)"></path>)}
+        </svg>
+        <ol class="process-cycle__nodes">
+          {processSteps.map((item) => (
+            <li style={item.style}><span>{item.number}</span><strong>{item.title}</strong></li>
+          ))}
+        </ol>
+        <p class="process-cycle__center"><span>制作の循環</span></p>
+      </div>
+      <ArrowLink class="section-end-link" href="/philosophy/#process">VIEW THE FULL PROCESS</ArrowLink>
+    </Container>
+  </Section>
+
+  <Section class="home-section home-work" labelledby="work-title">
+    <Container>
+      <SectionHeader eyebrow="PROJECTS" title="生まれるもの、生まれたもの" id="work-title" />
+
+      <div class="home-work-group">
+        <div class="home-section-heading">
+          <p class="eyebrow">PICK UP</p>
+        </div>
+        <div class="project-card-grid">
+          {pickUpProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+        <ArrowLink class="section-end-link" href="/projects/">VIEW ALL</ArrowLink>
+      </div>
+
+      <div class="home-work-group">
+        <div class="home-section-heading">
+          <p class="eyebrow">CLIENT WORK</p>
+        </div>
+        <div class="project-card-grid">
+          {featuredClientProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+        <ArrowLink class="section-end-link" href="/projects/#client-work">VIEW ALL</ArrowLink>
+      </div>
+
+      <div class="home-work-group">
+        <div class="home-section-heading">
+          <p class="eyebrow">PERSONAL PROJECTS</p>
+        </div>
+        <div class="project-card-grid">
+          {featuredPersonalProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+        <ArrowLink class="section-end-link" href="/projects/#personal-projects">VIEW ALL</ArrowLink>
+      </div>
+    </Container>
+  </Section>
+
+  {inProgressProject && (
+    <Section class="home-section home-progress" labelledby="progress-title">
+      <Container>
+        <div class="home-section-heading">
+          <p class="eyebrow" id="progress-title">IN PROGRESS</p>
+        </div>
+        <article class="progress-project" style={projectStyle(inProgressProject)}>
+          <a class="progress-project__media" href={`/projects/${inProgressProject.data.slug}/`} aria-label={`${inProgressProject.data.title}の詳細を見る`}>
+            {inProgressProject.data.heroImage ? (
+              <img src={inProgressProject.data.heroImage} alt="" loading="lazy" />
+            ) : (
+              <span class="progress-project__placeholder" aria-hidden="true">
+                <span>FIELD NOTE</span>
+                <strong>{inProgressProject.data.title}</strong>
+              </span>
+            )}
+          </a>
+          <div class="progress-project__body">
+            <p class="eyebrow">CURRENT PROJECT</p>
+            <h2><a href={`/projects/${inProgressProject.data.slug}/`}>{inProgressProject.data.title}</a></h2>
+            <dl class="progress-project__meta">
+              <div><dt>STATUS</dt><dd>IN DEVELOPMENT</dd></div>
+              <div><dt>CURRENT PHASE</dt><dd>Phase 0 — Sensor Reading</dd></div>
+            </dl>
+            <p>{inProgressProject.data.summary}</p>
+            <ArrowLink class="section-end-link" href={`/projects/${inProgressProject.data.slug}/`}>VIEW PROJECT</ArrowLink>
+          </div>
+        </article>
+      </Container>
+    </Section>
+  )}
+
+  <Section class="home-section home-professional" labelledby="professional-title">
+    <Container>
+      <SectionHeader
+        eyebrow="PROFESSIONAL EXPERIENCE"
+        title={"実装から構造へ――\n役割の拡張"}
+        id="professional-title"
+      />
+      <div class="professional-list">
+        {professionalExperiences.map(({ data }) => (
+          <a href={`/experience/${data.slug}/`} class="professional-item">
+            <span class="professional-item__number">{data.number}</span>
+            <div>
+              <p>{data.label}</p>
+              <h3>{data.shortName}</h3>
+              <time>{data.period}</time>
+            </div>
+            <p>{data.summary}</p>
+            <span aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+      <ArrowLink class="section-end-link" href="/experience/">VIEW EXPERIENCE</ArrowLink>
+    </Container>
+  </Section>
+
+  <Section class="home-section home-identities" labelledby="identities-title">
+    <Container>
+      <SectionHeader eyebrow="IDENTITIES" title="ひとりの人間、３つのInterface" id="identities-title" />
       <div class="identity-grid">
         {identities.map((identity) => (
           <article>
@@ -89,18 +226,7 @@ const identities = [
           </article>
         ))}
       </div>
-      <ArrowLink href="/about/">ABOUT THESE INTERFACES</ArrowLink>
-    </Container>
-  </Section>
-
-  <Section class="section--muted" labelledby="experience-title">
-    <Container class="experience-intro">
-      <SectionHeader eyebrow="EXPERIENCE" title="現場と実装を往復する。" id="experience-title" />
-      <div class="experience-intro__body">
-        <p>この制作方法は、<br />個人活動だけで生まれたものではありません。</p>
-        <p>Web制作、VR、業務システム、CMS、<br />クライアントとの要件定義、チーム運用改善を通して、<br />現場と実装を往復する方法として形成されました。</p>
-        <ArrowLink href="/experience/">EXPERIENCE</ArrowLink>
-      </div>
+      <ArrowLink class="section-end-link" href="/about/">ABOUT THESE INTERFACES</ArrowLink>
     </Container>
   </Section>
 </SiteLayout>

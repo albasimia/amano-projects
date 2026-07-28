@@ -8,9 +8,9 @@ status: completed
 interfaces:
   - creative-to-engineering
 fields:
-  - Game
-  - Audio
-  - Community
+  - ゲーム
+  - 音声
+  - コミュニティ
 technologies:
   - JavaScript
   - Web Audio
@@ -26,24 +26,34 @@ relatedProjects:
 draft: false
 ---
 
-## Origin
+<p class="eyebrow project-prose__eyebrow">ORIGIN</p>
+
+## 発端
 
 一般的なカードの絵柄ではなく、音声そのものを記憶対象にした神経衰弱を誕生日コンテンツとして制作しました。
 
-## Ideal Experience
+<p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
+
+## 目指した体験
 
 音を聞き分け、組み合わせを見つけ、クリア時の画像まで含めて短い達成体験が成立する状態を目指しました。
 
-## Conditions
+<p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
+
+## 成立条件
 
 - 音声を主要情報として扱うこと
 - ブラウザで再生できること
 - クリア報酬を設けること
 
-## Verification
+<p class="eyebrow project-prose__eyebrow">VERIFICATION</p>
+
+## 検証
 
 誕生日の場で実際に遊ばれることを前提に制作しました。
 
-## Publication Note
+<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
+
+## 公開に関する注記
 
 音声や画像の権利、本人の公開許可を確認する必要があるためdraftとします。
