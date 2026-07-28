@@ -30,18 +30,35 @@ npm run build
 
 ## コンテンツ
 
-Projectは`src/content/projects/`のMarkdownで管理します。frontmatterには一覧、メタ情報、関連Projectなどの構造化データを置き、本文には制作過程を記述します。
+ProjectとCompanyは、どちらも`src/content/{collection}/{slug}/`単位で管理します。各Markdownのfrontmatterに構造化データを置き、画像などが必要なContentだけ、同じディレクトリに`assets/`を作成します。
 
 ```text
 src/content/projects/
-├─ watari-ea.md
-├─ yasai-toretore.md
-├─ kakasshy.md
-├─ karirenjan.md
-└─ albasimia-ssg-core.md
+└─ watari-ea/
+   ├─ index.md
+   └─ assets/
+      ├─ hero.webp
+      └─ gallery-01.webp
+
+src/content/companies/
+└─ kayac/
+   ├─ index.md
+   └─ assets/
+      └─ hero.webp
 ```
 
-schemaは`src/content.config.ts`、取得と関連Project検証は`src/lib/projects.ts`にあります。未公開Projectには`draft: true`を設定します。
+Hero画像は`index.md`から`assets/`内の相対パスで参照します。
+
+```yaml
+heroImage:
+  asset: hero.webp
+  alt: ワタリEAのメインビジュアル
+  position: center
+```
+
+`npm run dev`、`npm run check`、`npm run build`の前に、ASCのContent Asset同期が自動実行されます。画像は`public/images/{collection}/{slug}/`へ生成されますが、この出力はGit管理しません。存在しない参照画像、不正な相対パス、ディレクトリ名と`slug`の不一致はビルド前にエラーになります。
+
+schemaは`src/content.config.ts`、取得と関連Project検証は`src/lib/projects.ts`、Asset同期は`scripts/sync-content-assets.mjs`にあります。未公開Projectには`draft: true`を設定します。
 
 ## ASCとの境界
 
@@ -51,6 +68,7 @@ ASCから利用しているもの：
 - HTML head、canonical、OGP、Twitter Card
 - BaseLayout
 - sitemap生成
+- Project画像の同期、公開URL生成、参照検証
 
 アマノPJ側に保持するもの：
 
@@ -59,4 +77,4 @@ ASCから利用しているもの：
 - Identity、Process、Career Phase
 - ブランド固有のコピーとスタイル
 
-テーマ状態、SkipLink、Containerなどの小さなUI基盤は、ASC `v0.1.3`の公開componentを利用します。アマノPJ側ではASC tokenをブランド固有の色、書体、余白へ接続し、Header、Footer、ProjectCardなど固有の情報構造だけを保持します。
+テーマ状態、SkipLink、Containerなどの小さなUI基盤は、ASC `v0.1.5`の公開componentを利用します。アマノPJ側ではASC tokenをブランド固有の色、書体、余白へ接続し、Header、Footer、ProjectCardなど固有の情報構造だけを保持します。

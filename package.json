@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "albasimia-ssg-core": "github:albasimia/albasimia-ssg-core#v0.1.3",
+    "albasimia-ssg-core": "github:albasimia/albasimia-ssg-core#v0.1.5",
     "astro": "^7.1.3"
   },
   "devDependencies": {
@@ -12,9 +12,13 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "sync:assets": "node scripts/sync-content-assets.mjs",
+    "predev": "npm run sync:assets",
     "dev": "astro dev",
+    "prebuild": "npm run sync:assets",
     "build": "astro build",
     "preview": "astro preview",
+    "precheck": "npm run sync:assets",
     "check": "astro check"
   }
 }
