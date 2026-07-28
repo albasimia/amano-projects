@@ -1,5 +1,7 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { extname, join, resolve } from "node:path";
+import { spawn } from "node:child_process";
 import { chromium } from "playwright";
 import { parseDocument } from "yaml";
 import { imageSize } from "image-size";
@@ -23,11 +25,13 @@ const DEFAULT_CAPTURE_CONFIG = Object.freeze({
   networkIdleTimeoutMs: 10_000,
   waitFor: null,
   videoTime: 1.5,
+  videoFrameFallback: true,
   hero: "og",
   click: [],
   consentSelectors: [],
   hideSelectors: [],
   sliderMode: "first",
+  sliderIndex: 0,
   sliderSelectors: [],
 });
 
@@ -305,7 +309,8 @@ async function preparePage(page, config) {
   await activateLazyVisuals(page);
   await waitForFonts(page);
   await waitForImages(page);
-  await prepareVideos(page, config.videoTime);
+  const fixedVideoFrames = await prepareVideos(page, config.videoTime, config.videoFrameFallback);
+  if (fixedVideoFrames > 0) notes.push(`動画frameを固定: ${fixedVideoFrames}件`);
 
   if (config.delayMs > 0) {
     await page.waitForTimeout(config.delayMs);
@@ -317,8 +322,8 @@ async function preparePage(page, config) {
 
   const stabilizedSliderCount = await stabilizeSliders(page, config);
   if (stabilizedSliderCount > 0) {
-    notes.push(`スライダーを1枚目で固定: ${stabilizedSliderCount}件`);
-    // 1枚目へ戻したことでlazy loadが始まる場合がある。
+    notes.push(`スライダーを${config.sliderIndex + 1}枚目で固定: ${stabilizedSliderCount}件`);
+    // 指定slideへ移動したことでlazy loadが始まる場合がある。
     await activateLazyVisuals(page);
     await waitForImages(page);
   }
@@ -472,8 +477,8 @@ async function waitForImages(page) {
   }).catch(() => {});
 }
 
-async function prepareVideos(page, videoTime) {
-  if (videoTime === null || videoTime === false) return;
+async function prepareVideos(page, videoTime, frameFallback) {
+  if (videoTime === null || videoTime === false) return 0;
 
   await page.evaluate(async (targetTime) => {
     const videos = [...document.querySelectorAll("video")];
@@ -481,6 +486,13 @@ async function prepareVideos(page, videoTime) {
     await Promise.allSettled(videos.map(async (video) => {
       video.muted = true;
       video.preload = "auto";
+      video.setAttribute("playsinline", "");
+
+      try {
+        await video.play();
+      } catch {
+        // autoplay policyやcodec非対応時はffmpeg fallbackを使う。
+      }
 
       if (video.readyState < HTMLMediaElement.HAVE_METADATA) {
         await Promise.race([
@@ -522,6 +534,139 @@ async function prepareVideos(page, videoTime) {
       video.pause();
     }));
   }, videoTime).catch(() => {});
+
+  if (!frameFallback) return 0;
+
+  const candidates = await page.evaluate(() => {
+    return [...document.querySelectorAll("video")].map((video, index) => {
+      const rect = video.getBoundingClientRect();
+      const style = getComputedStyle(video);
+      const source = video.currentSrc
+        || video.src
+        || video.querySelector("source[src]")?.src
+        || "";
+      const visible = rect.width > 2
+        && rect.height > 2
+        && style.display !== "none"
+        && style.visibility !== "hidden"
+        && Number.parseFloat(style.opacity || "1") > 0;
+      return {
+        index,
+        source,
+        visible,
+        readyState: video.readyState,
+        videoWidth: video.videoWidth,
+        videoHeight: video.videoHeight,
+      };
+    }).filter((item) => item.visible && item.source);
+  }).catch(() => []);
+
+  let replaced = 0;
+  for (const candidate of candidates) {
+    try {
+      const dataUrl = await extractVideoFrame(page, candidate.source, videoTime);
+      const didReplace = await page.evaluate(({ index, dataUrl }) => {
+        const video = [...document.querySelectorAll("video")][index];
+        if (!video) return false;
+
+        const style = getComputedStyle(video);
+        const image = document.createElement("img");
+        image.src = dataUrl;
+        image.alt = "";
+        image.setAttribute("aria-hidden", "true");
+        image.setAttribute("data-project-visual-video-frame", "");
+
+        const properties = [
+          "display", "position", "top", "right", "bottom", "left", "inset",
+          "width", "height", "minWidth", "minHeight", "maxWidth", "maxHeight",
+          "margin", "padding", "objectFit", "objectPosition", "transform",
+          "transformOrigin", "opacity", "zIndex", "borderRadius", "clipPath",
+          "filter", "mixBlendMode", "boxSizing",
+        ];
+        for (const property of properties) {
+          const value = style[property];
+          if (value) image.style[property] = value;
+        }
+
+        if (!image.style.objectFit || image.style.objectFit === "fill") {
+          image.style.objectFit = "cover";
+        }
+
+        image.className = typeof video.className === "string" ? video.className : "";
+        video.replaceWith(image);
+        return true;
+      }, { index: candidate.index, dataUrl }).catch(() => false);
+
+      if (didReplace) replaced += 1;
+    } catch {
+      // ffmpegやdownloadに失敗した場合はbrowserが描画したvideoをそのまま使う。
+    }
+  }
+
+  return replaced;
+}
+
+async function extractVideoFrame(page, sourceUrl, targetTime) {
+  const response = await page.context().request.get(sourceUrl, {
+    timeout: 60_000,
+    failOnStatusCode: false,
+    headers: { "User-Agent": "amano-projects-visual-collector" },
+  });
+  if (!response.ok()) {
+    throw new Error(`video download failed: ${response.status()} ${sourceUrl}`);
+  }
+
+  const buffer = await response.body();
+  if (buffer.byteLength === 0 || buffer.byteLength > 150 * 1024 * 1024) {
+    throw new Error(`video size is invalid: ${buffer.byteLength}`);
+  }
+
+  const directory = await mkdtemp(join(tmpdir(), "amano-project-video-"));
+  const extension = normalizeVideoExtension(extname(new URL(sourceUrl).pathname));
+  const inputPath = join(directory, `source${extension}`);
+  const outputPath = join(directory, "frame.jpg");
+
+  try {
+    await writeFile(inputPath, buffer);
+    await runCommand("ffmpeg", [
+      "-hide_banner",
+      "-loglevel", "error",
+      "-ss", String(Math.max(Number(targetTime) || 0, 0)),
+      "-i", inputPath,
+      "-frames:v", "1",
+      "-q:v", "2",
+      "-y",
+      outputPath,
+    ]);
+    const frame = await readFile(outputPath);
+    return `data:image/jpeg;base64,${frame.toString("base64")}`;
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+}
+
+function runCommand(command, args) {
+  return new Promise((resolvePromise, rejectPromise) => {
+    const child = spawn(command, args, { stdio: ["ignore", "ignore", "pipe"] });
+    let stderr = "";
+    child.stderr.setEncoding("utf8");
+    child.stderr.on("data", (chunk) => { stderr += chunk; });
+    child.on("error", rejectPromise);
+    child.on("close", (code) => {
+      if (code === 0) {
+        resolvePromise();
+      } else {
+        rejectPromise(new Error(`${command} exited with ${code}: ${stderr.trim()}`));
+      }
+    });
+  });
+}
+
+function normalizeVideoExtension(extension) {
+  const normalized = extension.toLowerCase();
+  return [".mp4", ".webm", ".mov", ".m4v", ".ogv"].includes(normalized)
+    ? normalized
+    : ".mp4";
 }
 
 async function hideConfiguredElements(page, selectors) {
@@ -538,17 +683,21 @@ async function hideConfiguredElements(page, selectors) {
 async function stabilizeSliders(page, config) {
   if (config.sliderMode === "none") return 0;
 
-  return page.evaluate(({ mode, explicitSelectors }) => {
+  return page.evaluate(({ mode, slideIndex, explicitSelectors }) => {
     let stabilized = 0;
     const handledRoots = new Set();
 
-    function forceFirst(slides, preferred = null) {
+    function forceSlide(slides, requestedIndex = 0, preferred = null) {
       const uniqueSlides = [...new Set(slides)].filter((element) => element instanceof HTMLElement);
       if (uniqueSlides.length < 2) return false;
 
-      const first = preferred && uniqueSlides.includes(preferred) ? preferred : uniqueSlides[0];
+      const normalizedIndex = Math.min(Math.max(Number(requestedIndex) || 0, 0), uniqueSlides.length - 1);
+      const selected = preferred && uniqueSlides.includes(preferred)
+        ? preferred
+        : uniqueSlides[normalizedIndex];
+
       for (const slide of uniqueSlides) {
-        const active = slide === first;
+        const active = slide === selected;
         slide.style.setProperty("animation", "none", "important");
         slide.style.setProperty("transition", "none", "important");
         slide.style.setProperty("transform", "none", "important");
@@ -589,16 +738,16 @@ async function stabilizeSliders(page, config) {
     for (const root of document.querySelectorAll(".swiper, .swiper-container")) {
       try {
         root.swiper?.autoplay?.stop?.();
-        if (typeof root.swiper?.slideToLoop === "function") root.swiper.slideToLoop(0, 0, false);
-        else root.swiper?.slideTo?.(0, 0, false);
+        if (typeof root.swiper?.slideToLoop === "function") root.swiper.slideToLoop(slideIndex, 0, false);
+        else root.swiper?.slideTo?.(slideIndex, 0, false);
       } catch {}
 
       const slides = [...root.querySelectorAll(".swiper-slide")];
-      const first = root.querySelector('.swiper-slide[data-swiper-slide-index="0"]:not(.swiper-slide-duplicate)')
-        ?? slides.find((slide) => !slide.classList.contains("swiper-slide-duplicate"))
-        ?? slides[0];
+      const preferred = root.querySelector(
+        `.swiper-slide[data-swiper-slide-index="${slideIndex}"]:not(.swiper-slide-duplicate)`
+      ) ?? slides.filter((slide) => !slide.classList.contains("swiper-slide-duplicate"))[slideIndex];
       resetTrack(root);
-      if (forceFirst(slides, first)) stabilized += 1;
+      if (forceSlide(slides, slideIndex, preferred)) stabilized += 1;
       handledRoots.add(root);
     }
 
@@ -608,16 +757,16 @@ async function stabilizeSliders(page, config) {
         const jq = window.jQuery;
         if (jq && jq(root).hasClass("slick-initialized")) {
           jq(root).slick("slickPause");
-          jq(root).slick("slickGoTo", 0, true);
+          jq(root).slick("slickGoTo", slideIndex, true);
         }
       } catch {}
 
       const slides = [...root.querySelectorAll(".slick-slide")];
-      const first = root.querySelector('.slick-slide[data-slick-index="0"]:not(.slick-cloned)')
-        ?? slides.find((slide) => !slide.classList.contains("slick-cloned"))
-        ?? slides[0];
+      const preferred = root.querySelector(
+        `.slick-slide[data-slick-index="${slideIndex}"]:not(.slick-cloned)`
+      ) ?? slides.filter((slide) => !slide.classList.contains("slick-cloned"))[slideIndex];
       resetTrack(root);
-      if (forceFirst(slides, first)) stabilized += 1;
+      if (forceSlide(slides, slideIndex, preferred)) stabilized += 1;
       handledRoots.add(root);
     }
 
@@ -625,13 +774,13 @@ async function stabilizeSliders(page, config) {
     for (const root of document.querySelectorAll(".splide")) {
       try {
         root.splide?.Components?.Autoplay?.pause?.();
-        root.splide?.go?.(0);
+        root.splide?.go?.(slideIndex);
       } catch {}
 
       const slides = [...root.querySelectorAll(".splide__slide")];
-      const first = slides.find((slide) => !slide.classList.contains("is-clone")) ?? slides[0];
+      const preferred = slides.filter((slide) => !slide.classList.contains("is-clone"))[slideIndex];
       resetTrack(root);
-      if (forceFirst(slides, first)) stabilized += 1;
+      if (forceSlide(slides, slideIndex, preferred)) stabilized += 1;
       handledRoots.add(root);
     }
 
@@ -640,19 +789,19 @@ async function stabilizeSliders(page, config) {
       try {
         const instance = window.Flickity?.data?.(root);
         instance?.stopPlayer?.();
-        instance?.select?.(0, false, true);
+        instance?.select?.(slideIndex, false, true);
       } catch {}
 
       const slides = [...root.querySelectorAll(".carousel-cell, .flickity-slider > *")];
       resetTrack(root);
-      if (forceFirst(slides)) stabilized += 1;
+      if (forceSlide(slides, slideIndex)) stabilized += 1;
       handledRoots.add(root);
     }
 
     // Project別に指定されたslide selector。
     for (const selector of explicitSelectors) {
       const slides = [...document.querySelectorAll(selector)];
-      if (forceFirst(slides)) stabilized += 1;
+      if (forceSlide(slides, slideIndex)) stabilized += 1;
     }
 
     if (mode !== "first") return stabilized;
@@ -697,7 +846,7 @@ async function stabilizeSliders(page, config) {
         return hasVisual && (largeEnough || style.position === "absolute");
       });
 
-      if (forceFirst(slides)) {
+      if (forceSlide(slides, slideIndex)) {
         resetTrack(root);
         stabilized += 1;
       }
@@ -706,6 +855,7 @@ async function stabilizeSliders(page, config) {
     return stabilized;
   }, {
     mode: config.sliderMode,
+    slideIndex: config.sliderIndex,
     explicitSelectors: config.sliderSelectors,
   }).catch(() => 0);
 }
@@ -862,8 +1012,14 @@ async function loadCaptureConfig(projectDirectory, slug) {
   if (!["first", "api-only", "none"].includes(config.sliderMode)) {
     throw new Error(`${configPath}: sliderModeはfirst/api-only/noneのいずれかを指定してください`);
   }
+  if (!Number.isInteger(config.sliderIndex) || config.sliderIndex < 0) {
+    throw new Error(`${configPath}: sliderIndexは0以上のintegerで指定してください`);
+  }
   if (!(config.videoTime === null || config.videoTime === false || (Number.isFinite(config.videoTime) && config.videoTime >= 0))) {
     throw new Error(`${configPath}: videoTimeは0以上のnumber、null、falseのいずれかを指定してください`);
+  }
+  if (typeof config.videoFrameFallback !== "boolean") {
+    throw new Error(`${configPath}: videoFrameFallbackはbooleanで指定してください`);
   }
 
   if (!config.websiteUrl && WEBSITE_OVERRIDES.has(slug)) {

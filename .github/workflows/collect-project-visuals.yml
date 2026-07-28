@@ -33,6 +33,11 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
       - name: Collect OGP images and screenshots
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
