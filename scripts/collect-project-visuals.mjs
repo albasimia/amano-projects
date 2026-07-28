@@ -20,6 +20,7 @@ const IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpg", ".jpeg", ".png", ".we
 const MAX_ASSET_BYTES = 10 * 1024 * 1024;
 
 const DEFAULT_CAPTURE_CONFIG = Object.freeze({
+  force: false,
   delayMs: 1_800,
   timeoutMs: 45_000,
   networkIdleTimeoutMs: 10_000,
@@ -132,8 +133,17 @@ async function processProject(entry) {
   }
 
   if (repository) {
-    repositoryAsset = await collectRepositoryImage({ repository, assetsDir });
-    if (repositoryAsset) notes.push(`repository画像を保存: ${repositoryAsset}`);
+    const existingRepositoryAsset = captureConfig.force
+      ? null
+      : await findExistingImageAsset(assetsDir, "repository-image");
+
+    if (existingRepositoryAsset) {
+      repositoryAsset = existingRepositoryAsset;
+      notes.push(`repository画像があるため取得をスキップ: ${repositoryAsset}`);
+    } else {
+      repositoryAsset = await collectRepositoryImage({ repository, assetsDir });
+      if (repositoryAsset) notes.push(`repository画像を保存: ${repositoryAsset}`);
+    }
   }
 
   const existingHeroAsset = typeof data.heroImage?.asset === "string"
@@ -179,7 +189,16 @@ async function processProject(entry) {
 
 async function captureWebsite({ url, assetsDir, config }) {
   const notes = [];
-  let ogAsset = null;
+
+  const existingOgAsset = config.force
+    ? null
+    : await findExistingImageAsset(assetsDir, "og-image", { representative: true });
+  const existingDesktopAsset = config.force
+    ? null
+    : await findExistingImageAsset(assetsDir, "screenshot-desktop");
+  const existingMobileAsset = config.force
+    ? null
+    : await findExistingImageAsset(assetsDir, "screenshot-mobile");
 
   const desktopResult = await captureViewport({
     url,
@@ -187,6 +206,8 @@ async function captureWebsite({ url, assetsDir, config }) {
     config,
     viewportName: "PC",
     filename: "screenshot-desktop.jpg",
+    existingAsset: existingDesktopAsset,
+    existingOgAsset,
     contextOptions: {
       viewport: { width: 1440, height: 900 },
       deviceScaleFactor: 1,
@@ -198,7 +219,6 @@ async function captureWebsite({ url, assetsDir, config }) {
   });
 
   notes.push(...desktopResult.notes);
-  ogAsset = desktopResult.ogAsset;
 
   const mobileResult = await captureViewport({
     url,
@@ -206,6 +226,8 @@ async function captureWebsite({ url, assetsDir, config }) {
     config,
     viewportName: "SP",
     filename: "screenshot-mobile.jpg",
+    existingAsset: existingMobileAsset,
+    existingOgAsset: null,
     contextOptions: {
       viewport: { width: 390, height: 844 },
       deviceScaleFactor: 1,
@@ -221,7 +243,7 @@ async function captureWebsite({ url, assetsDir, config }) {
   notes.push(...mobileResult.notes);
 
   return {
-    ogAsset,
+    ogAsset: desktopResult.ogAsset,
     desktopAsset: desktopResult.asset,
     mobileAsset: mobileResult.asset,
     notes,
@@ -234,12 +256,24 @@ async function captureViewport({
   config,
   viewportName,
   filename,
+  existingAsset,
+  existingOgAsset,
   contextOptions,
   collectOg,
 }) {
   const notes = [];
-  let asset = null;
-  let ogAsset = null;
+  let asset = existingAsset ?? null;
+  let ogAsset = existingOgAsset ?? null;
+
+  const needsScreenshot = config.force || !asset;
+  const needsOg = collectOg && (config.force || !ogAsset);
+
+  if (!needsScreenshot && !needsOg) {
+    notes.push(`${viewportName}: 既存画像があるため取得をスキップ: ${asset}`);
+    if (collectOg && ogAsset) notes.push(`OGP画像があるため取得をスキップ: ${ogAsset}`);
+    return { asset, ogAsset, notes };
+  }
+
   const context = await browser.newContext(contextOptions);
 
   try {
@@ -251,10 +285,8 @@ async function captureViewport({
       timeout: config.timeoutMs,
     });
 
-    const preparation = await preparePage(page, config, viewportName);
-    notes.push(...preparation.notes.map((note) => `${viewportName}: ${note}`));
-
-    if (collectOg) {
+    // OGPだけが未取得の場合は、画面準備をせずmeta情報だけ確認する。
+    if (needsOg) {
       const ogImage = await page.locator('meta[property="og:image"]').first().getAttribute("content").catch(() => null)
         ?? await page.locator('meta[name="twitter:image"]').first().getAttribute("content").catch(() => null);
 
@@ -265,16 +297,25 @@ async function captureViewport({
         if (ogAsset) notes.push(`OGP画像を保存: ${ogAsset}`);
         if (downloadedOg.note) notes.push(downloadedOg.note);
       }
+    } else if (collectOg && ogAsset) {
+      notes.push(`OGP画像があるため取得をスキップ: ${ogAsset}`);
     }
 
-    asset = filename;
-    await page.screenshot({
-      path: join(assetsDir, asset),
-      type: "jpeg",
-      quality: 88,
-      fullPage: false,
-    });
-    notes.push(`${viewportName}スクリーンショットを保存: ${asset}`);
+    if (needsScreenshot) {
+      const preparation = await preparePage(page, config, viewportName);
+      notes.push(...preparation.notes.map((note) => `${viewportName}: ${note}`));
+
+      asset = filename;
+      await page.screenshot({
+        path: join(assetsDir, asset),
+        type: "jpeg",
+        quality: 88,
+        fullPage: false,
+      });
+      notes.push(`${viewportName}スクリーンショットを保存: ${asset}`);
+    } else {
+      notes.push(`${viewportName}: 既存画像があるため取得をスキップ: ${asset}`);
+    }
   } catch (error) {
     notes.push(`${viewportName}取得失敗: ${errorMessage(error)}`);
   } finally {
@@ -1093,6 +1134,7 @@ async function collectRepositoryImage({ repository, assetsDir }) {
 
     const extension = normalizeExtension(extname(candidate.path));
     const filename = `repository-image${extension}`;
+    await removeAssetVariants(assetsDir, "repository-image");
     await writeFile(join(assetsDir, filename), buffer);
     return filename;
   }
@@ -1137,6 +1179,55 @@ async function fetchGitHubRepository(owner, repo) {
   const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers: githubHeaders, signal: AbortSignal.timeout(15_000) });
   if (!response.ok) return null;
   return response.json();
+}
+
+async function findExistingImageAsset(directory, basename, { representative = false } = {}) {
+  const entries = await readdir(directory, { withFileTypes: true }).catch(() => []);
+  const candidates = entries
+    .filter((entry) => entry.isFile())
+    .map((entry) => entry.name)
+    .filter((name) => name === basename || name.startsWith(`${basename}.`))
+    .filter((name) => IMAGE_EXTENSIONS.has(extname(name).toLowerCase()))
+    .sort();
+
+  for (const filename of candidates) {
+    const path = join(directory, filename);
+
+    try {
+      const buffer = await readFile(path);
+      if (buffer.byteLength === 0 || buffer.byteLength > MAX_ASSET_BYTES) {
+        await rm(path, { force: true });
+        continue;
+      }
+
+      const dimensions = imageSize(buffer);
+      const width = dimensions.width ?? 0;
+      const height = dimensions.height ?? 0;
+      const aspectRatio = height > 0 ? width / height : 0;
+
+      if (width <= 0 || height <= 0) {
+        await rm(path, { force: true });
+        continue;
+      }
+
+      if (representative) {
+        const valid = width >= 480
+          && height >= 240
+          && aspectRatio >= 0.75
+          && aspectRatio <= 3;
+        if (!valid) {
+          await rm(path, { force: true });
+          continue;
+        }
+      }
+
+      return filename;
+    } catch {
+      await rm(path, { force: true });
+    }
+  }
+
+  return null;
 }
 
 async function downloadOgImage(url, assetsDir) {
@@ -1247,6 +1338,9 @@ async function loadCaptureConfig(projectDirectory, slug) {
 
   if (custom.websiteUrl !== undefined && typeof custom.websiteUrl !== "string") {
     throw new Error(`${configPath}: websiteUrlはstringで指定してください`);
+  }
+  if (typeof config.force !== "boolean") {
+    throw new Error(`${configPath}: forceはbooleanで指定してください`);
   }
   if (config.waitFor !== null && typeof config.waitFor !== "string") {
     throw new Error(`${configPath}: waitForはstringまたはnullで指定してください`);
