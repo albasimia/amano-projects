@@ -1,6 +1,6 @@
 # Project Visuals Report
 
-Generated: 2026-07-28T16:18:11.857Z
+Generated: 2026-07-28T16:39:34.117Z
 
 | Project | Website | Repository | OGP | PC SS | SP SS | Hero | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -15,16 +15,16 @@ Generated: 2026-07-28T16:18:11.857Z
 | クラロワ日本一決定戦 | — | — | — | — | — | — | 変更なし |
 | CODE QUEST | — | — | — | — | — | — | 変更なし |
 | へぇボタン | [link](https://helebutton-6cf30.firebaseapp.com/) | [link](https://github.com/albasimia/hele-button) | — | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PCスクリーンショットを保存: screenshot-desktop.jpg / SPスクリーンショットを保存: screenshot-mobile.jpg / repository画像を保存: repository-image.png |
-| House Tect Corporate Website | [link](https://housetect.co.jp/) | — | og-image.png | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.png | PC: スライダーを1枚目で固定: 1件 / OGP画像を保存: og-image.png / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: スライダーを1枚目で固定: 1件 / SPスクリーンショットを保存: screenshot-mobile.jpg |
+| House Tect Corporate Website | [link](https://housetect.co.jp/) | — | — | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PC: スライダーを1枚目で固定: 1件 / OGP画像を不採用: 546×60 / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: スライダーを1枚目で固定: 1件 / SPスクリーンショットを保存: screenshot-mobile.jpg / heroImageを設定: img/screenshot-desktop.jpg |
 | 社内向け勉強会・業務改善 | — | — | — | — | — | — | 変更なし |
 | 椅子取りYouTube | — | [link](https://github.com/albasimia/isutori_youtube) | — | — | — | — | 変更なし |
-| 株式会社JSS コーポレートサイト | [link](https://j-ss.jp/) | — | og-image.webp | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PC: 指定要素をクリック: text=合意して続行 / PC: スライダーを2枚目で固定: 1件 / OGP画像を保存: og-image.webp / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: 指定要素をクリック: text=合意して続行 / SP: スライダーを2枚目で固定: 1件 / SPスクリーンショットを保存: screenshot-mobile.jpg / heroImageを設定: img/screenshot-desktop.jpg |
+| 株式会社JSS コーポレートサイト | [link](https://j-ss.jp/) | — | og-image.webp | screenshot-desktop.jpg | screenshot-mobile.jpg | screenshot-desktop.jpg | PC: 指定要素をクリック: text=合意して続行 / PC: スライダーを2枚目で固定: 1件 / OGP画像を保存: og-image.webp / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: 指定要素をクリック: text=合意して続行 / SP: スライダーを2枚目で固定: 1件 / SPスクリーンショットを保存: screenshot-mobile.jpg |
 | kaka-see | — | — | — | — | — | — | 変更なし |
 | カリレンジャン | — | — | — | — | — | — | 変更なし |
 | KAYAC Interactive Campaigns | — | — | — | — | — | — | 変更なし |
 | love_mako | [link](https://albasimia.github.io/love_mako/) | [link](https://github.com/albasimia/love_mako) | og-image.png | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.png | OGP画像を保存: og-image.png / PCスクリーンショットを保存: screenshot-desktop.jpg / SPスクリーンショットを保存: screenshot-mobile.jpg / repository画像を保存: repository-image.png |
 | OverCUE | [link](https://albasimia.github.io/OverCUE/) | [link](https://github.com/albasimia/OverCUE) | og-image.png | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.png | OGP画像を保存: og-image.png / PCスクリーンショットを保存: screenshot-desktop.jpg / SPスクリーンショットを保存: screenshot-mobile.jpg / repository画像を保存: repository-image.png |
-| purin_chang_unofficial | [link](https://albasimia.github.io/purin_chang_unofficial/) | [link](https://github.com/albasimia/purin_chang_unofficial) | og-image.png | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.png | PC: スライダーを1枚目で固定: 1件 / OGP画像を保存: og-image.png / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: スライダーを1枚目で固定: 2件 / SPスクリーンショットを保存: screenshot-mobile.jpg / repository画像を保存: repository-image.png / heroImageを設定: img/og-image.png |
+| purin_chang_unofficial | [link](https://albasimia.github.io/purin_chang_unofficial/) | [link](https://github.com/albasimia/purin_chang_unofficial) | og-image.png | screenshot-desktop.jpg | screenshot-mobile.jpg | og-image.png | PC: スライダーを1枚目で固定: 1件 / OGP画像を保存: og-image.png / PCスクリーンショットを保存: screenshot-desktop.jpg / SP: スライダーを1枚目で固定: 2件 / SPスクリーンショットを保存: screenshot-mobile.jpg / repository画像を保存: repository-image.png |
 | Quizzool | — | — | — | — | — | — | 変更なし |
 | rice_caster | — | [link](https://github.com/albasimia/rice_caster) | — | — | — | — | 変更なし |
 | 就活自由形 | — | — | — | — | — | — | 変更なし |

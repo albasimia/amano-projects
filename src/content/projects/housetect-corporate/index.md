@@ -28,7 +28,7 @@ websiteUrl: https://housetect.co.jp/
 relatedProjects: []
 draft: false
 heroImage:
-  asset: img/og-image.png
+  asset: img/screenshot-desktop.jpg
   alt: House Tect Corporate Websiteの代表画像
 screenshots:
   desktop: true
