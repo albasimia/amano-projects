@@ -27,6 +27,12 @@ order: 210
 websiteUrl: https://housetect.co.jp/
 relatedProjects: []
 draft: false
+heroImage:
+  asset: img/screenshot-desktop.jpg
+  alt: House Tect Corporate Websiteの代表画像
+screenshots:
+  desktop: true
+  mobile: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

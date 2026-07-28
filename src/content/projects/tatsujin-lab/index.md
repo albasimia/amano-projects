@@ -28,6 +28,12 @@ websiteUrl: https://tatsujin-lab.com/
 relatedProjects:
   - technonex-corporate
 draft: false
+heroImage:
+  asset: img/screenshot-desktop.jpg
+  alt: 達人育成LABOの代表画像
+screenshots:
+  desktop: true
+  mobile: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

@@ -56,6 +56,23 @@ heroImage:
   position: center
 ```
 
+
+`assets/img/ogp.*`または`assets/img/og-image.*`がある場合は、Projectカードの代表画像として自動的に優先します。Project詳細ページへスクリーンショットを表示する場合は、規定名の画像を配置し、`index.md`でPC版とSP版を個別に有効化します。
+
+```text
+assets/img/
+├─ screenshot-desktop.jpg
+└─ screenshot-mobile.jpg
+```
+
+```yaml
+screenshots:
+  desktop: true
+  mobile: true
+```
+
+`false`または未指定のスクリーンショットは表示しません。表示対象の画像が存在しない場合は、Asset同期時にエラーになります。
+
 `npm run dev`、`npm run check`、`npm run build`の前に、ASCのContent Asset同期が自動実行されます。画像は`public/images/{collection}/{slug}/`へ生成されますが、この出力はGit管理しません。存在しない参照画像、不正な相対パス、ディレクトリ名と`slug`の不一致はビルド前にエラーになります。
 
 schemaは`src/content.config.ts`、取得と関連Project検証は`src/lib/projects.ts`、Asset同期は`scripts/sync-content-assets.mjs`にあります。未公開Projectには`draft: true`を設定します。

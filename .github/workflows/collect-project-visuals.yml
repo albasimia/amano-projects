@@ -1,0 +1,61 @@
+name: Collect project visuals
+
+on:
+  push:
+    branches:
+      - chore/project-visuals
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[skip project visuals]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: chore/project-visuals
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install collector dependencies
+        run: npm install --no-save --package-lock=false playwright yaml image-size
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Collect OGP images and screenshots
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/collect-project-visuals.mjs
+
+      - name: Validate generated content
+        run: |
+          npm run check
+          npm run build
+
+      - name: Commit collected assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/projects docs/project-visuals-report.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: collect project visuals [skip project visuals]"
+          git push origin HEAD:chore/project-visuals
