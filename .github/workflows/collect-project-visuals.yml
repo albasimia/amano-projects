@@ -38,6 +38,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/collect-project-visuals.mjs
 
+      - name: Validate generated content
+        run: |
+          npm run check
+          npm run build
+
       - name: Commit collected assets
         run: |
           git config user.name "github-actions[bot]"
