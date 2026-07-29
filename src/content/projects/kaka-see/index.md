@@ -5,6 +5,9 @@ summary: 畑の地表温度と土壌水分を取得し、通信、蓄積、通�
 origin: 畑の状態を確認するために現地へ行く必要があり、気温や水分の変化を継続的に把握できなかった。
 intention: 畑の状態を遠隔から把握し、必要な作業を判断できる小さな観測基盤をつくる。
 status: development
+currentPhase:
+  label: Phase 0 — Sensor Reading
+  description: Zephyr環境でHello WorldとUSBシリアル出力を確認し、センサー値取得の準備を進めています。
 interfaces:
   - creative-to-engineering
 fields:

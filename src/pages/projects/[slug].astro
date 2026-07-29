@@ -1,7 +1,7 @@
 ---
 import { render } from "astro:content";
 import ProjectCard from "../../components/ProjectCard.astro";
-import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import ArrowLink from "../../components/ArrowLink.astro";
 import Container from "albasimia-ssg-core/components/Container.astro";
 import MetaList from "albasimia-ssg-core/components/MetaList.astro";
 import Tag from "albasimia-ssg-core/components/Tag.astro";
@@ -53,7 +53,7 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
       <Container>
         <ArrowLink href="/projects/">ALL PROJECTS</ArrowLink>
         <div class="project-hero__tags">
-          <Tag tone="accent">{statusLabels[project.data.status]}</Tag>
+          <span class:list={["project-card__status", `project-card__status--${project.data.status}`]}>{statusLabels[project.data.status]}</span>
           {project.data.interfaces.map((item) => <Tag>{interfaceLabels[item]}</Tag>)}
         </div>
         <h1>{project.data.title}</h1>
@@ -85,7 +85,7 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
       {(project.data.websiteUrl || project.data.repositoryUrl) && (
         <div class="project-overview__links">
           {project.data.websiteUrl && <ArrowLink href={project.data.websiteUrl}>WEBSITE</ArrowLink>}
-          {project.data.repositoryUrl && <ArrowLink href={project.data.repositoryUrl}>REPOSITORY</ArrowLink>}
+          {project.data.repositoryUrl && <ArrowLink href={project.data.repositoryUrl}>GITHUB</ArrowLink>}
         </div>
       )}
     </Container>

@@ -9,7 +9,27 @@ import { imageSize } from "image-size";
 const repositoryRoot = resolve(process.cwd());
 const projectsRoot = join(repositoryRoot, "src/content/projects");
 const reportPath = join(repositoryRoot, "docs/project-visuals-report.md");
-const requestedSlugs = new Set(process.argv.slice(2).map((value) => value.trim()).filter(Boolean));
+const cliArguments = process.argv.slice(2).map((value) => value.trim()).filter(Boolean);
+const accentOnly = cliArguments.includes("--accent-only");
+const forceAccent = cliArguments.includes("--force-accent");
+const showHelp = cliArguments.includes("--help");
+const unknownOptions = cliArguments.filter((value) => value.startsWith("--")
+  && !["--accent-only", "--force-accent", "--help"].includes(value));
+if (unknownOptions.length > 0) {
+  throw new Error(`未対応のoptionです: ${unknownOptions.join(", ")}`);
+}
+if (showHelp) {
+  console.log([
+    "Usage: npm run collect:visuals -- [options] [slug ...]",
+    "",
+    "Options:",
+    "  --accent-only   画像を更新せず、未設定のaccentだけを検出する",
+    "  --force-accent  既存のaccentも再検出して更新する",
+    "  --help          このhelpを表示する",
+  ].join("\n"));
+  process.exit(0);
+}
+const requestedSlugs = new Set(cliArguments.filter((value) => !value.startsWith("--")));
 const githubToken = process.env.GITHUB_TOKEN?.trim();
 const githubHeaders = {
   Accept: "application/vnd.github+json",
@@ -42,6 +62,7 @@ const DEFAULT_CAPTURE_CONFIG = Object.freeze({
   sliderMode: "first",
   sliderIndex: 0,
   sliderSelectors: [],
+  detectAccent: true,
 });
 
 // repositoryUrlを持たないProjectや、GitHub上のrepository名とslugが異なるProject用。
@@ -83,7 +104,7 @@ try {
   await browser.close();
 }
 
-if (requestedSlugs.size === 0) {
+if (requestedSlugs.size === 0 && !accentOnly) {
   await mkdir(join(repositoryRoot, "docs"), { recursive: true });
   await writeFile(reportPath, renderReport(report), "utf8");
 }
@@ -98,6 +119,8 @@ async function processProject(entry) {
   const notes = [];
   const assetsDir = join(entry.directory, "assets/img");
   const captureConfig = await loadCaptureConfig(entry.directory, slug);
+  const collectAccent = captureConfig.detectAccent && (forceAccent || !isHexColor(data.accent));
+  let selectedAccent = data.accent ?? null;
   await mkdir(assetsDir, { recursive: true });
 
   let repository = null;
@@ -138,14 +161,21 @@ async function processProject(entry) {
       title,
       assetsDir,
       config: captureConfig,
+      captureVisuals: !accentOnly,
+      collectAccent,
     });
     ogAsset = captured.ogAsset;
     desktopAsset = captured.desktopAsset;
     mobileAsset = captured.mobileAsset;
+    if (captured.accent && (forceAccent || !isHexColor(data.accent)) && data.accent !== captured.accent) {
+      document.set("accent", captured.accent);
+      selectedAccent = captured.accent;
+      notes.push(`accentを設定: ${captured.accent}`);
+    }
     notes.push(...captured.notes);
   }
 
-  if (repository) {
+  if (repository && !accentOnly) {
     const existingRepositoryAsset = captureConfig.force
       ? null
       : await findExistingImageAsset(assetsDir, "repository-image");
@@ -163,7 +193,7 @@ async function processProject(entry) {
     ? data.heroImage.asset.replace(/^img\//, "")
     : null;
 
-  const heroAsset = selectHeroAsset(captureConfig.hero, {
+  const heroAsset = accentOnly ? existingHeroAsset : selectHeroAsset(captureConfig.hero, {
     ogAsset,
     desktopAsset,
     mobileAsset,
@@ -196,20 +226,21 @@ async function processProject(entry) {
     mobileAsset,
     repositoryAsset,
     heroAsset,
+    accent: selectedAccent,
     notes,
   };
 }
 
-async function captureWebsite({ url, assetsDir, config }) {
+async function captureWebsite({ url, assetsDir, config, captureVisuals, collectAccent }) {
   const notes = [];
 
-  const existingOgAsset = config.force
+  const existingOgAsset = !captureVisuals || config.force
     ? null
     : await findExistingImageAsset(assetsDir, "og-image", { representative: true });
-  const existingDesktopAsset = config.force
+  const existingDesktopAsset = !captureVisuals || config.force
     ? null
     : await findExistingImageAsset(assetsDir, "screenshot-desktop");
-  const existingMobileAsset = config.force
+  const existingMobileAsset = !captureVisuals || config.force
     ? null
     : await findExistingImageAsset(assetsDir, "screenshot-mobile");
 
@@ -228,12 +259,14 @@ async function captureWebsite({ url, assetsDir, config }) {
       ignoreHTTPSErrors: true,
       reducedMotion: "reduce",
     },
-    collectOg: true,
+    captureScreenshot: captureVisuals,
+    collectOg: captureVisuals,
+    collectAccent,
   });
 
   notes.push(...desktopResult.notes);
 
-  const mobileResult = await captureViewport({
+  const mobileResult = captureVisuals ? await captureViewport({
     url,
     assetsDir,
     config,
@@ -250,8 +283,10 @@ async function captureWebsite({ url, assetsDir, config }) {
       ignoreHTTPSErrors: true,
       reducedMotion: "reduce",
     },
+    captureScreenshot: true,
     collectOg: false,
-  });
+    collectAccent: false,
+  }) : { asset: null, ogAsset: null, accent: null, notes: [] };
 
   notes.push(...mobileResult.notes);
 
@@ -259,6 +294,7 @@ async function captureWebsite({ url, assetsDir, config }) {
     ogAsset: desktopResult.ogAsset,
     desktopAsset: desktopResult.asset,
     mobileAsset: mobileResult.asset,
+    accent: desktopResult.accent,
     notes,
   };
 }
@@ -272,19 +308,23 @@ async function captureViewport({
   existingAsset,
   existingOgAsset,
   contextOptions,
+  captureScreenshot,
   collectOg,
+  collectAccent,
 }) {
   const notes = [];
   let asset = existingAsset ?? null;
   let ogAsset = existingOgAsset ?? null;
+  let accent = null;
 
-  const needsScreenshot = config.force || !asset;
+  const needsScreenshot = captureScreenshot && (config.force || !asset);
   const needsOg = collectOg && (config.force || !ogAsset);
+  const needsAccent = collectAccent;
 
-  if (!needsScreenshot && !needsOg) {
+  if (!needsScreenshot && !needsOg && !needsAccent) {
     notes.push(`${viewportName}: 既存画像があるため取得をスキップ: ${asset}`);
     if (collectOg && ogAsset) notes.push(`OGP画像があるため取得をスキップ: ${ogAsset}`);
-    return { asset, ogAsset, notes };
+    return { asset, ogAsset, accent, notes };
   }
 
   const context = await browser.newContext(contextOptions);
@@ -317,7 +357,18 @@ async function captureViewport({
     if (needsScreenshot) {
       const preparation = await preparePage(page, config, viewportName);
       notes.push(...preparation.notes.map((note) => `${viewportName}: ${note}`));
+    } else if (needsAccent) {
+      const preparation = await preparePageForAccent(page, config);
+      notes.push(...preparation.notes.map((note) => `${viewportName}: ${note}`));
+    }
 
+    if (needsAccent) {
+      accent = await detectPageAccent(page);
+      if (accent) notes.push(`${viewportName}: accent候補を検出: ${accent}`);
+      else notes.push(`${viewportName}: accent候補を検出できませんでした`);
+    }
+
+    if (needsScreenshot) {
       asset = filename;
       await page.screenshot({
         path: join(assetsDir, asset),
@@ -326,7 +377,7 @@ async function captureViewport({
         fullPage: false,
       });
       notes.push(`${viewportName}スクリーンショットを保存: ${asset}`);
-    } else {
+    } else if (asset) {
       notes.push(`${viewportName}: 既存画像があるため取得をスキップ: ${asset}`);
     }
   } catch (error) {
@@ -335,7 +386,7 @@ async function captureViewport({
     await context.close();
   }
 
-  return { asset, ogAsset, notes };
+  return { asset, ogAsset, accent, notes };
 }
 
 async function preparePage(page, config, viewportName) {
@@ -411,6 +462,114 @@ async function preparePage(page, config, viewportName) {
   await page.waitForTimeout(300);
 
   return { notes };
+}
+
+async function preparePageForAccent(page, config) {
+  const notes = [];
+  await page.waitForLoadState("networkidle", {
+    timeout: config.networkIdleTimeoutMs,
+  }).catch(() => {});
+  const consentResult = await dismissConsent(page, config.consentSelectors);
+  if (consentResult) notes.push(`Cookie同意を操作: ${consentResult}`);
+  await waitForFonts(page);
+  await page.waitForTimeout(Math.min(config.delayMs, 1_000));
+  return { notes };
+}
+
+async function detectPageAccent(page) {
+  return page.evaluate(() => {
+    const probe = document.createElement("span");
+    probe.setAttribute("aria-hidden", "true");
+    probe.style.cssText = "position:fixed;left:-9999px;top:-9999px;pointer-events:none";
+    document.body.append(probe);
+
+    const parseColor = (value) => {
+      if (!value || value === "transparent" || value === "currentcolor") return null;
+      probe.style.color = "";
+      probe.style.color = value;
+      if (!probe.style.color) return null;
+
+      const normalized = getComputedStyle(probe).color;
+      const rgb = normalized.match(/rgba?\(\s*([\d.]+)(?:\s|,\s*)+([\d.]+)(?:\s|,\s*)+([\d.]+)(?:\s*\/\s*|\s*,\s*)?([\d.]*)\s*\)/i);
+      if (rgb) {
+        const alpha = rgb[4] === "" ? 1 : Number(rgb[4]);
+        return alpha < 0.5 ? null : rgb.slice(1, 4).map((channel) => Math.round(Number(channel)));
+      }
+
+      const srgb = normalized.match(/color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/i);
+      if (srgb) {
+        const alpha = srgb[4] === undefined ? 1 : Number(srgb[4]);
+        return alpha < 0.5 ? null : srgb.slice(1, 4).map((channel) => Math.round(Number(channel) * 255));
+      }
+
+      return null;
+    };
+
+    const colorMetrics = ([red, green, blue]) => {
+      const channels = [red, green, blue].map((channel) => channel / 255);
+      const maximum = Math.max(...channels);
+      const minimum = Math.min(...channels);
+      const lightness = (maximum + minimum) / 2;
+      const delta = maximum - minimum;
+      const saturation = delta === 0 ? 0 : delta / (1 - Math.abs(2 * lightness - 1));
+      return { lightness, saturation };
+    };
+
+    const toHex = (rgb) => `#${rgb.map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+    const candidates = new Map();
+    const addCandidate = (value, weight) => {
+      const rgb = parseColor(value);
+      if (!rgb) return;
+      const { lightness, saturation } = colorMetrics(rgb);
+      if (saturation < 0.22 || lightness < 0.14 || lightness > 0.88) return;
+      const hex = toHex(rgb);
+      const score = weight + saturation * 60 - Math.abs(lightness - 0.52) * 24;
+      const previous = candidates.get(hex) ?? { score: 0, count: 0 };
+      candidates.set(hex, {
+        score: Math.max(previous.score, score),
+        count: previous.count + 1,
+      });
+    };
+
+    const themeColor = document.querySelector('meta[name="theme-color"]')?.getAttribute("content");
+    addCandidate(themeColor, 90);
+
+    const variableNames = [
+      "--accent", "--accent-color", "--color-accent", "--primary", "--primary-color",
+      "--color-primary", "--brand", "--brand-color", "--theme-color", "--key-color",
+    ];
+    for (const root of [document.documentElement, document.body]) {
+      const style = getComputedStyle(root);
+      for (const name of variableNames) addCandidate(style.getPropertyValue(name).trim(), 110);
+    }
+
+    const elements = [...document.querySelectorAll([
+      "a", "button", "[role='button']", "h1", "h2", "h3",
+      "[class*='accent' i]", "[class*='primary' i]", "[class*='brand' i]", "svg",
+    ].join(","))].slice(0, 600);
+
+    for (const element of elements) {
+      if (!(element instanceof Element)) continue;
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      if (rect.width < 2 || rect.height < 2 || style.display === "none" || style.visibility === "hidden") continue;
+      const prominence = Math.min((rect.width * rect.height) / 20_000, 18);
+      const interactive = element.matches("a, button, [role='button']") ? 16 : 7;
+      addCandidate(style.color, 24 + interactive + prominence);
+      addCandidate(style.backgroundColor, 28 + interactive + prominence);
+      addCandidate(style.borderTopColor, 16 + interactive);
+      addCandidate(style.borderBottomColor, 16 + interactive);
+      if (element instanceof SVGElement) {
+        addCandidate(style.fill, 24 + prominence);
+        addCandidate(style.stroke, 24 + prominence);
+      }
+    }
+
+    probe.remove();
+    return [...candidates.entries()]
+      .map(([hex, candidate]) => ({ hex, score: candidate.score + Math.min(candidate.count, 20) * 2 }))
+      .sort((a, b) => b.score - a.score)[0]?.hex ?? null;
+  }).catch(() => null);
 }
 
 async function closeOpenMobileMenu(page, {
@@ -1400,6 +1559,9 @@ async function loadCaptureConfig(projectDirectory, slug) {
   if (typeof config.closeMobileMenu !== "boolean") {
     throw new Error(`${configPath}: closeMobileMenuはbooleanで指定してください`);
   }
+  if (typeof config.detectAccent !== "boolean") {
+    throw new Error(`${configPath}: detectAccentはbooleanで指定してください`);
+  }
   for (const key of ["mobileMenuSelector", "mobileMenuButtonSelector"]) {
     if (config[key] !== null && (typeof config[key] !== "string" || config[key].trim() === "")) {
       throw new Error(`${configPath}: ${key}は空でないstringまたはnullで指定してください`);
@@ -1515,6 +1677,10 @@ function normalizeButtonText(value) {
   return value.trim().replace(/\s+/g, " ").toLowerCase();
 }
 
+function isHexColor(value) {
+  return typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value);
+}
+
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
 }
@@ -1529,12 +1695,12 @@ function renderReport(results) {
     "",
     `Generated: ${new Date().toISOString()}`,
     "",
-    "| Project | Website | Repository | OGP | PC SS | SP SS | Hero | Notes |",
-    "| --- | --- | --- | --- | --- | --- | --- | --- |",
+    "| Project | Website | Repository | Accent | OGP | PC SS | SP SS | Hero | Notes |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
   ];
 
   for (const result of results) {
-    lines.push(`| ${escapeCell(result.title)} | ${linkCell(result.websiteUrl)} | ${linkCell(result.repositoryUrl)} | ${result.ogAsset ?? "—"} | ${result.desktopAsset ?? "—"} | ${result.mobileAsset ?? "—"} | ${result.heroAsset ?? "—"} | ${escapeCell(result.notes.join(" / ") || "変更なし")} |`);
+    lines.push(`| ${escapeCell(result.title)} | ${linkCell(result.websiteUrl)} | ${linkCell(result.repositoryUrl)} | ${result.accent ?? "—"} | ${result.ogAsset ?? "—"} | ${result.desktopAsset ?? "—"} | ${result.mobileAsset ?? "—"} | ${result.heroAsset ?? "—"} | ${escapeCell(result.notes.join(" / ") || "変更なし")} |`);
   }
   lines.push("");
   return lines.join("\n");

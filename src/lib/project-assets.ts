@@ -17,22 +17,6 @@ export interface ProjectScreenshot extends ProjectImage {
   label: "DESKTOP" | "MOBILE";
 }
 
-export function getProjectCardImage(project: ProjectEntry): ProjectImage | undefined {
-  const conventionalOgp = findConventionalImage(project.data.slug, ["img/ogp", "img/og-image"]);
-  if (conventionalOgp) {
-    return {
-      src: createContentAssetUrl("/images/projects", project.data.slug, conventionalOgp),
-      alt: project.data.heroImage?.asset === conventionalOgp
-        ? project.data.heroImage.alt
-        : `${project.data.title}の代表画像`,
-      position: project.data.heroImage?.asset === conventionalOgp
-        ? project.data.heroImage.position
-        : undefined,
-    };
-  }
-  return project.data.heroImage;
-}
-
 export function getProjectScreenshots(project: ProjectEntry): ProjectScreenshot[] {
   return (["desktop", "mobile"] as const).flatMap((kind) => {
     if (!project.data.screenshots[kind]) return [];
