@@ -1,5 +1,9 @@
 {
+  "force": true,
   "videoTime": 1.5,
   "videoFrameFallback": true,
-  "hero": "desktop"
+  "hero": "desktop",
+  "closeMobileMenu": true,
+  "mobileMenuSelector": "#mobile-menu",
+  "mobileMenuButtonSelector": "#menu-toggle"
 }

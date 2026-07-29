@@ -33,6 +33,7 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
+accent: "#f18f01"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

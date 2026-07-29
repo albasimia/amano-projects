@@ -4,7 +4,18 @@ import Container from "albasimia-ssg-core/components/Container.astro";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import { getPublishedProjects } from "../../lib/projects";
 
-const projects = await getPublishedProjects();
+const periodValue = (startedAt?: string): number => {
+  if (!startedAt) return Number.NEGATIVE_INFINITY;
+  const parsed = Date.parse(startedAt);
+  if (Number.isFinite(parsed)) return parsed;
+  const year = startedAt.match(/\d{4}/)?.[0];
+  return year ? Number(year) : Number.NEGATIVE_INFINITY;
+};
+
+const projects = [...await getPublishedProjects()].sort((a, b) => {
+  const periodDifference = periodValue(b.data.startedAt) - periodValue(a.data.startedAt);
+  return periodDifference || a.data.order - b.data.order;
+});
 const clientProjects = projects.filter(({ data }) => data.projectType === "client");
 const personalProjects = projects.filter(({ data }) => data.projectType === "personal");
 const projectTabs = [
@@ -18,10 +29,12 @@ const projectTabs = [
   breadcrumbs={[{ label: "PROJECTS" }]}
   meta={{ title: "Projects", description: "課題の発見から検証まで、制作過程を記録したProject一覧。", canonicalPath: "/projects/" }}
 >
-  <header class="page-hero">
+  <header class="page-hero project-index-hero">
     <Container>
-      <p class="eyebrow">PROJECT INDEX</p>
-      <h1>PROJECTS</h1>
+      <div class="project-index-hero__title">
+        <p class="eyebrow">PROJECT INDEX</p>
+        <h1>PROJECTS</h1>
+      </div>
       <p>作品の一覧ではなく、課題と制作過程への索引。</p>
     </Container>
   </header>
@@ -46,6 +59,7 @@ const projectTabs = [
         <div class="project-list">
           {clientProjects.map((project) => <ProjectCard project={project} headingLevel="h2" />)}
         </div>
+        <p class="project-tab-panel__note">その他非公開案件多数</p>
       </section>
 
       <section id="personal-projects" class="project-tab-panel" role="tabpanel" aria-labelledby="personal-projects-tab" hidden>

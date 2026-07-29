@@ -1,5 +1,5 @@
 ---
-import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import ArrowLink from "../components/ArrowLink.astro";
 import Container from "albasimia-ssg-core/components/Container.astro";
 import Section from "albasimia-ssg-core/components/Section.astro";
 import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
@@ -7,8 +7,7 @@ import ProjectCard from "../components/ProjectCard.astro";
 import { processCycle } from "../data/process";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { getCompanies } from "../lib/companies";
-import { getProjectCardImage } from "../lib/project-assets";
-import { getPublishedProjects, type ProjectEntry } from "../lib/projects";
+import { getPublishedProjects, statusLabels, type ProjectEntry } from "../lib/projects";
 
 const projects = await getPublishedProjects();
 const professionalExperiences = await getCompanies();
@@ -19,8 +18,8 @@ const pickUpSlugs = new Set(pickUpProjects.map(({ data }) => data.slug));
 const featuredPersonalProjects = featuredProjects
   .filter(({ data }) => data.projectType === "personal" && !pickUpSlugs.has(data.slug))
   .slice(0, 3);
-const inProgressProject = projects.find(({ data }) => data.slug === "kaka-see");
-const inProgressImage = inProgressProject ? getProjectCardImage(inProgressProject) : undefined;
+const inProgressProject = projects.find(({ data }) => data.status === "development" && data.currentPhase);
+const inProgressImage = inProgressProject?.data.heroImage;
 
 const pointOnCircle = (angle: number, radius: number) => {
   const radians = (angle * Math.PI) / 180;
@@ -92,6 +91,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
         </figure>
         <div class="home-about__body">
           <p class="eyebrow">ABOUT</p>
+          <p class="profile-kana">アマノ コウヘイ</p>
           <h2 id="home-about-title">天野 浩平</h2>
           <p>現実の中で心が動き、既存の仕組みでは成立しない体験が見えた時、必要な構造を考え、実装します。</p>
           <ArrowLink class="section-end-link" href="/about/">VIEW ABOUT</ArrowLink>
@@ -162,34 +162,35 @@ function projectStyle(project: ProjectEntry): string | undefined {
   {inProgressProject && (
     <Section class="home-section home-progress" labelledby="progress-title">
       <Container>
-        <div class="home-section-heading">
-          <p class="eyebrow" id="progress-title">IN PROGRESS</p>
-        </div>
+        <SectionHeader eyebrow="IN PROGRESS" title="現在、検証していること" id="progress-title" />
         <article class="progress-project" style={projectStyle(inProgressProject)}>
-          <a class="progress-project__media" href={`/projects/${inProgressProject.data.slug}/`} aria-label={`${inProgressProject.data.title}の詳細を見る`}>
-            {inProgressImage ? (
+          <header class="progress-project__identity">
+            <div class="project-card__badges">
+              <span class:list={["project-card__status", `project-card__status--${inProgressProject.data.status}`]}>{statusLabels[inProgressProject.data.status]}</span>
+            </div>
+            <p class="project-card__fields">
+              <span>FIELD</span>
+              <span>{inProgressProject.data.fields.join(" / ")}</span>
+            </p>
+            <h3><a href={`/projects/${inProgressProject.data.slug}/`}>{inProgressProject.data.title}</a></h3>
+          </header>
+          <div class="progress-project__phase">
+            <p class="eyebrow">CURRENT PHASE</p>
+            <h4>{inProgressProject.data.currentPhase?.label}</h4>
+            <p>{inProgressProject.data.currentPhase?.description}</p>
+          </div>
+          <div class="progress-project__aside">
+            {inProgressImage && (
+              <a class="progress-project__media" href={`/projects/${inProgressProject.data.slug}/`} aria-label={`${inProgressProject.data.title}の詳細を見る`}>
               <img
                 src={inProgressImage.src}
                 alt={inProgressImage.alt}
                 loading="lazy"
                 style={inProgressImage.position ? `object-position:${inProgressImage.position}` : undefined}
               />
-            ) : (
-              <span class="progress-project__placeholder" aria-hidden="true">
-                <span>FIELD NOTE</span>
-                <strong>{inProgressProject.data.title}</strong>
-              </span>
+              </a>
             )}
-          </a>
-          <div class="progress-project__body">
-            <p class="eyebrow">CURRENT PROJECT</p>
-            <h2><a href={`/projects/${inProgressProject.data.slug}/`}>{inProgressProject.data.title}</a></h2>
-            <dl class="progress-project__meta">
-              <div><dt>STATUS</dt><dd>IN DEVELOPMENT</dd></div>
-              <div><dt>CURRENT PHASE</dt><dd>Phase 0 — Sensor Reading</dd></div>
-            </dl>
-            <p>{inProgressProject.data.summary}</p>
-            <ArrowLink class="section-end-link" href={`/projects/${inProgressProject.data.slug}/`}>VIEW PROJECT</ArrowLink>
+            <ArrowLink href={`/projects/${inProgressProject.data.slug}/`}>VIEW PROJECT</ArrowLink>
           </div>
         </article>
       </Container>
@@ -228,7 +229,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
         {identities.map((identity) => (
           <article>
             <p class="eyebrow">{identity.label}</p>
-            <h3>{identity.name}</h3>
+            <h3 class:list={{ "identity-name--watarino": identity.label === "CREATIVE IDENTITY" }}>{identity.name}</h3>
             <p>{identity.description}</p>
           </article>
         ))}

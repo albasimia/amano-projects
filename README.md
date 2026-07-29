@@ -57,7 +57,9 @@ heroImage:
 ```
 
 
-`assets/img/ogp.*`または`assets/img/og-image.*`がある場合は、Projectカードの代表画像として自動的に優先します。Project詳細ページへスクリーンショットを表示する場合は、規定名の画像を配置し、`index.md`でPC版とSP版を個別に有効化します。
+Projectカードには、frontmatterで明示した`heroImage`だけを使用します。`heroImage`がない場合は、Projectの`accent`を背景色としたプレースホルダーを表示します。`assets/img/ogp.*`と`assets/img/og-image.*`はSNS共有用として保持しますが、カード画像には自動利用しません。
+
+Project詳細ページへスクリーンショットを表示する場合は、規定名の画像を配置し、`index.md`でPC版とSP版を個別に有効化します。
 
 ```text
 assets/img/
@@ -72,6 +74,30 @@ screenshots:
 ```
 
 `false`または未指定のスクリーンショットは表示しません。表示対象の画像が存在しない場合は、Asset同期時にエラーになります。
+
+### アクセントカラーの自動取得
+
+Projectの公開サイトからアクセントカラーを検出し、frontmatterの`accent`へ設定できます。通常は明示済みの`accent`を保護し、未設定のProjectだけを更新します。
+
+Projectを指定して、未設定のアクセントカラーだけを取得します。
+
+```sh
+npm run collect:visuals:accent -- technonex-corporate
+```
+
+既存の`accent`も再検出して更新する場合は、`--force-accent`を指定します。
+
+```sh
+npm run collect:visuals:accent -- --force-accent technonex-corporate
+```
+
+利用可能なオプションは、次のコマンドで確認できます。
+
+```sh
+npm run collect:visuals:accent -- --help
+```
+
+Project slugを省略すると、対象となるすべてのProjectを処理します。アクセントカラー専用コマンドでは、OGPやスクリーンショットを更新しません。
 
 `npm run dev`、`npm run check`、`npm run build`の前に、ASCのContent Asset同期が自動実行されます。画像は`public/images/{collection}/{slug}/`へ生成されますが、この出力はGit管理しません。存在しない参照画像、不正な相対パス、ディレクトリ名と`slug`の不一致はビルド前にエラーになります。
 

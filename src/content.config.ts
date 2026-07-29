@@ -36,6 +36,10 @@ const projects = defineCollection({
     origin: z.string().trim().min(1),
     intention: z.string().trim().min(1),
     status: projectStatus,
+    currentPhase: z.object({
+      label: z.string().trim().min(1),
+      description: z.string().trim().min(1),
+    }).optional(),
     projectType: z.enum(["client", "personal"]).default("personal"),
     interfaces: z.array(projectInterface).min(1),
     fields: z.array(z.string().trim().min(1)).min(1),

@@ -1,7 +1,6 @@
 ---
 import type { ProjectEntry } from "../lib/projects";
-import { interfaceLabels, statusLabels } from "../lib/projects";
-import { getProjectCardImage } from "../lib/project-assets";
+import { interfaceLabels, projectPeriod, statusLabels } from "../lib/projects";
 
 interface Props {
   project: ProjectEntry;
@@ -12,12 +11,13 @@ const { project, headingLevel = "h3" } = Astro.props;
 const Heading = headingLevel;
 const href = `/projects/${project.data.slug}/`;
 const style = project.data.accent ? `--project-accent:${project.data.accent}` : undefined;
-const cardImage = getProjectCardImage(project);
+const cardImage = project.data.heroImage;
+const period = projectPeriod(project);
 ---
 
 <article class="project-card" style={style}>
   <a class="project-card__link" href={href} aria-label={`${project.data.title}の詳細を見る`}>
-    <div class="project-card__visual">
+    <div class:list={["project-card__visual", { "project-card__visual--placeholder": !cardImage }]}>
       {cardImage ? (
         <img
           src={cardImage.src}
@@ -27,7 +27,7 @@ const cardImage = getProjectCardImage(project);
           style={cardImage.position ? `object-position:${cardImage.position}` : undefined}
         />
       ) : (
-        <img src="/og.png" alt="" loading="lazy" decoding="async" />
+        <span class="project-card__placeholder" aria-hidden="true">{project.data.title}</span>
       )}
     </div>
     <div class="project-card__body">
@@ -35,6 +35,12 @@ const cardImage = getProjectCardImage(project);
         <span class:list={["project-card__status", `project-card__status--${project.data.status}`]}>{statusLabels[project.data.status]}</span>
         {project.data.interfaces.map((item) => <span>{interfaceLabels[item]}</span>)}
       </div>
+      {period && (
+        <p class="project-card__period">
+          <span>PERIOD</span>
+          <span>{period}</span>
+        </p>
+      )}
       <p class="project-card__fields">
         <span>FIELD</span>
         <span>{project.data.fields.join(" / ")}</span>

@@ -1,0 +1,34 @@
+---
+import VisuallyHidden from "albasimia-ssg-core/components/VisuallyHidden.astro";
+
+interface Props {
+  href: string;
+  label?: string;
+  class?: string;
+}
+
+const { href, label, class: className } = Astro.props;
+const external = /^(?:https?:)?\/\//i.test(href);
+---
+
+<a
+  class:list={["asc-arrow-link", { "asc-arrow-link--external": external }, className]}
+  href={href}
+  aria-label={label}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+>
+  <span><slot /></span>
+  {external ? (
+    <>
+      <svg class="asc-arrow-link__arrow" viewBox="0 0 18 18" aria-hidden="true">
+        <path d="M7 5H3v10h10v-4" />
+        <path d="M9 2.5h6.5V9" />
+        <path d="m15.5 2.5-8 8" />
+      </svg>
+      <VisuallyHidden>（新しいタブで開く）</VisuallyHidden>
+    </>
+  ) : (
+    <span class="asc-arrow-link__arrow" aria-hidden="true">→</span>
+  )}
+</a>

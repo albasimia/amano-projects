@@ -1,5 +1,5 @@
 ---
-import ArrowLink from "albasimia-ssg-core/components/ArrowLink.astro";
+import ArrowLink from "../components/ArrowLink.astro";
 import Container from "albasimia-ssg-core/components/Container.astro";
 import Section from "albasimia-ssg-core/components/Section.astro";
 import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
@@ -22,6 +22,7 @@ const identities = [
       <p class="eyebrow">ABOUT</p>
       <div class="about-profile">
         <div class="about-profile__header">
+          <p class="profile-kana">アマノ コウヘイ</p>
           <h1>天野 浩平</h1>
         </div>
         <figure class="about-profile__portrait">
@@ -44,11 +45,11 @@ const identities = [
 
   <Section id="interfaces" class="section--muted" labelledby="interfaces-title">
     <Container>
-      <SectionHeader eyebrow="IDENTITIES AS INTERFACES" title="同じ人間、三つのInterface" id="interfaces-title" />
+      <SectionHeader eyebrow="IDENTITIES AS INTERFACES" title="同じ人間、３つのInterface" id="interfaces-title" />
       <div class="identity-list">
         {identities.map((identity) => (
           <article>
-            <div><p class="eyebrow">{identity.label}</p><h3>{identity.name}</h3></div>
+            <div><p class="eyebrow">{identity.label}</p><h3 class:list={{ "identity-name--watarino": identity.label === "CREATIVE IDENTITY" }}>{identity.name}</h3></div>
             <p>{identity.description}</p>
           </article>
         ))}

@@ -30,6 +30,7 @@ draft: false
 heroImage:
   asset: img/og-image.png
   alt: purin_chang_unofficialの代表画像
+accent: "#0000ee"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
