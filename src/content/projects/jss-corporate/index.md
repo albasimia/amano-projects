@@ -11,15 +11,11 @@ interfaces:
 fields:
   - コーポレートサイト
   - 写真撮影
-  - 情報設計
 technologies:
-  - WordPress
-  - PHP
-  - JavaScript
+  - Vue.js
+  - Github Actions
 roles:
-  - 情報設計
   - フロントエンド
-  - WordPress実装
   - 写真撮影
 featured: false
 order: 190
@@ -32,6 +28,8 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
+startedAt: "2023.3"
+endedAt: "2023.4"
 accent: "#111987"
 ---
 
@@ -66,10 +64,4 @@ Bloomark在籍時に、当時のサイト制作と写真撮影を担当しまし
 
 ## 実装
 
-コーポレートサイトの情報設計、フロントエンド、WordPress実装に加え、サイト内で使用する現場写真を撮影しました。
-
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
-
-## 公開に関する注記
-
-現在公開中のサイトには制作後の更新や改修が含まれる可能性があるため、当時の担当範囲と画面資料を確認してから公開します。
+コーポレートサイトのVue.jsによるSPA実装、Github ActionsによるCI/CDの整備に加え、サイト内で使用する現場写真を撮影しました。

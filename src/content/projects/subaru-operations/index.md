@@ -1,7 +1,7 @@
 ---
-title: SUBARU Official Website Operations
+title: SUBARU 公式サイト 保守・運用
 slug: subaru-operations
-summary: 大規模公式サイトの制作、長期運用、更新設計、CMS構築に関わったProfessional Work。
+summary: 大規模公式サイトの制作、長期運用、更新設計、CMS構築に従事。
 origin: 厳格なレギュレーションの中で、多数のページと継続更新を複数社が保守できる構造が必要だった。
 intention: 短期的な実装ではなく、他社や後任が継続して扱える簡潔で普遍的な運用へ変える。
 status: completed
@@ -29,9 +29,8 @@ organization: BLOOMARK
 order: 250
 startedAt: "2019"
 endedAt: "2025"
-relatedProjects:
-  - watari-ea
 draft: false
+accent: "#2362A5"
 ---
 
 <p class="eyebrow project-prose__eyebrow">OVERVIEW</p>
@@ -62,8 +61,3 @@ GoogleスプレッドシートとJSONを利用した情報更新方法を提案�
 
 大規模運用では、高度な実装よりも、誰が触っても壊れにくい構造、更新手順、引き継ぎ可能性が重要です。
 
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
-
-## 公開に関する注記
-
-企業案件のため、公開可能な担当範囲と名称表記を確認するまでdraftとします。

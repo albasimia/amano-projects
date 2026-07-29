@@ -33,6 +33,8 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
+startedAt: "2026.7"
+endedAt: "2026.7"
 accent: "#f18f01"
 ---
 
@@ -54,8 +56,15 @@ accent: "#f18f01"
 
 フリーランスとして実務制作を担当しました。
 
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
 
-## 公開に関する注記
+## 実装
 
-現行サイトには制作後のリニューアルや更新が含まれる可能性があるため、担当時点の範囲を確認してから公開します。
+短納期での制作でしたが、既存の資産の利用と初めてのAIを使用した実装補助を行い、動きのあるUIを実装しました。
+
+
+<p class="eyebrow project-prose__eyebrow">LEARNING</p>
+
+## 得られたこと
+
+AIによる実装補助は使い方によって強力なサポートになることを実感しました。

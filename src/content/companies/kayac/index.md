@@ -1,7 +1,7 @@
 ---
 slug: kayac
 number: "02"
-company: 株式会社カヤック
+company: 面白法人カヤック
 shortName: KAYAC
 label: INTERACTIVE FRONTEND
 period: 2017–2018

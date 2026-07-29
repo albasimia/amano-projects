@@ -24,7 +24,7 @@ roles:
   - デザイン
   - 実装
   - 運用
-featured: true
+featured: false
 order: 10
 startedAt: "2025"
 websiteUrl: https://catharsiswatari-events.pages.dev/

@@ -17,10 +17,10 @@ works:
   - title: SUBARU公式サイト
     description: 運用上の制約、担当範囲、改善内容を整理中。
     project: subaru-operations
-  - title: 個人情報台帳管理システム
+  - title: メルセデス・ベンツ 個人情報台帳管理システム
     description: 業務要件と設計上の判断を整理中。
     project: bookmate
-  - title: 社内向け勉強会・業務改善
+  - title: 株式会社JSS　コーポーレートサイト
     description: 技術展開と運用改善の記録を整理中。
     project: internal-learning-workflow-improvement
 order: 30

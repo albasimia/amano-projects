@@ -1,8 +1,8 @@
 ---
-title: 達人育成LABO
+title: 達人育成LABO LP
 slug: tatsujin-lab
 summary: 職人育成スクールの内容、コース、費用、受講後の状態を整理し、問い合わせへ導くサービスサイト。
-origin: 未経験者にとって、講習内容や受講後のキャリアが分かりにくく、申込み判断に必要な情報が不足していた。
+origin: 職人育成スクール立ち上げに際し、講習内容や受講後のキャリアが分かりにくく、申込み判断に必要な情報が不足していた。
 intention: 不安、条件、期待を整理し、受講者が問い合わせ前に判断できる情報設計をつくる。
 status: completed
 projectType: client
@@ -27,6 +27,7 @@ order: 220
 websiteUrl: https://tatsujin-lab.com/
 relatedProjects:
   - technonex-corporate
+  - housetect-corporate
 draft: false
 heroImage:
   asset: img/screenshot-desktop.jpg
@@ -34,6 +35,8 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
+startedAt: "2026.5"
+endedAt: "2026.5"
 accent: "#00b295"
 ---
 
@@ -41,7 +44,8 @@ accent: "#00b295"
 
 ## 発端
 
-職人育成スクールは、対象者、講習内容、期間、価格、受講後のキャリアが複雑で、未経験者が申込みを判断しにくいサービスでした。
+職人育成スクールの立ち上げにあたり、受講生募集の為のプラットフォームとして、  
+対象者、講習内容、期間、価格、受講後のキャリアをわかりやすくリーチ可能なサイトが必要でした。
 
 <p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
 
@@ -64,8 +68,9 @@ accent: "#00b295"
 
 フリーランスとして実務制作を担当しました。
 
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
 
-## 公開に関する注記
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
 
-現行コンテンツと制作時点の差分、担当範囲を確認してから公開するためdraftとします。
+## 実装
+
+LPとしての制作でしたが、将来WordPressでの記事運用を前提としていた為、WordPress上の単一ページとして実装しました。

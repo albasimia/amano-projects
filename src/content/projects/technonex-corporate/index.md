@@ -27,6 +27,7 @@ featured: false
 order: 200
 websiteUrl: https://technonex.co.jp/
 relatedProjects:
+  - housetect-corporate
   - tatsujin-lab
 draft: false
 heroImage:
@@ -35,6 +36,8 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
+startedAt: "2026.4"
+endedAt: "2026.4"
 accent: "#3180db"
 ---
 
@@ -56,8 +59,8 @@ accent: "#3180db"
 
 フリーランスとして実務制作を担当しました。
 
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
 
-## 公開に関する注記
+## 実装
 
-担当範囲、公開時期、制作後の更新内容を確認してから公開するためdraftとします。
+ページを構成するパーツを事業形態の変化に合わせて再利用可能なコンポーネントにし、WordPressのテンプレート内で使用可能にする実装を行いました。

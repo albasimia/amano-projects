@@ -40,7 +40,7 @@ draft: false
 
 ## 目指した体験
 
-派生サイトが固有のコンテンツと表現へ集中しながら、公開、更新、検証の基盤を再利用できる状態を目指します。
+静的サイト運用における、公開、編集、検証のための基盤を、シンプルかつ低コストで再利用できる形で実装します。
 
 <p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
 
@@ -74,3 +74,7 @@ packed packageとGitHub tagの双方を、一時consumerへインストールし
 ## 得られたこと
 
 package内部の完成だけでなく、cleanなconsumerから利用できることを検証条件に含める必要があります。
+
+<p class="eyebrow project-prose__eyebrow">EVALUATION</p>
+
+## AIによる評価
