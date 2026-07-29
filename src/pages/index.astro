@@ -4,7 +4,7 @@ import Container from "albasimia-ssg-core/components/Container.astro";
 import Section from "albasimia-ssg-core/components/Section.astro";
 import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import { homeProjectSlugs } from "../data/home-projects";
+import { projectSelections } from "../data/project-selections";
 import { processCycle } from "../data/process";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { getCompanies } from "../lib/companies";
@@ -16,10 +16,10 @@ const projectBySlug = new Map(projects.map((project) => [project.data.slug, proj
 const selectHomeProjects = (slugs: readonly string[]) => slugs
   .map((slug) => projectBySlug.get(slug))
   .filter((project): project is ProjectEntry => project !== undefined);
-const pickUpProjects = selectHomeProjects(homeProjectSlugs.pickUp);
-const featuredClientProjects = selectHomeProjects(homeProjectSlugs.clientWork);
-const featuredPersonalProjects = selectHomeProjects(homeProjectSlugs.personalProjects);
-const inProgressProject = projectBySlug.get(homeProjectSlugs.inProgress);
+const pickUpProjects = selectHomeProjects(projectSelections.home.pickUp);
+const featuredClientProjects = selectHomeProjects(projectSelections.home.clientWork);
+const featuredPersonalProjects = selectHomeProjects(projectSelections.home.personalProjects);
+const inProgressProject = projectBySlug.get(projectSelections.home.inProgress);
 const inProgressImage = inProgressProject?.data.heroImage;
 
 const pointOnCircle = (angle: number, radius: number) => {

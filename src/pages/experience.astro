@@ -4,6 +4,7 @@ import Container from "albasimia-ssg-core/components/Container.astro";
 import Section from "albasimia-ssg-core/components/Section.astro";
 import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import { projectSelections } from "../data/project-selections";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { getCompanies } from "../lib/companies";
 import { getPublishedProjects, type ProjectEntry } from "../lib/projects";
@@ -11,8 +12,7 @@ import { getPublishedProjects, type ProjectEntry } from "../lib/projects";
 const professionalExperiences = await getCompanies();
 const publishedProjects = await getPublishedProjects();
 const projectsBySlug = new Map(publishedProjects.map((project) => [project.data.slug, project]));
-const earlierProjectSlugs = ["hele-button", "quizzool", "rice-caster"];
-const earlierProjects = earlierProjectSlugs
+const earlierProjects = projectSelections.experience.earlierProjects
   .map((slug) => projectsBySlug.get(slug))
   .filter((project): project is ProjectEntry => project !== undefined);
 
