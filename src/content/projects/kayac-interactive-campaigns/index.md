@@ -6,8 +6,6 @@ origin: 短期間で強い表現を求められるキャンペーン制作の中
 intention: Canvas、SVG、JavaScriptによる表現を、運用可能なWebコンテンツとして成立させる。
 status: completed
 projectType: client
-interfaces:
-  - engineering
 fields:
   - 実務制作
   - インタラクティブ
@@ -22,10 +20,7 @@ roles:
   - フロントエンド
   - インタラクション実装
   - 更新設計
-featured: false
-clientFeatured: true
 organization: KAYAC
-order: 240
 startedAt: "2017"
 endedAt: "2018"
 relatedProjects: []

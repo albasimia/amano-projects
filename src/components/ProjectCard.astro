@@ -1,6 +1,6 @@
 ---
 import type { ProjectEntry } from "../lib/projects";
-import { interfaceLabels, projectPeriod, statusLabels } from "../lib/projects";
+import { projectPeriod, statusLabels } from "../lib/projects";
 
 interface Props {
   project: ProjectEntry;
@@ -33,7 +33,6 @@ const period = projectPeriod(project);
     <div class="project-card__body">
       <div class="project-card__badges">
         <span class:list={["project-card__status", `project-card__status--${project.data.status}`]}>{statusLabels[project.data.status]}</span>
-        {project.data.interfaces.map((item) => <span>{interfaceLabels[item]}</span>)}
       </div>
       {period && (
         <p class="project-card__period">
@@ -51,3 +50,37 @@ const period = projectPeriod(project);
     </div>
   </a>
 </article>
+
+<script>
+  const cardViewport = window.matchMedia("(max-width: 767px)");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let cardObserver: IntersectionObserver | undefined;
+
+  const clearActiveCards = () => {
+    document.querySelectorAll(".project-card.is-scroll-active").forEach((card) => {
+      card.classList.remove("is-scroll-active");
+    });
+  };
+
+  const observeProjectCards = () => {
+    cardObserver?.disconnect();
+    clearActiveCards();
+
+    if (!cardViewport.matches || reducedMotion.matches) return;
+
+    cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.closest(".project-card")?.classList.toggle("is-scroll-active", entry.isIntersecting);
+      });
+    }, {
+      rootMargin: "-42% 0px -42% 0px",
+      threshold: 0,
+    });
+
+    document.querySelectorAll(".project-card__visual").forEach((visual) => cardObserver?.observe(visual));
+  };
+
+  observeProjectCards();
+  cardViewport.addEventListener("change", observeProjectCards);
+  reducedMotion.addEventListener("change", observeProjectCards);
+</script>

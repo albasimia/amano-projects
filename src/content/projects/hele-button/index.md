@@ -5,8 +5,6 @@ summary: 会場の参加者がスマートフォンからボタンを押し、�
 origin: 観客が見るだけでなく、その場の反応を全員で共有できる仕組みが必要だった。
 intention: 多人数の反応を同時に集め、会場演出の一部として可視化する。
 status: completed
-interfaces:
-  - creative-to-engineering
 fields:
   - リアルタイム
   - イベント
@@ -19,8 +17,6 @@ roles:
   - リアルタイム設計
   - 実装
   - 運用
-featured: false
-order: 140
 repositoryUrl: https://github.com/albasimia/hele-button
 websiteUrl: https://helebutton-6cf30.firebaseapp.com/
 relatedProjects:

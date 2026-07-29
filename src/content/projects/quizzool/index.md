@@ -6,14 +6,10 @@ origin: 制作当時の背景を整理中。
 intention: 制作当時の目的と判断を、後から参照できる記録として整理する。
 status: completed
 projectType: personal
-interfaces:
-  - creative-to-engineering
 fields:
   - 過去の個人制作
 technologies: []
 roles: []
-featured: false
-order: 145
 relatedProjects: []
 draft: false
 ---

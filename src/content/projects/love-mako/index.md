@@ -5,8 +5,6 @@ summary: 友人たちを登場人物にした、伊東マコト誕生日用の�
 origin: 本人と友人たちの関係性を、内輪の物語として遊べる形へ変えたかった。
 intention: 実在のコミュニティを登場人物、選択肢、分岐へ再構成し、誕生日の共有体験をつくる。
 status: completed
-interfaces:
-  - creative-to-engineering
 fields:
   - ゲーム
   - 物語
@@ -19,8 +17,6 @@ roles:
   - シナリオ
   - キャラクター設計
   - 実装
-featured: false
-order: 110
 repositoryUrl: https://github.com/albasimia/love_mako
 relatedProjects:
   - birthday-contents

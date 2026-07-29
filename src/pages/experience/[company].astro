@@ -1,27 +1,33 @@
 ---
 import ArrowLink from "../../components/ArrowLink.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
 import Container from "albasimia-ssg-core/components/Container.astro";
 import Section from "albasimia-ssg-core/components/Section.astro";
 import SectionHeader from "albasimia-ssg-core/components/SectionHeader.astro";
-import Tag from "albasimia-ssg-core/components/Tag.astro";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import { getCompanies, type CompanyEntry } from "../../lib/companies";
+import { getPublishedProjects, type ProjectEntry } from "../../lib/projects";
 
 export async function getStaticPaths() {
-  const companies = await getCompanies();
+  const [companies, projects] = await Promise.all([getCompanies(), getPublishedProjects()]);
 
   return companies.map((company) => ({
     params: { company: company.data.slug },
-    props: { company },
+    props: { company, projects },
   }));
 }
 
 interface Props {
   company: CompanyEntry;
+  projects: ProjectEntry[];
 }
 
-const { company } = Astro.props;
+const { company, projects } = Astro.props;
 const { data } = company;
+const projectBySlug = new Map(projects.map((project) => [project.data.slug, project]));
+const workProjects = data.works
+  .map((slug) => projectBySlug.get(slug))
+  .filter((project): project is ProjectEntry => project !== undefined);
 ---
 
 <SiteLayout
@@ -56,21 +62,12 @@ const { data } = company;
     </Container>
   </Section>
 
-  {data.works.length > 0 && (
+  {workProjects.length > 0 && (
     <Section labelledby="selected-work-title">
       <Container>
         <SectionHeader eyebrow="SELECTED WORK" title="所属期間中の主な制作と経験" id="selected-work-title" />
-        <div class="company-work-list">
-          {data.works.map((work) => (
-            <article class:list={{ "company-work-list__linked": work.project }}>
-              <h3>{work.title}</h3>
-              {work.description && <p>{work.description}</p>}
-              <div class="company-work-list__footer">
-                <Tag>{data.shortName}</Tag>
-                {work.project && <ArrowLink href={`/projects/${work.project}/`}>VIEW PROJECT</ArrowLink>}
-              </div>
-            </article>
-          ))}
+        <div class="project-card-grid">
+          {workProjects.map((project) => <ProjectCard project={project} />)}
         </div>
       </Container>
     </Section>

@@ -5,8 +5,6 @@ summary: ダンス活動を行う友人の人物像と活動を編集した、�
 origin: ダンス活動をしている友人の魅力を、本人の活動全体が見えるWebサイトへまとめたかった。
 intention: 名前、活動、ビジュアルをひとつの世界観へまとめ、本人のためのWeb上の入口をつくる。
 status: completed
-interfaces:
-  - creative-to-engineering
 fields:
   - Web
   - アイデンティティ
@@ -20,8 +18,6 @@ roles:
   - 編集
   - デザイン
   - 実装
-featured: false
-order: 130
 repositoryUrl: https://github.com/albasimia/purin_chang_unofficial
 websiteUrl: https://albasimia.github.io/purin_chang_unofficial/
 relatedProjects:

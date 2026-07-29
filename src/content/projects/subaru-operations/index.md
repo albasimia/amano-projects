@@ -6,8 +6,6 @@ origin: 厳格なレギュレーションの中で、多数のページと継続
 intention: 短期的な実装ではなく、他社や後任が継続して扱える簡潔で普遍的な運用へ変える。
 status: completed
 projectType: client
-interfaces:
-  - engineering
 fields:
   - 実務制作
   - 大規模Webサイト
@@ -23,10 +21,7 @@ roles:
   - リードエンジニア
   - 運用改善
   - CMS設計
-featured: false
-clientFeatured: true
 organization: BLOOMARK
-order: 250
 startedAt: "2019"
 endedAt: "2025"
 draft: false
@@ -60,4 +55,3 @@ GoogleスプレッドシートとJSONを利用した情報更新方法を提案�
 ## 得られたこと
 
 大規模運用では、高度な実装よりも、誰が触っても壊れにくい構造、更新手順、引き継ぎ可能性が重要です。
-

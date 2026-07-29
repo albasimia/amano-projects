@@ -5,8 +5,6 @@ summary: 音声を記憶して組み合わせ、クリア時にご褒美画像�
 origin: 視覚中心の神経衰弱を、対象者に合わせた音声体験へ変えたかった。
 intention: 音を記憶する遊びと誕生日演出を組み合わせ、短時間で共有できるゲームをつくる。
 status: completed
-interfaces:
-  - creative-to-engineering
 fields:
   - ゲーム
   - 音声
@@ -19,8 +17,6 @@ roles:
   - ゲーム設計
   - 音声演出
   - 実装
-featured: false
-order: 120
 relatedProjects:
   - birthday-contents
 draft: false

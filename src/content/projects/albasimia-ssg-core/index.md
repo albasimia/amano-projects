@@ -5,8 +5,6 @@ summary: 複数の静的サイトで再利用できる、AstroとGitOpsの共通
 origin: ワタリEAで実装した共通責務を、サイト固有実装から分離する必要が生まれた。
 intention: 一度設計した基盤を、異なるProjectで育て続けられる形へ変える。
 status: development
-interfaces:
-  - engineering
 fields:
   - 設計構造
   - 静的サイト
@@ -21,8 +19,6 @@ roles:
   - 実装
   - テスト
   - ドキュメント
-featured: false
-order: 50
 startedAt: "2026"
 repositoryUrl: https://github.com/albasimia/albasimia-ssg-core
 relatedProjects:

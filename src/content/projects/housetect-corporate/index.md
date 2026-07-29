@@ -1,13 +1,11 @@
 ---
-title: House Tect Corporate Website
+title: House Tect コーポレートサイト
 slug: housetect-corporate
 summary: 住宅修繕、太陽光、害虫獣駆除など異なる事業を、暮らしの困りごとを軸に整理した企業サイト。
 origin: 性質の異なる住宅関連サービスを、利用者に分かりやすい分類へ整理する必要があった。
 intention: 個別サービスを企業の信頼性と接続し、困りごとから適切な情報へ辿れる導線をつくる。
 status: completed
 projectType: client
-interfaces:
-  - engineering
 fields:
   - 受託制作
   - コーポレートサイト
@@ -22,8 +20,6 @@ roles:
   - 情報設計
   - 実装
   - 公開
-featured: false
-order: 210
 websiteUrl: https://housetect.co.jp/
 relatedProjects: []
 draft: false
@@ -33,7 +29,6 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
-startedAt: "2026.7"
 endedAt: "2026.7"
 accent: "#f18f01"
 ---

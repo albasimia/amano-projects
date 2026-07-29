@@ -13,11 +13,8 @@ areas:
   - デザイン調整
   - 公開
 works:
-  - title: TechnoLabo Corporate Website
-    project: technonex-corporate
-  - title: House Tect Corporate Website
-    project: housetect-corporate
-  - title: 達人育成LABO
-    project: tatsujin-lab
+  - technonex-corporate
+  - housetect-corporate
+  - tatsujin-lab
 order: 40
 ---

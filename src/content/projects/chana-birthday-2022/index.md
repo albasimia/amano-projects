@@ -5,8 +5,6 @@ summary: 2泊3日の名古屋オフ会と連動して進行する、ブラウザ
 origin: チャナマサラの誕生日とオフ会そのものを、ひとつの連続した体験にしたかった。
 intention: 現実の時間とブラウザゲームの進行を接続し、参加者全員が共有できる誕生日体験をつくる。
 status: completed
-interfaces:
-  - creative-to-engineering
 fields:
   - ゲーム
   - イベント
@@ -20,8 +18,6 @@ roles:
   - ゲーム設計
   - 実装
   - 演出
-featured: false
-order: 100
 repositoryUrl: https://github.com/albasimia/chana_birthday_2022
 relatedProjects:
   - birthday-contents

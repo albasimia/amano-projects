@@ -384,11 +384,6 @@ type ProjectStatus =
   | 'paused'
   | 'completed'
 
-type ProjectInterface =
-  | 'creative'
-  | 'engineering'
-  | 'creative-to-engineering'
-
 type Project = {
   title: string
   slug: string
@@ -396,11 +391,8 @@ type Project = {
   origin: string
   intention: string
   status: ProjectStatus
-  interfaces: ProjectInterface[]
   fields: string[]
   technologies: string[]
-  featured: boolean
-  order: number
   startedAt?: string
   endedAt?: string
   repositoryUrl?: string
@@ -409,6 +401,15 @@ type Project = {
   draft?: boolean
 }
 ```
+
+Projectの期間は次の規則で管理する。
+
+- 継続中のProjectは `startedAt` のみを持つ
+- 単一時点で完了したProjectは `endedAt` のみを持つ
+- 期間を持つ完了Projectは `startedAt` と `endedAt` を持つ
+- 一覧は継続中を先頭に置き、`startedAt` の新しい順に表示する
+- 完了Projectは `endedAt` の新しい順、同値の場合は `startedAt` の新しい順に表示する
+- 日付が未入力の完了Projectは一覧末尾に表示する
 
 Astro Content Collectionsを使用する場合は、現行Astroの推奨方式と既存プロジェクトの設計に合わせる。
 

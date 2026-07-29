@@ -1,13 +1,11 @@
 ---
-title: TechnoLabo Corporate Website
+title: TechnoLabo コーポレートサイト
 slug: technonex-corporate
 summary: 複数事業、採用、加盟店募集を接続する企業サイト。
 origin: 生活インフラに関わる複数事業が存在し、企業全体と各サービスの関係を整理する必要があった。
 intention: コーポレートサイトを事業群のハブとして設計し、閲覧者を各サービスや採用情報へ導く。
 status: completed
 projectType: client
-interfaces:
-  - engineering
 fields:
   - 受託制作
   - コーポレートサイト
@@ -23,8 +21,6 @@ roles:
   - デザイン調整
   - 実装
   - 公開
-featured: false
-order: 200
 websiteUrl: https://technonex.co.jp/
 relatedProjects:
   - housetect-corporate
@@ -36,7 +32,6 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
-startedAt: "2026.4"
 endedAt: "2026.4"
 accent: "#3180db"
 ---

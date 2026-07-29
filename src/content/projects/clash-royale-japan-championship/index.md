@@ -6,16 +6,12 @@ origin: 案件固有の背景と制約を整理中。
 intention: 担当範囲と実装上の判断を、公開可能な範囲で記録する。
 status: completed
 projectType: client
-interfaces:
-  - engineering
 fields:
   - 実務制作
   - インタラクティブキャンペーン
 technologies: []
 roles:
   - フロントエンド
-featured: false
-order: 241
 organization: KAYAC
 relatedProjects:
   - kayac-interactive-campaigns

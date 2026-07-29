@@ -12,13 +12,9 @@ areas:
   - Vue.js / Firebase
   - インタラクティブコンテンツ
 works:
-  - title: クラロワ日本一決定戦
-    project: clash-royale-japan-championship
-  - title: CODE QUEST
-    project: code-quest
-  - title: ボジョパ
-    project: bojopa
-  - title: 就活自由形
-    project: shukatsu-jiyugata
+  - clash-royale-japan-championship
+  - code-quest
+  - bojopa
+  - shukatsu-jiyugata
 order: 20
 ---
