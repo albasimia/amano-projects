@@ -5,8 +5,6 @@ summary: YouTube再生を自動制御し、曲を止める係も椅子取りゲ�
 origin: 椅子取りゲームでは、曲を止める人だけがゲームに参加できなかった。
 intention: 進行役を固定せず、その場にいる全員が同じ遊びへ参加できる状態をつくる。
 status: completed
-interfaces:
-  - creative-to-engineering
 fields:
   - ブラウザ拡張
   - ゲーム
@@ -20,8 +18,6 @@ roles:
   - 仕様設計
   - 実装
   - 実地検証
-featured: true
-order: 80
 repositoryUrl: https://github.com/albasimia/isutori_youtube
 relatedProjects:
   - hele-button

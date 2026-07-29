@@ -6,8 +6,6 @@ origin: 除雪状況の不透明さが、市民の生活に影響を与えてい
 intention: 除雪状況を手軽に市民に分かりやすい情報に変える。
 status: operation
 projectType: client
-interfaces:
-  - engineering
 fields:
   - 受託制作
   - 業務システム
@@ -24,8 +22,6 @@ roles:
   - フロントエンド
   - バックエンド
   - 運用設計
-featured: false
-order: 230
 startedAt: "2022"
 relatedProjects: []
 draft: false

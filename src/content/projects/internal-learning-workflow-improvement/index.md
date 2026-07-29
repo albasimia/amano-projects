@@ -6,8 +6,6 @@ origin: チーム内で技術や運用知識を共有し、制作・運用の進
 intention: 属人的な知識を共有可能な形へ整理し、チームで継続して改善できる状態をつくる。
 status: completed
 projectType: client
-interfaces:
-  - engineering
 fields:
   - 実務制作
   - 技術指導
@@ -17,8 +15,6 @@ roles:
   - 技術指導
   - ワークフロー標準化
   - ドキュメント作成
-featured: false
-order: 255
 organization: BLOOMARK
 relatedProjects: []
 draft: false

@@ -5,8 +5,6 @@ summary: XPPen ACK05を、macOS版rekordboxのCUE仕込み専用コントロー�
 origin: DJのCUE仕込みを大量に行う際、マウスとキーボードだけでは身体的な負担と操作の煩雑さが大きかった。
 intention: 既製入力デバイスを再解釈し、DJ準備作業を片手で進められる専用ワークフローへ変える。
 status: operation
-interfaces:
-  - creative-to-engineering
 fields:
   - 音楽
   - 入力デバイス
@@ -22,8 +20,6 @@ roles:
   - 実装
   - 配布
   - ドキュメント
-featured: true
-order: 60
 startedAt: "2026"
 repositoryUrl: https://github.com/albasimia/OverCUE
 websiteUrl: https://albasimia.github.io/OverCUE/

@@ -13,11 +13,10 @@ const projectStatus = z.enum([
   "completed",
 ]);
 
-const projectInterface = z.enum([
-  "creative",
-  "engineering",
-  "creative-to-engineering",
-]);
+const projectDate = z.string().regex(
+  /^\d{4}(?:\.(?:0?[1-9]|1[0-2])(?:\.(?:0?[1-9]|[12]\d|3[01]))?)?$/,
+  "YYYY、YYYY.M、YYYY.M.Dのいずれかで指定してください",
+);
 
 const contentAssetPath = z.string().trim().min(1).refine((value) => {
   const segments = value.split("/");
@@ -41,14 +40,11 @@ const projects = defineCollection({
       description: z.string().trim().min(1),
     }).optional(),
     projectType: z.enum(["client", "personal"]).default("personal"),
-    interfaces: z.array(projectInterface).min(1),
     fields: z.array(z.string().trim().min(1)).min(1),
     technologies: z.array(z.string().trim().min(1)).default([]),
     roles: z.array(z.string().trim().min(1)).default([]),
-    featured: z.boolean().default(false),
-    order: z.number().int().nonnegative(),
-    startedAt: z.string().trim().min(1).optional(),
-    endedAt: z.string().trim().min(1).optional(),
+    startedAt: projectDate.optional(),
+    endedAt: projectDate.optional(),
     repositoryUrl: z.url().optional(),
     websiteUrl: z.url().optional(),
     heroImage: z.object({
@@ -63,7 +59,6 @@ const projects = defineCollection({
     accent: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
     relatedProjects: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).default([]),
     organization: z.string().trim().min(1).optional(),
-    clientFeatured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }).transform((project) => ({
     ...project,
@@ -85,11 +80,7 @@ const companies = defineCollection({
     period: z.string().trim().min(1),
     summary: z.string().trim().min(1),
     areas: z.array(z.string().trim().min(1)).min(1),
-    works: z.array(z.object({
-      title: z.string().trim().min(1),
-      description: z.string().trim().min(1).optional(),
-      project: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
-    })).default([]),
+    works: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).default([]),
     order: z.number().int().nonnegative(),
   }),
 });

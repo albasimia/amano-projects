@@ -5,8 +5,6 @@ summary: 左右対称性と身体性を重視し、ジョイスティックを�
 origin: 既存キーボードの配列や姿勢が、自分の身体と操作感覚に合わなかった。
 intention: 指、手首、視線の動きを含めて、身体に自然な入力体験を設計する。
 status: paused
-interfaces:
-  - creative-to-engineering
 fields:
   - ハードウェア
   - キーボード
@@ -22,8 +20,6 @@ roles:
   - 筐体設計
   - ファームウェア
   - 実機検証
-featured: false
-order: 70
 startedAt: "2025"
 repositoryUrl: https://github.com/albasimia/aovista_keyboard
 relatedProjects: []

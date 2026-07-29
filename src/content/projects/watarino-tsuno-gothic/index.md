@@ -5,8 +5,6 @@ summary: 固有名「ｶﾀﾙｼｽﾜﾀﾘ」を核に、ツノという造�
 origin: 既存書体では活動名の固有性と、制作物全体のIdentityを十分に表現できなかった。
 intention: 文字ごとの装飾ではなく、一貫した造形規則を持つ書体としてIdentityを実装する。
 status: development
-interfaces:
-  - creative-to-engineering
 fields:
   - タイポグラフィ
   - アイデンティティ
@@ -20,8 +18,6 @@ roles:
   - 文字設計
   - フォント生成
   - 実用検証
-featured: false
-order: 160
 startedAt: "2026"
 relatedProjects:
   - karirenjan

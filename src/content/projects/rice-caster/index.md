@@ -5,8 +5,6 @@ summary: 配信コメントを取得し、画面演出へ変換するElectronア
 origin: 友人の配信でコメントを装飾したかったが、既存機能では表示件数や表現に制約があった。
 intention: 配信コメントを独自に取得し、出演者や視聴者が楽しめる画面演出へ変える。
 status: completed
-interfaces:
-  - creative-to-engineering
 fields:
   - 配信
   - デスクトップアプリ
@@ -19,8 +17,6 @@ roles:
   - 課題発見
   - 仕様設計
   - 実装
-featured: false
-order: 150
 repositoryUrl: https://github.com/albasimia/rice_caster
 relatedProjects: []
 draft: false

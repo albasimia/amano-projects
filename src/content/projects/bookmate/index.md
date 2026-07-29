@@ -6,8 +6,6 @@ origin: 各部署で個別に管理されていた個人情報台帳を、法改
 intention: クライアントヒアリングから業務を構造化し、継続的に更新できる管理システムへ変える。
 status: completed
 projectType: client
-interfaces:
-  - engineering
 fields:
   - 実務制作
   - 業務システム
@@ -23,15 +21,12 @@ roles:
   - システム設計
   - 実装
   - リードエンジニア
-featured: false
-clientFeatured: true
 organization: BLOOMARK
-order: 260
 startedAt: "2020"
 endedAt: "2025"
 relatedProjects: []
 draft: false
-accent: "#111111"
+accent: "#2e2e2e"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
@@ -68,4 +63,3 @@ LaravelとMySQLを中心に、Dockerによる開発環境、GitHub Actionsによ
 
 クライアントヒアリングによる要件の具体化の経験、将来拡張を織り込んだDB設計の知見を得ることができました。  
 最終的に本国メルセデス・ベンツのドメインに取り入れられることになりました。
-

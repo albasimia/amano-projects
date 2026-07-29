@@ -6,8 +6,6 @@ origin: 警備という現場性の高い事業を、文章と既存素材だけ
 intention: 多岐にわたる警備事業を整理し、現場の実在感と企業の信頼性をWeb上で伝える。
 status: completed
 projectType: client
-interfaces:
-  - creative-to-engineering
 fields:
   - コーポレートサイト
   - 写真撮影
@@ -17,8 +15,6 @@ technologies:
 roles:
   - フロントエンド
   - 写真撮影
-featured: false
-order: 190
 websiteUrl: https://j-ss.jp/
 relatedProjects: []
 draft: false

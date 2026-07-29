@@ -5,8 +5,6 @@ summary: 任意の2コミット間の差分ファイルを抽出し、必要な�
 origin: Git差分を納品用ファイルとして手作業で抽出する工程が煩雑だった。
 intention: Gitの履歴を利用し、必要な変更ファイルだけを安全にまとめられる道具をつくる。
 status: development
-interfaces:
-  - engineering
 fields:
   - 開発ツール
   - Git
@@ -20,8 +18,6 @@ roles:
   - 設計
   - 実装
   - テスト
-featured: false
-order: 170
 repositoryUrl: https://github.com/albasimia/zippy-diffany
 relatedProjects: []
 draft: false

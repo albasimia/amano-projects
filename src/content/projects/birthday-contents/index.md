@@ -5,8 +5,6 @@ summary: 友人の人物像やコミュニティを観察し、誕生日とい�
 origin: 一般的な誕生日メッセージではなく、その人と周囲の関係性そのものを体験へ変えたかった。
 intention: 本人の活動、性格、友人関係を、その場で共有できるWebコンテンツとして再構成する。
 status: completed
-interfaces:
-  - creative-to-engineering
 fields:
   - ゲーム
   - コミュニティ
@@ -21,8 +19,6 @@ roles:
   - デザイン
   - 実装
   - 演出
-featured: true
-order: 90
 relatedProjects:
   - chana-birthday-2022
   - love-mako

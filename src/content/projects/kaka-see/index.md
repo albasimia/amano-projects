@@ -8,8 +8,6 @@ status: development
 currentPhase:
   label: Phase 0 — Sensor Reading
   description: Zephyr環境でHello WorldとUSBシリアル出力を確認し、センサー値取得の準備を進めています。
-interfaces:
-  - creative-to-engineering
 fields:
   - 農業
   - IoT
@@ -25,8 +23,6 @@ roles:
   - 要件整理
   - センサー検証
   - 組み込み実装
-featured: true
-order: 30
 startedAt: "2026"
 relatedProjects:
   - yasai-toretore

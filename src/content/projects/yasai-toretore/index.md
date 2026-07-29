@@ -5,8 +5,6 @@ summary: 音楽、酒、野菜を同じ場に持ち込み、異なる体験が�
 origin: DJイベントと農業で得た経験を、別々の活動として閉じずに接続するところから始まった。
 intention: 音楽を聴く場に収穫や食の実感を重ね、参加者が複数の入口から関われる体験をつくる。
 status: development
-interfaces:
-  - creative-to-engineering
 fields:
   - イベント
   - 音楽
@@ -19,8 +17,6 @@ roles:
   - 主催
   - Web制作
   - 広報設計
-featured: true
-order: 20
 startedAt: "2026"
 websiteUrl: https://catharsiswatari-events.pages.dev/events/yasai-toretore-2026/
 relatedProjects:

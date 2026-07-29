@@ -4,18 +4,7 @@ import Container from "albasimia-ssg-core/components/Container.astro";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import { getPublishedProjects } from "../../lib/projects";
 
-const periodValue = (startedAt?: string): number => {
-  if (!startedAt) return Number.NEGATIVE_INFINITY;
-  const parsed = Date.parse(startedAt);
-  if (Number.isFinite(parsed)) return parsed;
-  const year = startedAt.match(/\d{4}/)?.[0];
-  return year ? Number(year) : Number.NEGATIVE_INFINITY;
-};
-
-const projects = [...await getPublishedProjects()].sort((a, b) => {
-  const periodDifference = periodValue(b.data.startedAt) - periodValue(a.data.startedAt);
-  return periodDifference || a.data.order - b.data.order;
-});
+const projects = await getPublishedProjects();
 const clientProjects = projects.filter(({ data }) => data.projectType === "client");
 const personalProjects = projects.filter(({ data }) => data.projectType === "personal");
 const projectTabs = [

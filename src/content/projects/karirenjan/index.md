@@ -5,8 +5,6 @@ summary: 図書館の蔵書と利用条件を横断し、レア音源を借り�
 origin: 廃盤音源を探す中で、中古市場だけでなく図書館に保存されている音源へ辿り着いた。
 intention: 自治体ごとに分断された蔵書情報と利用条件を、実際の行動へつながる探索体験へ変える。
 status: development
-interfaces:
-  - creative-to-engineering
 fields:
   - 音楽
   - ライブラリ
@@ -22,8 +20,6 @@ roles:
   - サービス設計
   - 情報設計
   - 実装
-featured: false
-order: 40
 startedAt: "2026"
 relatedProjects:
   - watarino-tsuno-gothic

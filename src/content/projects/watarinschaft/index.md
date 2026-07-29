@@ -5,8 +5,6 @@ summary: 複数視点のAIを評議員、人間を議長として扱う合議型
 origin: AIへ判断を委ねず、複数視点を利用しながら人間が最終決定を持つ仕組みが必要だった。
 intention: 発散、対立、収束、記録を分離し、人間の主権を保った意思決定支援をつくる。
 status: development
-interfaces:
-  - engineering
 fields:
   - AI
   - 意思決定支援
@@ -19,8 +17,6 @@ roles:
   - 設計
   - 実装
   - プロンプト設計
-featured: false
-order: 180
 relatedProjects: []
 draft: false
 ---

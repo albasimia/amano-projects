@@ -5,8 +5,6 @@ summary: イベント告知、開催記録、管理画面、GitOps運用をひ�
 origin: 告知がSNSへ流れ、開催後の記録も分散する状況から始まった。
 intention: 開催前後を通して情報へ辿り着ける、継続可能なイベントアーカイブへ変える。
 status: operation
-interfaces:
-  - creative-to-engineering
 fields:
   - イベント
   - Web
@@ -24,8 +22,6 @@ roles:
   - デザイン
   - 実装
   - 運用
-featured: false
-order: 10
 startedAt: "2025"
 websiteUrl: https://catharsiswatari-events.pages.dev/
 relatedProjects:

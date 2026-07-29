@@ -6,8 +6,6 @@ origin: 職人育成スクール立ち上げに際し、講習内容や受講後
 intention: 不安、条件、期待を整理し、受講者が問い合わせ前に判断できる情報設計をつくる。
 status: completed
 projectType: client
-interfaces:
-  - engineering
 fields:
   - 受託制作
   - サービスサイト
@@ -22,8 +20,6 @@ roles:
   - 情報設計
   - 実装
   - CTA設計
-featured: false
-order: 220
 websiteUrl: https://tatsujin-lab.com/
 relatedProjects:
   - technonex-corporate
@@ -35,7 +31,6 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
-startedAt: "2026.5"
 endedAt: "2026.5"
 accent: "#00b295"
 ---
