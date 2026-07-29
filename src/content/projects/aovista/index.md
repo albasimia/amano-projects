@@ -34,13 +34,14 @@ draft: false
 
 ## 発端
 
-一般的なキーボードでは、手の位置、親指の役割、カーソル操作が身体感覚と一致しませんでした。
+Windows環境でMacのようなemacsキーバインディングが使用できないことから身体的な記憶がパフォーマンスに直結することを実感しました。
+
 
 <p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
 
 ## 目指した体験
 
-左右対称の姿勢を保ちながら、文字入力、カーソル操作、ショートカットを両手の自然な動きで行える状態を目指しました。
+Windows向けのキーボードでは物理的に修飾キーが足りないことからオンボードでemacsキーバインディングをサポートするキーボードの作成を目指しました。
 
 <p class="eyebrow project-prose__eyebrow">CONDITIONS</p>
 
@@ -50,13 +51,13 @@ draft: false
 - 片側にジョイスティックとエンコーダーを持つこと
 - QMKとVialへ対応すること
 - WindowsとmacOSの差を吸収すること
-- 初号機では無線や複雑な拡張を避けること
+- Windowsでemacsキーバインディングが使用できること
 
 <p class="eyebrow project-prose__eyebrow">DECISIONS</p>
 
 ## 判断
 
-初号機では身体性と配列の成立を優先し、RP2040、TRRS、有線接続、磁石連結を採用しました。
+初号機では身体性と配列の成立を優先し、RP2040、TRRS、有線接続を採用しました。
 
 <p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
 
@@ -74,10 +75,12 @@ draft: false
 
 ## 前提の見直し
 
-生活状況と他Projectの優先度を考え、開発を無期限休止としました。
+生活状況と他Projectの優先度を考え、開発を無期限休止としました。  
+つまり、お金がなくなりました。
 
 <p class="eyebrow project-prose__eyebrow">LEARNING</p>
 
 ## 得られたこと
 
-未完成でも、身体性、電子回路、ファームウェア、筐体設計を横断した検証から多くの設計知見を得ました。
+未完成でも、身体性、電子回路、ファームウェア、筐体設計を横断した検証から多くの設計知見を得ました。  
+未完成部分はジョイスティック部分のみで、emacsキーバインディングが標準搭載されたキーボードとしては動作するため、実制作で使用しています。

@@ -1,5 +1,5 @@
 ---
-title: Bookmate
+title: Mercedes-Benz Bookmate
 slug: bookmate
 summary: メルセデス・ベンツの個人情報台帳管理を一元化する業務Webシステム。
 origin: 各部署で個別に管理されていた個人情報台帳を、法改正や運用変更へ対応できる形で統合する必要があった。
@@ -31,6 +31,7 @@ startedAt: "2020"
 endedAt: "2025"
 relatedProjects: []
 draft: false
+accent: "#111111"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
@@ -50,7 +51,7 @@ draft: false
 ## 成立条件
 
 - クライアントヒアリングから要件を具体化すること
-- 個人情報を安全に扱うこと
+- 個人情報管理状態のバージョン管理
 - 法改正に対応できること
 - 複数部署で利用できること
 - 開発とテストの手順を標準化すること
@@ -65,10 +66,6 @@ LaravelとMySQLを中心に、Dockerによる開発環境、GitHub Actionsによ
 
 ## 得られたこと
 
-業務システムでは、画面を作る前に、言葉、責任、更新主体、例外条件を整理することが重要です。
+クライアントヒアリングによる要件の具体化の経験、将来拡張を織り込んだDB設計の知見を得ることができました。  
+最終的に本国メルセデス・ベンツのドメインに取り入れられることになりました。
 
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
-
-## 公開に関する注記
-
-システム内部、画面、正式名称の公開可否を確認するまでdraftとします。
