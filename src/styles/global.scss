@@ -614,6 +614,21 @@ main[class] .asc-tag {
 .project-prose p + p { margin-top: 1.2rem; }
 .project-prose ul { padding-left: 1.35rem; }
 .project-prose li + li { margin-top: .5rem; }
+.project-video {
+  position: relative;
+  width: 100%;
+  margin: 2.5rem 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.project-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
 .project-facts { padding-block: var(--section-space); border-top: 1px solid var(--color-border); }
 .project-facts > .eyebrow { margin-bottom: 2rem; }
 .related-projects { padding-block: var(--section-space); background: var(--color-surface); border-top: 1px solid var(--color-border); }
