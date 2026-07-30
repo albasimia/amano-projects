@@ -1,5 +1,5 @@
 ---
-title: purin_chang_unofficial
+title: ぷりんちゃん非公式サイト
 slug: purin-chang-unofficial
 summary: ダンス活動を行う友人の人物像と活動を編集した、誕生日用の非公式サイト。
 origin: ダンス活動をしている友人の魅力を、本人の活動全体が見えるWebサイトへまとめたかった。
@@ -10,9 +10,13 @@ fields:
   - アイデンティティ
   - ダンス
 technologies:
-  - HTML
-  - CSS
+  - Pug
+  - Sass
   - JavaScript
+  - Canvas API
+  - Swiper
+  - Axios
+  - Webpack
 roles:
   - 企画
   - 編集
@@ -25,8 +29,10 @@ relatedProjects:
 draft: false
 heroImage:
   asset: img/og-image.png
-  alt: purin_chang_unofficialの代表画像
-accent: "#0000ee"
+  alt: ぷりんちゃん非公式サイトの代表画像
+accent: "#c492f2"
+startedAt: "2021.9"
+endedAt: "2021.9"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
@@ -48,9 +54,18 @@ accent: "#0000ee"
 - 非公式サイトであることを明示すること
 - 本人の活動を尊重すること
 - 写真や名称の公開許可を確認すること
+- PCとスマートフォンの両方で閲覧できること
 
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
 
-## 公開に関する注記
+## 実装
 
-画像、名前、活動情報の公開範囲を確認する必要があるためdraftとします。
+プロフィール、YouTube動画のギャラリー、友人によるレビューを一つのページへ構成しました。Canvasによるビジュアル演出とSwiperによるスライダーを加え、人物像と活動を複数の視点から見られるサイトにしています。
+
+Pug、Sass、JavaScriptをWebpackでビルドし、Axiosを利用して外部データを取得する構成としました。PCとスマートフォンの双方に対応しています。
+
+<p class="eyebrow project-prose__eyebrow">VERIFICATION</p>
+
+## 検証
+
+プロフィール情報だけで人物を説明するのではなく、本人の動画と友人からのレビューを並べることで、活動と周囲から見た人物像を同じページにまとめました。

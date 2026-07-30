@@ -23,17 +23,19 @@ roles:
   - 公開
 websiteUrl: https://technonex.co.jp/
 relatedProjects:
+  - jss-corporate
   - housetect-corporate
   - tatsujin-lab
 draft: false
 heroImage:
-  asset: img/screenshot-desktop.jpg
+  asset: img/desktop.jpg
   alt: TechnoLabo Corporate Websiteの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 endedAt: "2026.4"
 accent: "#3180db"
+
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

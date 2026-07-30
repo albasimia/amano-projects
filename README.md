@@ -59,21 +59,44 @@ heroImage:
 
 Projectカードには、frontmatterで明示した`heroImage`だけを使用します。`heroImage`がない場合は、Projectの`accent`を背景色としたプレースホルダーを表示します。`assets/img/ogp.*`と`assets/img/og-image.*`はSNS共有用として保持しますが、カード画像には自動利用しません。
 
-Project詳細ページへスクリーンショットを表示する場合は、規定名の画像を配置し、`index.md`でPC版とSP版を個別に有効化します。
+Project詳細ページへ画像を表示する場合は、キーと同名の画像を配置し、`index.md`で個別に有効化します。
 
 ```text
 assets/img/
-├─ screenshot-desktop.jpg
-└─ screenshot-mobile.jpg
+├─ desktop.jpg
+└─ mobile.jpg
 ```
 
 ```yaml
-screenshots:
+images:
   desktop: true
   mobile: true
 ```
 
-`false`または未指定のスクリーンショットは表示しません。表示対象の画像が存在しない場合は、Asset同期時にエラーになります。
+`images`には任意のキーを追加できます。キー`app`を有効にした場合は、同じキーを持つ`assets/img/app.*`を表示します。
+
+```text
+assets/img/
+└─ app.png
+```
+
+```yaml
+images:
+  desktop: false
+  mobile: false
+  app: true
+```
+
+キーには小文字英数字とハイフンを使用します。`false`または未指定の画像は表示しません。表示対象の画像が存在しない場合は、Asset同期時にエラーになります。
+
+同じエリアへYouTube動画を表示する場合は、11文字の動画IDとiframe用のタイトルを指定します。動画にはプライバシー強化版のYouTube埋め込みURLを使用します。
+
+```yaml
+videos:
+  demo:
+    videoId: nvRCi3HtjGg
+    title: We are the Makoto
+```
 
 ### アクセントカラーの自動取得
 

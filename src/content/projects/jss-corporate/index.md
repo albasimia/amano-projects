@@ -11,17 +11,21 @@ fields:
   - 写真撮影
 technologies:
   - Vue.js
-  - Github Actions
+  - GitHub Actions
 roles:
   - フロントエンド
   - 写真撮影
+organization: BLOOMARK
 websiteUrl: https://j-ss.jp/
-relatedProjects: []
+relatedProjects: 
+  - technonex-corporate
+  - housetect-corporate
+  - tohzai-sangyo-corporate
 draft: false
 heroImage:
-  asset: img/screenshot-desktop.jpg
+  asset: img/desktop.jpg
   alt: 株式会社JSS コーポレートサイトの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 startedAt: "2023.3"
@@ -48,16 +52,15 @@ accent: "#111987"
 - 複数事業を整理すること
 - 企業情報と採用情報を接続すること
 - 現場の実在感を写真で伝えること
-- 更新可能なCMSとすること
 
 <p class="eyebrow project-prose__eyebrow">ROLE</p>
 
 ## 担当
 
-Bloomark在籍時に、当時のサイト制作と写真撮影を担当しました。
+BLOOMARK在籍時に、フロントエンド実装とサイト内で使用する現場写真の撮影を担当しました。
 
 <p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
 
 ## 実装
 
-コーポレートサイトのVue.jsによるSPA実装、Github ActionsによるCI/CDの整備に加え、サイト内で使用する現場写真を撮影しました。
+Vue.jsによるSPAとしてフロントエンドを実装し、GitHub ActionsによるCI/CDを整備しました。CMSは利用しておらず、サイト内で使用する現場写真の撮影も担当しました。

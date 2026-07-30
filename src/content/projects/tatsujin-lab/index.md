@@ -26,9 +26,9 @@ relatedProjects:
   - housetect-corporate
 draft: false
 heroImage:
-  asset: img/screenshot-desktop.jpg
+  asset: img/desktop.jpg
   alt: 達人育成LABOの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 endedAt: "2026.5"
@@ -39,7 +39,7 @@ accent: "#00b295"
 
 ## 発端
 
-職人育成スクールの立ち上げにあたり、受講生募集の為のプラットフォームとして、  
+職人育成スクールの立ち上げにあたり、受講生募集のためのプラットフォームとして、
 対象者、講習内容、期間、価格、受講後のキャリアをわかりやすくリーチ可能なサイトが必要でした。
 
 <p class="eyebrow project-prose__eyebrow">IDEAL EXPERIENCE</p>
@@ -68,4 +68,4 @@ accent: "#00b295"
 
 ## 実装
 
-LPとしての制作でしたが、将来WordPressでの記事運用を前提としていた為、WordPress上の単一ページとして実装しました。
+LPとしての制作でしたが、将来WordPressでの記事運用を前提としていたため、WordPress上の単一ページとして実装しました。

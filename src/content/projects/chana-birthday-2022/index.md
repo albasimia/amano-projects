@@ -1,5 +1,5 @@
 ---
-title: chana_birthday_2022
+title: チャナごっち
 slug: chana-birthday-2022
 summary: 2泊3日の名古屋オフ会と連動して進行する、ブラウザ育成ゲーム。
 origin: チャナマサラの誕生日とオフ会そのものを、ひとつの連続した体験にしたかった。
@@ -13,6 +13,7 @@ technologies:
   - TypeScript
   - Phaser
   - Vite
+  - LocalStorage
 roles:
   - 企画
   - ゲーム設計
@@ -25,10 +26,12 @@ draft: false
 websiteUrl: https://albasimia.github.io/chana_birthday_2022/
 heroImage:
   asset: img/og-image.png
-  alt: chana_birthday_2022の代表画像
-screenshots:
-  desktop: true
+  alt: チャナごっちの代表画像
+images:
+  desktop: false
   mobile: true
+startedAt: "2022.5"
+endedAt: "2023.5"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
@@ -56,13 +59,21 @@ screenshots:
 
 ## 実装
 
-PhaserとTypeScriptを使ったブラウザ育成ゲームとして実装しました。
+PhaserとTypeScriptを使い、現実の経過時間に応じてキャラクターが成長するブラウザ育成ゲームとして実装しました。与えたアイテムによって体力、知性、音楽などの能力値が変化し、経過時間と能力値の組み合わせによって進化先が分岐します。
+
+キャラクター、アイテム、能力値、セーブデータを設定ファイルへ分離し、時間管理と進化判定を独立したクラスとして構成しました。進行状況はLocalStorageへ保存し、複数日にまたがるオフ会の途中でも育成を継続できるようにしています。
 
 <p class="eyebrow project-prose__eyebrow">VERIFICATION</p>
 
 ## 検証
 
 2泊3日のオフ会中に実際に使用し、現実の時間とゲームの進行を重ねました。
+
+<p class="eyebrow project-prose__eyebrow">DEVELOPMENT</p>
+
+## 開発期間
+
+2022年の誕生日コンテンツとして着手しましたが、ゲーム設計と実装が想定以上に長引き、完成まで約1年かかりました。実時間に基づく成長、複数の能力値、アイテム、進化分岐を相互に矛盾なく動かすことが、制作上の大きな難所でした。
 
 <p class="eyebrow project-prose__eyebrow">LEARNING</p>
 

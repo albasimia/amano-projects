@@ -1,5 +1,5 @@
 ---
-title: chachamaru_birthday
+title: 茶々丸おねえさんボイス神経衰弱
 slug: chachamaru-birthday
 summary: 音声を記憶して組み合わせ、クリア時にご褒美画像を得る誕生日用神経衰弱ゲーム。
 origin: 視覚中心の神経衰弱を、対象者に合わせた音声体験へ変えたかった。
@@ -11,7 +11,9 @@ fields:
   - コミュニティ
 technologies:
   - JavaScript
-  - Web Audio
+  - Pug
+  - Sass
+  - Webpack
 roles:
   - 企画
   - ゲーム設計
@@ -23,7 +25,10 @@ draft: false
 websiteUrl: https://albasimia.github.io/chachamaru_birthday/
 heroImage:
   asset: img/og-image.png
-  alt: chachamaru_birthdayの代表画像
+  alt: 茶々丸おねえさんボイス神経衰弱の代表画像
+accent: "#00adad"
+startedAt: "2022.6"
+endedAt: "2022.7"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
@@ -45,15 +50,18 @@ heroImage:
 - 音声を主要情報として扱うこと
 - ブラウザで再生できること
 - クリア報酬を設けること
+- PCとスマートフォンの両方で遊べること
+
+<p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
+
+## 実装
+
+8人分の声を16枚のカードへ割り当て、同じ人物の声を聴き分けてペアを揃える神経衰弱として実装しました。正解したカードの状態保持、全8組を揃えた後のご褒美表示、REPLAYボタンによる再プレイを備えています。
+
+画面はPugとSassで構築し、Webpackでビルドする構成としました。制作中は画像の差し替え、REPLAY処理、PC・スマートフォン双方のレイアウトを調整しました。
 
 <p class="eyebrow project-prose__eyebrow">VERIFICATION</p>
 
 ## 検証
 
-誕生日の場で実際に遊ばれることを前提に制作しました。
-
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
-
-## 公開に関する注記
-
-音声や画像の権利、本人の公開許可を確認する必要があるためdraftとします。
+音声を絵柄の代わりにすることで、8人の声そのものを知っている参加者ほど楽しめる、コミュニティ固有の神経衰弱として成立させました。

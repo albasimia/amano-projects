@@ -24,7 +24,8 @@ roles:
 organization: BLOOMARK
 startedAt: "2020"
 endedAt: "2025"
-relatedProjects: []
+relatedProjects: 
+  - bigfooter
 draft: false
 accent: "#2e2e2e"
 ---
@@ -61,5 +62,6 @@ LaravelとMySQLを中心に、Dockerによる開発環境、GitHub Actionsによ
 
 ## 得られたこと
 
-クライアントヒアリングによる要件の具体化の経験、将来拡張を織り込んだDB設計の知見を得ることができました。  
-最終的に本国メルセデス・ベンツのドメインに取り入れられることになりました。
+クライアントヒアリングを通じて要件を具体化する経験と、将来拡張を織り込んだデータベース設計の知見を得ました。
+
+最終的にシステム全体が、本国メルセデス・ベンツのWebドメインへ取り入れられました。

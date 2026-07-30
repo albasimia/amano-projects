@@ -1,5 +1,5 @@
 ---
-title: ワタリEA
+title: ｶﾀﾙｼｽﾜﾀﾘEVENTS ARCHIVE
 slug: watari-ea
 summary: イベント告知、開催記録、管理画面、GitOps運用をひとつにまとめた静的イベントサイト基盤。
 origin: 告知がSNSへ流れ、開催後の記録も分散する状況から始まった。
@@ -22,7 +22,6 @@ roles:
   - デザイン
   - 実装
   - 運用
-startedAt: "2025"
 websiteUrl: https://catharsiswatari-events.pages.dev/
 relatedProjects:
   - yasai-toretore
@@ -30,10 +29,12 @@ relatedProjects:
 draft: false
 heroImage:
   asset: img/og-image.webp
-  alt: ワタリEAの代表画像
-screenshots:
+  alt: ｶﾀﾙｼｽﾜﾀﾘEVENTS ARCHIVEの代表画像
+images:
   desktop: true
   mobile: true
+startedAt: "2026.7"
+completedAt: "2026.7"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
@@ -87,7 +88,7 @@ Astro Content Collectionsでイベントデータを検証し、GitHub Actions�
 
 ## 前提の見直し
 
-イベントサイトで得た共通機能を、複数サイトから利用できるASCへ切り出しました。
+イベントサイトで得た共通機能を、複数サイトから利用できるalbasimia-ssg-coreへ切り出しました。
 
 <p class="eyebrow project-prose__eyebrow">SOCIAL CONNECTION</p>
 

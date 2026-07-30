@@ -20,7 +20,7 @@ roles:
   - サービス設計
   - 情報設計
   - 実装
-startedAt: "2026"
+startedAt: "2026.6"
 relatedProjects:
   - watarino-tsuno-gothic
 draft: false
@@ -56,7 +56,7 @@ draft: false
 
 <p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
 
-## 実装
+## 実装方針
 
 Laravel、MariaDBを中心に、図書館データ取得はPythonとGitHub Actionsによる定期更新を想定しています。
 
@@ -65,9 +65,3 @@ Laravel、MariaDBを中心に、図書館データ取得はPythonとGitHub Actio
 ## 社会との接続
 
 音源を所有する人だけでなく、公共アーカイブを利用する人にも探索経路を開きます。
-
-<p class="eyebrow project-prose__eyebrow">LEARNING</p>
-
-## 得られたこと
-
-情報検索だけでなく、制度、移動、郵送、関連音源まで含めて行動全体を設計する必要があります。

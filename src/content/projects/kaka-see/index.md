@@ -23,7 +23,7 @@ roles:
   - 要件整理
   - センサー検証
   - 組み込み実装
-startedAt: "2026"
+startedAt: "2026.4"
 relatedProjects:
   - yasai-toretore
 draft: false

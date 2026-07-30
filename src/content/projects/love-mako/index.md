@@ -1,5 +1,5 @@
 ---
-title: love_mako
+title: らぶ♡マコ
 slug: love-mako
 summary: 友人たちを登場人物にした、伊東マコト誕生日用の恋愛シミュレーションゲーム。
 origin: 本人と友人たちの関係性を、内輪の物語として遊べる形へ変えたかった。
@@ -10,8 +10,10 @@ fields:
   - 物語
   - コミュニティ
 technologies:
+  - TyranoScript
   - JavaScript
-  - Web
+  - HTML
+  - CSS
 roles:
   - 企画
   - シナリオ
@@ -25,9 +27,11 @@ websiteUrl: https://albasimia.github.io/love_mako/
 heroImage:
   asset: img/og-image.png
   alt: love_makoの代表画像
-screenshots:
+images:
   desktop: true
-  mobile: true
+  mobile: false
+startedAt: "2022.8"
+endedAt: "2022.10"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
@@ -49,15 +53,18 @@ screenshots:
 - 実在人物を扱うこと
 - 内輪の関係性を損なわず笑いへ変えること
 - 分岐と選択肢によってゲームとして成立させること
+- 1週間の行動と好感度を一貫して管理すること
 
 <p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
 
 ## 実装
 
-友人たちを登場人物として配置し、恋愛シミュレーション形式のシナリオと画面を実装しました。
+昔のバンド仲間とのライブを1週間後に控えた主人公が、昼と夜の行動を選びながら5人の登場人物と交流する恋愛シミュレーションとして実装しました。選択内容によって好感度が変化し、ライブチケットを誰に渡すかによって個別ルート、複数のエンディング、バッドエンドへ分岐します。
 
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
+TyranoScriptを用い、シナリオを登場人物と日程ごとのファイルへ分割しました。好感度と進行状態はゲーム変数として管理し、セーブ、ロード、メッセージ速度、音量設定も備えています。
 
-## 公開に関する注記
+<p class="eyebrow project-prose__eyebrow">VERIFICATION</p>
 
-実名、画像、内輪情報の公開範囲を確認する必要があるため、初期状態ではdraftとします。
+## 検証
+
+実在する友人関係を、本人たちが共有している文脈を保ったまま、選択と分岐を持つ7日間の物語へ再構成しました。

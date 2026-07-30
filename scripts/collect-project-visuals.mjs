@@ -239,17 +239,17 @@ async function captureWebsite({ url, assetsDir, config, captureVisuals, collectA
     : await findExistingImageAsset(assetsDir, "og-image", { representative: true });
   const existingDesktopAsset = !captureVisuals || config.force
     ? null
-    : await findExistingImageAsset(assetsDir, "screenshot-desktop");
+    : await findExistingImageAsset(assetsDir, "desktop");
   const existingMobileAsset = !captureVisuals || config.force
     ? null
-    : await findExistingImageAsset(assetsDir, "screenshot-mobile");
+    : await findExistingImageAsset(assetsDir, "mobile");
 
   const desktopResult = await captureViewport({
     url,
     assetsDir,
     config,
     viewportName: "PC",
-    filename: "screenshot-desktop.jpg",
+    filename: "desktop.jpg",
     existingAsset: existingDesktopAsset,
     existingOgAsset,
     contextOptions: {
@@ -259,7 +259,7 @@ async function captureWebsite({ url, assetsDir, config, captureVisuals, collectA
       ignoreHTTPSErrors: true,
       reducedMotion: "reduce",
     },
-    captureScreenshot: captureVisuals,
+    captureImage: captureVisuals,
     collectOg: captureVisuals,
     collectAccent,
   });
@@ -271,7 +271,7 @@ async function captureWebsite({ url, assetsDir, config, captureVisuals, collectA
     assetsDir,
     config,
     viewportName: "SP",
-    filename: "screenshot-mobile.jpg",
+    filename: "mobile.jpg",
     existingAsset: existingMobileAsset,
     existingOgAsset: null,
     contextOptions: {
@@ -283,7 +283,7 @@ async function captureWebsite({ url, assetsDir, config, captureVisuals, collectA
       ignoreHTTPSErrors: true,
       reducedMotion: "reduce",
     },
-    captureScreenshot: true,
+    captureImage: true,
     collectOg: false,
     collectAccent: false,
   }) : { asset: null, ogAsset: null, accent: null, notes: [] };
@@ -308,7 +308,7 @@ async function captureViewport({
   existingAsset,
   existingOgAsset,
   contextOptions,
-  captureScreenshot,
+  captureImage,
   collectOg,
   collectAccent,
 }) {
@@ -317,11 +317,11 @@ async function captureViewport({
   let ogAsset = existingOgAsset ?? null;
   let accent = null;
 
-  const needsScreenshot = captureScreenshot && (config.force || !asset);
+  const needsImage = captureImage && (config.force || !asset);
   const needsOg = collectOg && (config.force || !ogAsset);
   const needsAccent = collectAccent;
 
-  if (!needsScreenshot && !needsOg && !needsAccent) {
+  if (!needsImage && !needsOg && !needsAccent) {
     notes.push(`${viewportName}: 既存画像があるため取得をスキップ: ${asset}`);
     if (collectOg && ogAsset) notes.push(`OGP画像があるため取得をスキップ: ${ogAsset}`);
     return { asset, ogAsset, accent, notes };
@@ -354,7 +354,7 @@ async function captureViewport({
       notes.push(`OGP画像があるため取得をスキップ: ${ogAsset}`);
     }
 
-    if (needsScreenshot) {
+    if (needsImage) {
       const preparation = await preparePage(page, config, viewportName);
       notes.push(...preparation.notes.map((note) => `${viewportName}: ${note}`));
     } else if (needsAccent) {
@@ -368,7 +368,7 @@ async function captureViewport({
       else notes.push(`${viewportName}: accent候補を検出できませんでした`);
     }
 
-    if (needsScreenshot) {
+    if (needsImage) {
       asset = filename;
       await page.screenshot({
         path: join(assetsDir, asset),
@@ -376,7 +376,7 @@ async function captureViewport({
         quality: 88,
         fullPage: false,
       });
-      notes.push(`${viewportName}スクリーンショットを保存: ${asset}`);
+      notes.push(`${viewportName}画像を保存: ${asset}`);
     } else if (asset) {
       notes.push(`${viewportName}: 既存画像があるため取得をスキップ: ${asset}`);
     }

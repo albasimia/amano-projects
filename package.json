@@ -17,6 +17,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "generate:brand-assets": "node scripts/generate-brand-assets.mjs",
     "collect:visuals": "node scripts/collect-project-visuals.mjs",
     "collect:visuals:accent": "node scripts/collect-project-visuals.mjs --accent-only",
     "sync:assets": "node scripts/sync-content-assets.mjs",

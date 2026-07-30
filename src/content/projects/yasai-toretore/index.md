@@ -17,16 +17,17 @@ roles:
   - 主催
   - Web制作
   - 広報設計
-startedAt: "2026"
+startedAt: "2026.9.6"
 websiteUrl: https://catharsiswatari-events.pages.dev/events/yasai-toretore-2026/
 relatedProjects:
-  - watari-ea
+  - agriculture-school
   - kaka-see
+  - watari-ea
 draft: false
 heroImage:
   asset: img/og-image.webp
   alt: やさいとれとれ祭りの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 ---
@@ -81,9 +82,3 @@ Creative Identityが現場の体験を構想し、Engineering Identityが告知�
 ## 社会との接続
 
 DJコミュニティ、友人コミュニティ、近隣住民、農業を接続する小さな共同体の場として設計しています。
-
-<p class="eyebrow project-prose__eyebrow">LEARNING</p>
-
-## 得られたこと
-
-開催後に、異なる入口を持つ参加者同士がどのように交わったかを記録します。

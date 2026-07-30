@@ -16,7 +16,7 @@ const collections = [
         }
         catalog.resolve(slug, heroImage.asset);
       }
-      validateScreenshots(frontmatter, catalog, slug, sourcePath);
+      validateImages(frontmatter, catalog, slug, sourcePath);
     },
   },
   {
@@ -61,19 +61,21 @@ function isRecord(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function validateScreenshots(frontmatter, catalog, slug, sourcePath) {
-  const screenshots = frontmatter.screenshots;
-  if (screenshots === undefined) return;
-  if (!isRecord(screenshots)) {
-    throw new Error(`${sourcePath}: screenshotsはobjectで指定してください`);
+function validateImages(frontmatter, catalog, slug, sourcePath) {
+  const images = frontmatter.images;
+  if (images === undefined) return;
+  if (!isRecord(images)) {
+    throw new Error(`${sourcePath}: imagesはobjectで指定してください`);
   }
-  for (const kind of ["desktop", "mobile"]) {
-    const visible = screenshots[kind];
-    if (visible !== undefined && typeof visible !== "boolean") {
-      throw new Error(`${sourcePath}: screenshots.${kind}はbooleanで指定してください`);
+  for (const [kind, visible] of Object.entries(images)) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(kind)) {
+      throw new Error(`${sourcePath}: imagesのキーは小文字英数字とハイフンで指定してください`);
     }
-    if (visible === true && !findConventionalAsset(catalog, slug, `img/screenshot-${kind}`)) {
-      throw new Error(`${sourcePath}: screenshots.${kind}に対応する画像がありません`);
+    if (typeof visible !== "boolean") {
+      throw new Error(`${sourcePath}: images.${kind}はbooleanで指定してください`);
+    }
+    if (visible === true && !findConventionalAsset(catalog, slug, `img/${kind}`)) {
+      throw new Error(`${sourcePath}: images.${kind}に対応する画像がありません`);
     }
   }
 }

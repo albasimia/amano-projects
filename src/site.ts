@@ -7,7 +7,7 @@ export const site = defineSiteConfig({
   locale: "ja",
   title: {
     default: "アマノPROJECTS",
-    separator: " — ",
+    separator: " | ",
     position: "suffix",
   },
   openGraph: {
@@ -22,7 +22,7 @@ export const site = defineSiteConfig({
     imageAlt: "アマノ PROJECTS",
   },
   favicons: [
-    { rel: "icon", href: "/og.png", type: "image/png" },
+    { rel: "icon", href: "/favicon.png", type: "image/png" },
   ],
   themeColors: [
     { color: "#f4f2ec" },

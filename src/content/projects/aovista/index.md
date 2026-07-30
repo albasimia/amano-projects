@@ -20,11 +20,19 @@ roles:
   - 筐体設計
   - ファームウェア
   - 実機検証
-startedAt: "2025"
+startedAt: "2025.12"
 repositoryUrl: https://github.com/albasimia/aovista_keyboard
 relatedProjects: []
 draft: false
+images:
+  aovista: true
+heroImage:
+  asset: img/aovista.jpg
+  alt: Aovistaの代表画像
+accent: "#00a9fc"
 ---
+
+
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
 
