@@ -23,7 +23,7 @@ roles:
 organization: KAYAC
 startedAt: "2017"
 endedAt: "2018"
-relatedProjects: []
+relatedProjects: ["code-quest", "clash-royale-japan-championship", "bojopa", "shukatsu-jiyugata"]
 draft: false
 accent : "#dcbf00"
 ---
