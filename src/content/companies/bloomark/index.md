@@ -17,5 +17,6 @@ works:
   - subaru-operations
   - bookmate
   - jss-corporate
+  - tohzai-sangyo-corporate
 order: 30
 ---

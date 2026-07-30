@@ -13,6 +13,7 @@ areas:
   - デザイン調整
   - 公開
 works:
+  - bigfooter
   - technonex-corporate
   - housetect-corporate
   - tatsujin-lab

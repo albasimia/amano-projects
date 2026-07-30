@@ -22,7 +22,7 @@ roles:
   - システム設計
   - 実装
   - 運用
-websiteUrl: https://quizzool.web.app/
+# websiteUrl: https://quizzool.web.app/
 heroImage:
   asset: img/og-image.png
   alt: Quizzoolのロゴとサービス紹介
