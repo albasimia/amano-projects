@@ -32,7 +32,7 @@ screenshots:
   mobile: true
 startedAt: "2026.7"
 endedAt: "2026.7"
-accent: "#1e6bb8"
+accent: "#ae0006"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

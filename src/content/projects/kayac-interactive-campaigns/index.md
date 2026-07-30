@@ -25,6 +25,7 @@ startedAt: "2017"
 endedAt: "2018"
 relatedProjects: []
 draft: false
+accent : "#dcbf00"
 ---
 
 <p class="eyebrow project-prose__eyebrow">OVERVIEW</p>

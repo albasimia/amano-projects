@@ -13,7 +13,8 @@
   --color-text: #171717;
   --color-muted: #696861;
   --color-border: #c9c6bb;
-  --color-accent: #d84a24;
+  --site-accent: #d84a24;
+  --color-accent: var(--site-accent);
   --color-accent-contrast: #fff8f1;
   --font-body: "Noto Sans JP Variable", "Noto Sans JP", system-ui, sans-serif;
   --font-display: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
@@ -441,7 +442,7 @@ main[class] .asc-tag {
 
 .project-list { border-top: 1px solid var(--color-border); }
 .project-list--featured { margin-bottom: 3rem; }
-.project-card { --project-card-accent: var(--project-accent, var(--color-accent)); min-width: 0; }
+.project-card { --project-card-accent: var(--site-accent); min-width: 0; }
 .project-card__link { height: 100%; display: flex; flex-direction: column; color: var(--color-text); text-decoration: none; }
 .project-card__link:hover { color: var(--color-text); }
 .project-card__link:focus-visible { outline-color: var(--project-card-accent); }
@@ -588,7 +589,6 @@ main[class] .asc-tag {
 .project-hero::before { position: absolute; z-index: 0; top: 24%; right: -8%; width: min(55vw, 44rem); height: 3px; background: linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 78%, transparent) 0 24%, transparent 24% 31%, var(--color-accent) 31% 72%, transparent 72% 78%, color-mix(in srgb, var(--color-accent) 64%, transparent) 78% 100%); content: ""; transform: rotate(-9deg); pointer-events: none; }
 .project-hero::after { position: absolute; z-index: 0; top: 47%; right: 1%; width: min(43vw, 35rem); height: 1px; background: linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 34%, transparent) 0 58%, transparent 58% 64%, color-mix(in srgb, var(--color-accent) 58%, transparent) 64% 100%); content: ""; transform: rotate(-9deg); pointer-events: none; }
 .project-hero > .asc-container { position: relative; z-index: 1; }
-.project-hero .asc-arrow-link { margin-bottom: clamp(4rem, 8vw, 7rem); }
 .project-hero__tags { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
 .project-hero__fields { margin: 0 0 0 .5rem; }
 .project-hero h1 { position: relative; margin: 1.5rem 0; padding-left: clamp(1rem, 2vw, 1.75rem); font-size: clamp(3.2rem, 8vw, 7rem); font-weight: 650; line-height: .9; letter-spacing: -.065em; overflow-wrap: anywhere; }

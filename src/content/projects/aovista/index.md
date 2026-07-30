@@ -24,7 +24,14 @@ startedAt: "2025.12"
 repositoryUrl: https://github.com/albasimia/aovista_keyboard
 relatedProjects: []
 draft: false
+heroImage:
+  asset: img/aovista.jpg
+  alt: Aovistaの代表画像
+accent : "#00a9fc"
 ---
+
+![Aovista 本体](/images/projects/aovista/img/aovista.jpg)
+
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
 

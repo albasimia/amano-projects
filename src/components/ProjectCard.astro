@@ -10,7 +10,9 @@ interface Props {
 const { project, headingLevel = "h3" } = Astro.props;
 const Heading = headingLevel;
 const href = `/projects/${project.data.slug}/`;
-const style = project.data.accent ? `--project-accent:${project.data.accent}` : undefined;
+const style = project.data.accent
+  ? `--project-card-accent:${project.data.accent}`
+  : "--project-card-accent:var(--site-accent)";
 const cardImage = project.data.heroImage;
 const period = projectPeriod(project);
 ---

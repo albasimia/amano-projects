@@ -21,6 +21,8 @@ roles:
 repositoryUrl: https://github.com/albasimia/zippy-diffany
 relatedProjects: []
 draft: false
+startedAt : "2025.8"
+endedAt : "2025.8"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

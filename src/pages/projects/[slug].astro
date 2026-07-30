@@ -52,7 +52,6 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
   <article style={projectAccentStyle}>
     <header class="project-hero">
       <Container>
-        <ArrowLink href="/projects/">ALL PROJECTS</ArrowLink>
         <div class="project-hero__tags">
           <span class:list={["project-card__status", `project-card__status--${project.data.status}`]}>{statusLabels[project.data.status]}</span>
           <p class="project-card__fields project-hero__fields">
