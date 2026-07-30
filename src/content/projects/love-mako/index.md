@@ -1,5 +1,5 @@
 ---
-title: love_mako
+title: らぶ♡マコ
 slug: love-mako
 summary: 友人たちを登場人物にした、伊東マコト誕生日用の恋愛シミュレーションゲーム。
 origin: 本人と友人たちの関係性を、内輪の物語として遊べる形へ変えたかった。
@@ -27,7 +27,9 @@ heroImage:
   alt: love_makoの代表画像
 screenshots:
   desktop: true
-  mobile: true
+  mobile: false
+startedAt : "2022.8"
+endedAt: "2022.10"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

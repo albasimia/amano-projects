@@ -1,5 +1,5 @@
 ---
-title: 椅子取りYouTube
+title: イストリYouTube
 slug: isutori-youtube
 summary: YouTube再生を自動制御し、曲を止める係も椅子取りゲームへ参加できるChrome拡張。
 origin: 椅子取りゲームでは、曲を止める人だけがゲームに参加できなかった。
@@ -20,8 +20,10 @@ roles:
   - 実地検証
 repositoryUrl: https://github.com/albasimia/isutori_youtube
 relatedProjects:
-  - hele-button
+  - hele-counter
 draft: false
+startedAt : "2022.3"
+endedAt: "2022.3"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

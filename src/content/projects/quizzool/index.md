@@ -29,10 +29,12 @@ heroImage:
 screenshots:
   desktop: true
   mobile: false
-accent: "#fc9e9e"
+accent: "#5451a9"
 relatedProjects:
-  - hele-button
+  - hele-counter
 draft: false
+startedAt : "2019.10"
+endedAt: "2020.8"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

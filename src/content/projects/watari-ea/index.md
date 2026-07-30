@@ -1,5 +1,5 @@
 ---
-title: ワタリEA
+title: ワタリEVENTS ARCHIVE
 slug: watari-ea
 summary: イベント告知、開催記録、管理画面、GitOps運用をひとつにまとめた静的イベントサイト基盤。
 origin: 告知がSNSへ流れ、開催後の記録も分散する状況から始まった。
@@ -22,7 +22,6 @@ roles:
   - デザイン
   - 実装
   - 運用
-startedAt: "2025"
 websiteUrl: https://catharsiswatari-events.pages.dev/
 relatedProjects:
   - yasai-toretore
@@ -30,10 +29,12 @@ relatedProjects:
 draft: false
 heroImage:
   asset: img/og-image.webp
-  alt: ワタリEAの代表画像
+  alt: ワタリEVENTS ARCHIVEの代表画像
 screenshots:
   desktop: true
   mobile: true
+startedAt: "2026.7"
+endedAt: "2026.7"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

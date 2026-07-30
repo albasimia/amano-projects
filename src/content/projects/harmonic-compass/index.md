@@ -20,7 +20,6 @@ roles:
   - グラフィック設計
   - プロトタイピング
   - 実用検証
-startedAt: "2026.2"
 heroImage:
   asset: img/harmonic-compass-ver3.jpeg
   alt: 回転盤で五度圏と調性の関係を示すHarmonic Compass Ver.3
@@ -28,8 +27,13 @@ heroImage:
 relatedProjects:
   - overcue
   - aovista
+startedAt: "2026.2"
+endedAt: "2026.3"
 draft: false
+accent: "#96aca1"
 ---
+
+![回転盤で五度圏と調性の関係を示すHarmonic Compass Ver.3](/images/projects/harmonic-compass/img/harmonic-compass-ver3.jpeg)
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
 

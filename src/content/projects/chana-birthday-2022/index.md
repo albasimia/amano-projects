@@ -1,5 +1,5 @@
 ---
-title: chana_birthday_2022
+title: チャナごっち
 slug: chana-birthday-2022
 summary: 2泊3日の名古屋オフ会と連動して進行する、ブラウザ育成ゲーム。
 origin: チャナマサラの誕生日とオフ会そのものを、ひとつの連続した体験にしたかった。
@@ -25,10 +25,12 @@ draft: false
 websiteUrl: https://albasimia.github.io/chana_birthday_2022/
 heroImage:
   asset: img/og-image.png
-  alt: chana_birthday_2022の代表画像
+  alt: チャナごっちの代表画像
 screenshots:
   desktop: true
   mobile: true
+startedAt : "2022.5"
+endedAt: "2023.5"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

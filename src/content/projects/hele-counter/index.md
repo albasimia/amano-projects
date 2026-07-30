@@ -1,6 +1,6 @@
 ---
-title: へぇボタン
-slug: hele-button
+title: へぇカウンター
+slug: hele-counter
 summary: 会場の参加者がスマートフォンからボタンを押し、反応をリアルタイム集計する参加型Webコンテンツ。
 origin: 観客が見るだけでなく、その場の反応を全員で共有できる仕組みが必要だった。
 intention: 多人数の反応を同時に集め、会場演出の一部として可視化する。
@@ -28,6 +28,9 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
+accent : "#4ea3e5"
+startedAt : "2018.1"
+endedAt: "2018.2"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

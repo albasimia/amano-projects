@@ -1,5 +1,5 @@
 ---
-title: chachamaru_birthday
+title: 茶々丸おねえさんボイス神経衰弱
 slug: chachamaru-birthday
 summary: 音声を記憶して組み合わせ、クリア時にご褒美画像を得る誕生日用神経衰弱ゲーム。
 origin: 視覚中心の神経衰弱を、対象者に合わせた音声体験へ変えたかった。
@@ -23,7 +23,10 @@ draft: false
 websiteUrl: https://albasimia.github.io/chachamaru_birthday/
 heroImage:
   asset: img/og-image.png
-  alt: chachamaru_birthdayの代表画像
+  alt: 茶々丸おねえさんボイス神経衰弱の代表画像
+accent : "#00adad"
+startedAt : "2022.6"
+endedAt: "2022.7"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
@@ -52,8 +55,3 @@ heroImage:
 
 誕生日の場で実際に遊ばれることを前提に制作しました。
 
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
-
-## 公開に関する注記
-
-音声や画像の権利、本人の公開許可を確認する必要があるためdraftとします。

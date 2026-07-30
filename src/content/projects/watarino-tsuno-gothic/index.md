@@ -1,5 +1,5 @@
 ---
-title: Watarino Tsuno Gothic
+title: ワタリノ角ゴシック
 slug: watarino-tsuno-gothic
 summary: 固有名「ｶﾀﾙｼｽﾜﾀﾘ」を核に、ツノという造形規則から展開する専用書体。
 origin: 既存書体では活動名の固有性と、制作物全体のIdentityを十分に表現できなかった。

@@ -20,7 +20,7 @@ roles:
   - 筐体設計
   - ファームウェア
   - 実機検証
-startedAt: "2025"
+startedAt: "2025.12"
 repositoryUrl: https://github.com/albasimia/aovista_keyboard
 relatedProjects: []
 draft: false

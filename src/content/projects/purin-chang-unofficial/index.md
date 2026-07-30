@@ -1,5 +1,5 @@
 ---
-title: purin_chang_unofficial
+title: ぷりんちゃん非公式サイト
 slug: purin-chang-unofficial
 summary: ダンス活動を行う友人の人物像と活動を編集した、誕生日用の非公式サイト。
 origin: ダンス活動をしている友人の魅力を、本人の活動全体が見えるWebサイトへまとめたかった。
@@ -25,8 +25,10 @@ relatedProjects:
 draft: false
 heroImage:
   asset: img/og-image.png
-  alt: purin_chang_unofficialの代表画像
-accent: "#0000ee"
+  alt: ぷりんちゃん非公式サイトの代表画像
+accent: "#c492f2"
+startedAt : "2021.9"
+endedAt: "2021.9"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

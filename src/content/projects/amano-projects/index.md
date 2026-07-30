@@ -1,5 +1,5 @@
 ---
-title: Amano Projects
+title: アマノ Projects
 slug: amano-projects
 summary: 成果物の一覧ではなく、発端から判断、検証、学びまでをProjectとして見せるポートフォリオサイト。
 origin: Web制作、個人開発、DJ、農業などを横断する活動が、職種や成果物だけでは一つの経歴として伝わりにくかった。
@@ -24,11 +24,15 @@ roles:
   - コンテンツ制作
 startedAt: "2026.7"
 repositoryUrl: https://github.com/albasimia/amano-projects
-websiteUrl: https://amano-projects.pages.dev/
+# websiteUrl: https://amano-projects.pages.dev/
 relatedProjects:
   - albasimia-ssg-core
   - watari-ea
 draft: false
+accent: "#d84a24"
+heroImage:
+  asset: img/og-image.png
+  alt: Amano Projectsの代表画像
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

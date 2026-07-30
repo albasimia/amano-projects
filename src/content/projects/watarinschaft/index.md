@@ -18,7 +18,7 @@ roles:
   - 実装
   - プロンプト設計
 relatedProjects: []
-draft: false
+draft: true
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

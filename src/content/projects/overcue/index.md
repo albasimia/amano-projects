@@ -20,7 +20,6 @@ roles:
   - 実装
   - 配布
   - ドキュメント
-startedAt: "2026"
 repositoryUrl: https://github.com/albasimia/OverCUE
 websiteUrl: https://albasimia.github.io/OverCUE/
 relatedProjects: []
@@ -31,6 +30,8 @@ heroImage:
 screenshots:
   desktop: true
   mobile: true
+startedAt: "2026.7"
+endedAt: "2026.7"
 accent: "#1e6bb8"
 ---
 
