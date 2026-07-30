@@ -614,6 +614,46 @@ main[class] .asc-tag {
 .project-prose p + p { margin-top: 1.2rem; }
 .project-prose ul { padding-left: 1.35rem; }
 .project-prose li + li { margin-top: .5rem; }
+.project-prose blockquote {
+  position: relative;
+  margin: 0;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 0;
+  border-left: 3px solid var(--project-accent, var(--color-accent));
+  background: color-mix(in srgb, var(--project-accent, var(--color-accent)) 5%, var(--color-surface));
+  color: var(--color-text);
+}
+.project-prose blockquote > :first-child { margin-top: 0; }
+.project-prose blockquote > :last-child { margin-bottom: 0; }
+.project-prose blockquote p,
+.project-prose blockquote li { font-size: clamp(.9rem, 1.2vw, 1rem); line-height: 1.75; }
+.project-prose blockquote p + p { margin-top: 1.5rem; }
+.project-prose blockquote ul,
+.project-prose blockquote ol { margin-block: 1.5rem; padding-left: 1.5rem; }
+.project-prose blockquote li + li { margin-top: 1.25rem; }
+.project-prose blockquote table {
+  width: 100%;
+  display: block;
+  margin-block: clamp(1.5rem, 3vw, 2.5rem);
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: clamp(.78rem, 1.2vw, .9rem);
+  line-height: 1.6;
+}
+.project-prose blockquote th,
+.project-prose blockquote td { min-width: 6rem; padding: .75rem 1rem; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
+.project-prose blockquote th { color: var(--project-accent, var(--color-accent)); font-size: .72rem; font-weight: 750; letter-spacing: .08em; white-space: nowrap; }
+.project-prose blockquote th:nth-child(2),
+.project-prose blockquote td:nth-child(2) { min-width: 4.5rem; text-align: right; white-space: nowrap; }
+.project-prose blockquote pre { margin-block: 1.5rem; padding: 1rem; overflow-x: auto; background: var(--color-background); font-size: .78rem; line-height: 1.6; }
+
+@media (max-width: 48rem) {
+  .project-prose blockquote table > :is(thead, tbody) {
+    display: table;
+    min-width: 38rem;
+  }
+}
+
 .project-video {
   position: relative;
   width: 100%;
