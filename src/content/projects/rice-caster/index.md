@@ -20,7 +20,7 @@ roles:
 repositoryUrl: https://github.com/albasimia/rice_caster
 relatedProjects: []
 draft: false
-startedAt : "2020.6"
+startedAt: "2020.6"
 endedAt: "2021.7"
 ---
 

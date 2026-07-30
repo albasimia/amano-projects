@@ -27,7 +27,7 @@ draft: false
 heroImage:
   asset: img/aovista.jpg
   alt: Aovistaの代表画像
-accent : "#00a9fc"
+accent: "#00a9fc"
 ---
 
 ![Aovista 本体](/images/projects/aovista/img/aovista.jpg)

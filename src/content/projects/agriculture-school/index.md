@@ -27,7 +27,7 @@ relatedProjects:
   - kaka-see
   - yasai-toretore
 draft: false
-accent : "#036b06"
+accent: "#036b06"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

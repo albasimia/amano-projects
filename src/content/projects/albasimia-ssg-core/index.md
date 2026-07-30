@@ -51,25 +51,25 @@ draft: false
 
 ## 判断
 
-root exportを設けず、機能境界ごとのsubpathを公開しています。consumerへ不要なビルド依存を要求しないため、CSSやLayoutは生成済み成果物として配布します。
+ルートからの一括exportを設けず、機能境界ごとのサブパスを公開しています。利用側へ不要なビルド依存を要求しないため、CSSやLayoutは生成済み成果物として配布します。
 
 <p class="eyebrow project-prose__eyebrow">IMPLEMENTATION</p>
 
 ## 実装
 
-Site Meta、sitemap、content source、Git content、deployment status、BaseLayout、共通CSSをpackageとして提供しています。
+Site Meta、sitemap、content source、Git content、deployment status、BaseLayout、共通CSSをパッケージとして提供しています。
 
 <p class="eyebrow project-prose__eyebrow">VERIFICATION</p>
 
 ## 検証
 
-packed packageとGitHub tagの双方を、一時consumerへインストールしてAstro buildを検証しています。
+パッケージ化した成果物とGitHub tagの双方を一時的な利用環境へインストールし、Astroのビルドを検証しています。
 
 <p class="eyebrow project-prose__eyebrow">LEARNING</p>
 
 ## 得られたこと
 
-package内部の完成だけでなく、cleanなconsumerから利用できることを検証条件に含める必要があります。
+パッケージ内部の完成だけでなく、何も導入していない利用環境から使用できることを検証条件に含める必要があります。
 
 <p class="eyebrow project-prose__eyebrow">EVALUATION</p>
 

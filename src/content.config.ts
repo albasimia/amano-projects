@@ -44,6 +44,7 @@ const projects = defineCollection({
     technologies: z.array(z.string().trim().min(1)).default([]),
     roles: z.array(z.string().trim().min(1)).default([]),
     startedAt: projectDate.optional(),
+    completedAt: projectDate.optional(),
     endedAt: projectDate.optional(),
     repositoryUrl: z.url().optional(),
     websiteUrl: z.url().optional(),

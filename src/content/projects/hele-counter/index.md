@@ -24,12 +24,12 @@ relatedProjects:
 draft: false
 heroImage:
   asset: img/screenshot-desktop.jpg
-  alt: へぇボタンの代表画像
+  alt: へぇカウンターの代表画像
 screenshots:
   desktop: true
   mobile: true
-accent : "#4ea3e5"
-startedAt : "2018.1"
+accent: "#4ea3e5"
+startedAt: "2018.1"
 endedAt: "2018.2"
 ---
 
@@ -63,7 +63,7 @@ Firebaseを利用し、参加者画面、カウンター画面、管理画面を
 
 ## 検証
 
-結婚式余興で約200人規模の同時利用を想定して運用しました。
+結婚式余興で実際に約200人が同時利用し、参加者の反応をリアルタイムに集計しました。2018年2月に制作を完了し、同年8月に一般公開のための最終整備を行いました。
 
 <p class="eyebrow project-prose__eyebrow">LEARNING</p>
 

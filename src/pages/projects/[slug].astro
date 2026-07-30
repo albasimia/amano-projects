@@ -30,6 +30,7 @@ const related = project.data.relatedProjects
   .filter((entry): entry is ProjectEntry => entry !== undefined);
 const facts: Array<{ term: string; value: string | string[] }> = [];
 if (period) facts.push({ term: "Period", value: period });
+if (project.data.completedAt) facts.push({ term: "Initial completion", value: project.data.completedAt });
 facts.push({ term: "Status", value: statusLabels[project.data.status] });
 if (project.data.roles.length) facts.push({ term: "Role", value: project.data.roles });
 facts.push({ term: "Field", value: project.data.fields });

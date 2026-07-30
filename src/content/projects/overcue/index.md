@@ -31,7 +31,7 @@ screenshots:
   desktop: true
   mobile: true
 startedAt: "2026.7"
-endedAt: "2026.7"
+completedAt: "2026.7"
 accent: "#ae0006"
 ---
 

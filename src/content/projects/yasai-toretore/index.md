@@ -81,9 +81,3 @@ Creative Identityが現場の体験を構想し、Engineering Identityが告知�
 ## 社会との接続
 
 DJコミュニティ、友人コミュニティ、近隣住民、農業を接続する小さな共同体の場として設計しています。
-
-<p class="eyebrow project-prose__eyebrow">LEARNING</p>
-
-## 得られたこと
-
-開催後に、異なる入口を持つ参加者同士がどのように交わったかを記録します。

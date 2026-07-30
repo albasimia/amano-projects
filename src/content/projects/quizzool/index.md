@@ -33,7 +33,7 @@ accent: "#5451a9"
 relatedProjects:
   - hele-counter
 draft: false
-startedAt : "2019.10"
+startedAt: "2019.10"
 endedAt: "2020.8"
 ---
 
@@ -79,9 +79,9 @@ Vue.jsで画面を構築し、Vue Routerで役割別の画面を分離、Vuexで
 
 <p class="eyebrow project-prose__eyebrow">OPERATION</p>
 
-## 公開と運用
+## 公開と運用状況
 
-個人運営の無料サービスとしてFirebase Hostingへ公開し、β版として提供しました。ランディングページでは、忘年会、結婚式の二次会、オンライン飲み会、習熟度チェックテストなどでの利用を想定しています。
+個人運営の無料サービスとしてFirebase Hostingへ公開し、β版として提供しました。現在はサービス本体を停止しており、ランディングページのみ当時の紹介内容を残しています。ランディングページでは、忘年会、結婚式の二次会、オンライン飲み会、習熟度チェックテストなどでの利用を想定していました。
 
 <p class="eyebrow project-prose__eyebrow">LEARNING</p>
 

@@ -25,7 +25,7 @@ startedAt: "2017"
 endedAt: "2018"
 relatedProjects: ["code-quest", "clash-royale-japan-championship", "bojopa", "shukatsu-jiyugata"]
 draft: false
-accent : "#dcbf00"
+accent: "#dcbf00"
 ---
 
 <p class="eyebrow project-prose__eyebrow">OVERVIEW</p>
@@ -42,7 +42,7 @@ accent : "#dcbf00"
 - CODE QUEST
 - ボジョパ
 - 就活自由形
-- その他Canvas、SVG、Vue、Firebaseを利用した案件
+- その他Canvas、SVG、Vue.js、Firebaseを利用した案件
 
 <p class="eyebrow project-prose__eyebrow">DECISIONS</p>
 
@@ -55,9 +55,3 @@ accent : "#dcbf00"
 ## 得られたこと
 
 表現性と運用性は対立するものではなく、データと描画を分けることで両立できます。
-
-<p class="eyebrow project-prose__eyebrow">PUBLICATION NOTE</p>
-
-## 公開に関する注記
-
-各案件の公開可能範囲、正式名称、担当範囲、画像利用可否を確認するまでdraftとします。

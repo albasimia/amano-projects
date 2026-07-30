@@ -28,7 +28,7 @@ relatedProjects:
   - overcue
   - aovista
 startedAt: "2026.2"
-endedAt: "2026.3"
+completedAt: "2026.3"
 draft: false
 accent: "#96aca1"
 ---
