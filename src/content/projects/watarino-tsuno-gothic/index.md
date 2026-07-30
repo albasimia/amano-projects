@@ -18,7 +18,7 @@ roles:
   - 文字設計
   - フォント生成
   - 実用検証
-startedAt: "2026"
+startedAt: "2026.7"
 relatedProjects:
   - karirenjan
 draft: false

@@ -20,7 +20,7 @@ roles:
   - サービス設計
   - 情報設計
   - 実装
-startedAt: "2026"
+startedAt: "2026.6"
 relatedProjects:
   - watarino-tsuno-gothic
 draft: false

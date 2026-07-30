@@ -17,7 +17,7 @@ roles:
   - 主催
   - Web制作
   - 広報設計
-startedAt: "2026"
+startedAt: "2026.9.6"
 websiteUrl: https://catharsiswatari-events.pages.dev/events/yasai-toretore-2026/
 relatedProjects:
   - watari-ea

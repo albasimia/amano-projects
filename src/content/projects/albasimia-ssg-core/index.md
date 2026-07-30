@@ -4,7 +4,7 @@ slug: albasimia-ssg-core
 summary: 複数の静的サイトで再利用できる、AstroとGitOpsの共通基盤。
 origin: ワタリEAで実装した共通責務を、サイト固有実装から分離する必要が生まれた。
 intention: 一度設計した基盤を、異なるProjectで育て続けられる形へ変える。
-status: development
+status: operation
 fields:
   - 設計構造
   - 静的サイト
@@ -19,7 +19,7 @@ roles:
   - 実装
   - テスト
   - ドキュメント
-startedAt: "2026"
+startedAt: "2026.7"
 repositoryUrl: https://github.com/albasimia/albasimia-ssg-core
 relatedProjects:
   - watari-ea

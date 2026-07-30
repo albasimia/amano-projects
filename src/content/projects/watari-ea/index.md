@@ -1,5 +1,5 @@
 ---
-title: ワタリEVENTS ARCHIVE
+title: ｶﾀﾙｼｽﾜﾀﾘEVENTS ARCHIVE
 slug: watari-ea
 summary: イベント告知、開催記録、管理画面、GitOps運用をひとつにまとめた静的イベントサイト基盤。
 origin: 告知がSNSへ流れ、開催後の記録も分散する状況から始まった。
@@ -29,7 +29,7 @@ relatedProjects:
 draft: false
 heroImage:
   asset: img/og-image.webp
-  alt: ワタリEVENTS ARCHIVEの代表画像
+  alt: ｶﾀﾙｼｽﾜﾀﾘEVENTS ARCHIVEの代表画像
 screenshots:
   desktop: true
   mobile: true
