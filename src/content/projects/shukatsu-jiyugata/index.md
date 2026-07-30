@@ -1,18 +1,25 @@
 ---
 title: 就活自由形
 slug: shukatsu-jiyugata
-summary: 株式会社カヤック在籍時にフロントエンド実装を担当したProject。
-origin: 案件固有の背景と制約を整理中。
-intention: 担当範囲と実装上の判断を、公開可能な範囲で記録する。
+summary: Firebaseをバックエンドに画像アップロード機能を実装し、デザイナーと密に連携して制作をリードした採用サイト。
+origin: 不動産SHOPナカジツの採用活動に向け、PC・スマートフォン対応のWebサイトを制作した。
+intention: デザインと実装の距離を縮めながら、画像投稿を扱える採用サイトを短期間で成立させる。
 status: completed
 projectType: client
 fields:
   - 実務制作
   - インタラクティブキャンペーン
-technologies: []
+technologies:
+  - HTML
+  - CSS
+  - JavaScript
+  - Firebase
 roles:
   - フロントエンド
+  - 制作リード
 organization: KAYAC
+startedAt: "2018.2"
+endedAt: "2018.3"
 relatedProjects:
   - kayac-interactive-campaigns
 draft: false
@@ -22,4 +29,20 @@ draft: false
 
 ## 概要
 
-担当範囲、判断、工夫、結果を整理中です。
+株式会社カヤック在籍時に、不動産SHOPナカジツの採用サイト「就活自由形」を制作しました。PC・スマートフォン向けのフロントエンド実装を担当し、Firebaseをバックエンドに画像アップロード機能を構築しました。
+
+<p class="eyebrow project-prose__eyebrow">COLLABORATION</p>
+
+## デザイナーと連携した制作
+
+入社直後のデザイナーと密に連携し、実装側から制作をリードしました。表現と技術要件を分断せず、画像アップロードを含む機能をFirebaseで実現しました。
+
+<p class="eyebrow project-prose__eyebrow">ROLE</p>
+
+## 担当
+
+- HTML、CSS、JavaScriptによるPC・スマートフォン向け実装
+- Firebaseを利用した画像アップロード機能の構築
+- デザイナーとの実装調整と制作進行
+
+ディレクター1名、デザイナー1名、エンジニア2名のチームで制作しました。
