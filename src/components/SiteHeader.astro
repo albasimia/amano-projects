@@ -29,3 +29,29 @@ const navigation = [
     </nav>
   </details>
 </header>
+
+<script>
+  const mobileNavigation = document.querySelector<HTMLDetailsElement>(".site-navigation-mobile");
+
+  if (mobileNavigation) {
+    document.addEventListener("pointerdown", (event) => {
+      if (!mobileNavigation.open) return;
+      if (event.target instanceof Node && !mobileNavigation.contains(event.target)) {
+        mobileNavigation.open = false;
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && mobileNavigation.open) {
+        mobileNavigation.open = false;
+        mobileNavigation.querySelector("summary")?.focus();
+      }
+    });
+
+    mobileNavigation.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileNavigation.open = false;
+      });
+    });
+  }
+</script>
