@@ -23,7 +23,7 @@ draft: false
 heroImage:
   asset: img/hero.webp
   alt: We are the Makoto 動画サムネイル
-youtubeVideos:
+videos:
   music-video:
     videoId: nvRCi3HtjGg
     title: We are the Makoto
@@ -50,7 +50,7 @@ endedAt: "2025.10"
 
 参加者ごとの歌唱パートを決め、仮歌と歌唱表現の共有資料を用意しました。音源、立ち絵、撮影、美術、編集を並行して進めるため、Google Sheetsにタスク、締め切り、成果物、登場人物、香盤、クレジットを集約しています。
 
-私は監督として全体の判断を担い、歌割、仮歌、歌唱ディレクション、セットとパペット方式の設計、セット制作、完成音源のMIXを担当しました。立ち絵、パペット操演、カメラ、撮影補助、映像編集は参加者で分担しています。
+僕は監督として全体の判断を担い、歌割、仮歌、歌唱ディレクション、セットとパペット方式の設計、セット制作、完成音源のMIXを担当しました。立ち絵、パペット操演、カメラ、撮影補助、映像編集は参加者で分担しています。
 
 <p class="eyebrow project-prose__eyebrow">VISUAL DESIGN</p>
 
@@ -58,7 +58,7 @@ endedAt: "2025.10"
 
 多数の人物を限られた人数で同時に登場させるため、印刷した顔と衣装を棒で操作するパペット方式を採用しました。事前に複数体を同時に動かす方法とセットの見え方を実験し、撮影時の操作負荷と画面内の密度を確認しています。
 
-![パペットを使った撮影風景](/images/projects/we-are-the-makoto/img/puppet-shoot.webp)
+<!-- ![パペットを使った撮影風景](/images/projects/we-are-the-makoto/img/puppet-shoot.webp) -->
 
 イラストの原画と仕上げ、操演、美術を分担し、撮影日にセットとパペットを組み合わせて各カットを収録しました。
 

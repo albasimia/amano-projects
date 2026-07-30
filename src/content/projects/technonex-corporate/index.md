@@ -28,9 +28,9 @@ relatedProjects:
   - tatsujin-lab
 draft: false
 heroImage:
-  asset: img/screenshot-desktop.jpg
+  asset: img/desktop.jpg
   alt: TechnoLabo Corporate Websiteの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 endedAt: "2026.4"

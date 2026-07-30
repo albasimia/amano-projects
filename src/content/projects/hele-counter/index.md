@@ -23,9 +23,9 @@ relatedProjects:
   - isutori-youtube
 draft: false
 heroImage:
-  asset: img/screenshot-desktop.jpg
+  asset: img/desktop.jpg
   alt: へぇカウンターの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 accent: "#4ea3e5"

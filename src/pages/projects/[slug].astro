@@ -70,19 +70,19 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
     </header>
 
     {projectMedia.length > 0 && (
-      <section class="project-screenshots" aria-label="Project screenshots and videos">
+      <section class="project-media" aria-label="Project images and videos">
         <Container>
-          <div class:list={["project-screenshots__grid", {
-            "project-screenshots__grid--single": projectMedia.length === 1,
-            "project-screenshots__grid--desktop-mobile": hasDesktopAndMobileOnly,
+          <div class:list={["project-media__grid", {
+            "project-media__grid--single": projectMedia.length === 1,
+            "project-media__grid--desktop-mobile": hasDesktopAndMobileOnly,
           }]}>
             {projectMedia.map((media) => (
-              <figure class:list={["project-screenshot", `project-screenshot--${media.kind}`, `project-screenshot--${media.type}`]}>
+              <figure class:list={["project-media-item", `project-media-item--${media.kind}`, `project-media-item--${media.type}`]}>
                 <figcaption>{media.label}</figcaption>
                 {media.type === "image" ? (
                   <img src={media.src} alt={media.alt} loading="eager" decoding="async" />
                 ) : (
-                  <div class="project-screenshot__video">
+                  <div class="project-media-item__video">
                     <iframe
                       src={media.src}
                       title={media.title}

@@ -23,9 +23,9 @@ relatedProjects:
   - tohzai-sangyo-corporate
 draft: false
 heroImage:
-  asset: img/screenshot-desktop.jpg
+  asset: img/desktop.jpg
   alt: 株式会社JSS コーポレートサイトの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 startedAt: "2023.3"

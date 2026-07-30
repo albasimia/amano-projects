@@ -27,7 +27,7 @@ websiteUrl: https://albasimia.github.io/love_mako/
 heroImage:
   asset: img/og-image.png
   alt: love_makoの代表画像
-screenshots:
+images:
   desktop: true
   mobile: false
 startedAt: "2022.8"

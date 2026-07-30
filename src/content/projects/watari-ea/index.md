@@ -30,7 +30,7 @@ draft: false
 heroImage:
   asset: img/og-image.webp
   alt: ｶﾀﾙｼｽﾜﾀﾘEVENTS ARCHIVEの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 startedAt: "2026.7"

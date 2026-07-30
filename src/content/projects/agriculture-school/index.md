@@ -23,6 +23,8 @@ heroImage:
   asset: img/field.jpeg
   alt: 夕方の農業塾の畑と、栽培中の野菜
   position: center
+images :
+  field : true
 relatedProjects:
   - kaka-see
   - yasai-toretore

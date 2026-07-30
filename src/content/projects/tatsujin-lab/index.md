@@ -26,9 +26,9 @@ relatedProjects:
   - housetect-corporate
 draft: false
 heroImage:
-  asset: img/screenshot-desktop.jpg
+  asset: img/desktop.jpg
   alt: 達人育成LABOの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 endedAt: "2026.5"

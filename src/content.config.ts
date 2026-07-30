@@ -53,16 +53,16 @@ const projects = defineCollection({
       alt: z.string().trim().min(1),
       position: z.string().trim().min(1).optional(),
     }).optional(),
-    screenshots: z.record(z.string(), z.boolean()).refine(
-      (screenshots) => Object.keys(screenshots).every((key) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(key)),
-      "screenshotsのキーは小文字英数字とハイフンで指定してください",
+    images: z.record(z.string(), z.boolean()).refine(
+      (images) => Object.keys(images).every((key) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(key)),
+      "imagesのキーは小文字英数字とハイフンで指定してください",
     ).default({}),
-    youtubeVideos: z.record(z.string(), z.object({
+    videos: z.record(z.string(), z.object({
       videoId: z.string().regex(/^[a-zA-Z0-9_-]{11}$/, "YouTubeの11文字のvideo IDを指定してください"),
       title: z.string().trim().min(1),
     })).refine(
       (videos) => Object.keys(videos).every((key) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(key)),
-      "youtubeVideosのキーは小文字英数字とハイフンで指定してください",
+      "videosのキーは小文字英数字とハイフンで指定してください",
     ).default({}),
     accent: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
     relatedProjects: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).default([]),

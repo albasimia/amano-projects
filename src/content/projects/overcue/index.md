@@ -27,7 +27,7 @@ draft: false
 heroImage:
   asset: img/og-image.png
   alt: OverCUEの代表画像
-screenshots:
+images:
   desktop: false
   mobile: false
   app: true

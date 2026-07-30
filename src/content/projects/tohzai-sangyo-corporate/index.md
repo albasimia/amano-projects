@@ -34,9 +34,9 @@ relatedProjects:
   - housetect-corporate
 draft: false
 heroImage:
-  asset: img/screenshot-desktop.jpg
+  asset: img/desktop.jpg
   alt: 東西産業貿易株式会社 オフィシャルWebサイトの代表画像
-screenshots:
+images:
   desktop: true
   mobile: true
 startedAt: "2020.4"

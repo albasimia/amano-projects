@@ -27,8 +27,8 @@ websiteUrl: https://albasimia.github.io/chana_birthday_2022/
 heroImage:
   asset: img/og-image.png
   alt: チャナごっちの代表画像
-screenshots:
-  desktop: true
+images:
+  desktop: false
   mobile: true
 startedAt: "2022.5"
 endedAt: "2023.5"

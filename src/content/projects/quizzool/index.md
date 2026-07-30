@@ -26,9 +26,13 @@ websiteUrl: https://quizzool.web.app/
 heroImage:
   asset: img/og-image.png
   alt: Quizzoolのロゴとサービス紹介
-screenshots:
-  desktop: true
+images:
+  desktop: false
   mobile: false
+videos:
+  demo:
+    videoId: n-rgXyzDx3o
+    title: Quizool demo
 accent: "#5451a9"
 relatedProjects:
   - hele-counter
@@ -48,16 +52,6 @@ endedAt: "2020.8"
 ## 目指した体験
 
 主催者がイベントと問題を作成し、参加者は手元のスマートフォンから回答する。会場では問題や正解、ランキングがテレビ番組のように切り替わる。インストール不要のWebアプリだけで、この一連のクイズイベントを開催できる状態を目指しました。
-
-<div class="project-video">
-  <iframe
-    src="https://www.youtube.com/embed/n-rgXyzDx3o?autoplay=1&mute=1&loop=1&playlist=n-rgXyzDx3o&rel=0"
-    title="Quizzool 紹介動画"
-    loading="lazy"
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen
-  ></iframe>
-</div>
 
 <p class="eyebrow project-prose__eyebrow">STRUCTURE</p>
 
