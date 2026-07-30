@@ -1,5 +1,5 @@
 ---
-title: 東西産業貿易株式会社 オフィシャルWebサイト
+title: 東西産業貿易株式会社 Webサイト
 slug: tohzai-sangyo-corporate
 summary: 輸入食品と産業設備にまたがる事業情報を整理し、社内更新可能なCMSとSVGアニメーションを実装した企業サイト。
 origin: 性質の異なる複数事業を一つの企業サイトへ統合し、公開後はクライアント自身が情報を更新できる仕組みが必要だった。
@@ -28,7 +28,10 @@ team:
   - デザイナー 1名
   - エンジニア 1名
 websiteUrl: https://www.tohzai-sangyo.co.jp/
-relatedProjects: []
+relatedProjects: 
+  - jss-corporate
+  - technonex-corporate
+  - housetect-corporate
 draft: false
 heroImage:
   asset: img/screenshot-desktop.jpg
@@ -38,7 +41,7 @@ screenshots:
   mobile: true
 startedAt: "2020.4"
 endedAt: "2020.8"
-accent: "#d72723"
+accent: "#185301"
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

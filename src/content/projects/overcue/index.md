@@ -30,12 +30,11 @@ heroImage:
 screenshots:
   desktop: false
   mobile: false
+  app: true
 startedAt: "2026.7"
 completedAt: "2026.7"
 accent: "#ae0006"
 ---
-
-![OverCUE アプリ UI](/images/projects/overcue/img/screenshot-app.png)
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>
 

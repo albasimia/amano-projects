@@ -20,8 +20,9 @@ roles:
 startedAt: "2026.9.6"
 websiteUrl: https://catharsiswatari-events.pages.dev/events/yasai-toretore-2026/
 relatedProjects:
-  - watari-ea
+  - agriculture-school
   - kaka-see
+  - watari-ea
 draft: false
 heroImage:
   asset: img/og-image.webp

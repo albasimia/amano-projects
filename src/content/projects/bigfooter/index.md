@@ -23,7 +23,8 @@ roles:
   - バックエンド
   - 運用設計
 startedAt: "2022"
-relatedProjects: []
+relatedProjects: 
+  - bookmate
 draft: false
 accent: "#4B6370"
 ---

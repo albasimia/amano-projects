@@ -73,7 +73,30 @@ screenshots:
   mobile: true
 ```
 
-`false`または未指定のスクリーンショットは表示しません。表示対象の画像が存在しない場合は、Asset同期時にエラーになります。
+`screenshots`には任意のキーを追加できます。キー`app`を有効にした場合は、同じキーを持つ`assets/img/screenshot-app.*`を表示します。
+
+```text
+assets/img/
+└─ screenshot-app.png
+```
+
+```yaml
+screenshots:
+  desktop: false
+  mobile: false
+  app: true
+```
+
+キーには小文字英数字とハイフンを使用します。`false`または未指定のスクリーンショットは表示しません。表示対象の画像が存在しない場合は、Asset同期時にエラーになります。
+
+同じエリアへYouTube動画を表示する場合は、11文字の動画IDとiframe用のタイトルを指定します。動画にはプライバシー強化版のYouTube埋め込みURLを使用します。
+
+```yaml
+youtubeVideos:
+  demo:
+    videoId: nvRCi3HtjGg
+    title: We are the Makoto
+```
 
 ### アクセントカラーの自動取得
 

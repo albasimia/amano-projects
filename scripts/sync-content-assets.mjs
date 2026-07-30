@@ -67,9 +67,11 @@ function validateScreenshots(frontmatter, catalog, slug, sourcePath) {
   if (!isRecord(screenshots)) {
     throw new Error(`${sourcePath}: screenshotsはobjectで指定してください`);
   }
-  for (const kind of ["desktop", "mobile"]) {
-    const visible = screenshots[kind];
-    if (visible !== undefined && typeof visible !== "boolean") {
+  for (const [kind, visible] of Object.entries(screenshots)) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(kind)) {
+      throw new Error(`${sourcePath}: screenshotsのキーは小文字英数字とハイフンで指定してください`);
+    }
+    if (typeof visible !== "boolean") {
       throw new Error(`${sourcePath}: screenshots.${kind}はbooleanで指定してください`);
     }
     if (visible === true && !findConventionalAsset(catalog, slug, `img/screenshot-${kind}`)) {

@@ -22,7 +22,7 @@ roles:
 startedAt: "2026.7"
 repositoryUrl: https://github.com/albasimia/albasimia-ssg-core
 relatedProjects:
-  - watari-ea
+  - yasai-toretore
 draft: false
 ---
 

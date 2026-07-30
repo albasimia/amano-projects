@@ -20,6 +20,7 @@ roles:
   - 実装
   - 演出
 relatedProjects:
+  - we-are-the-makoto
   - chana-birthday-2022
   - love-mako
   - chachamaru-birthday

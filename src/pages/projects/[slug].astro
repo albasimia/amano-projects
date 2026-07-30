@@ -6,7 +6,7 @@ import Container from "albasimia-ssg-core/components/Container.astro";
 import MetaList from "albasimia-ssg-core/components/MetaList.astro";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import { getPublishedProjects, projectPeriod, statusLabels, type ProjectEntry } from "../../lib/projects";
-import { getProjectScreenshots } from "../../lib/project-assets";
+import { getProjectMedia } from "../../lib/project-assets";
 
 export async function getStaticPaths() {
   const projects = await getPublishedProjects();
@@ -24,7 +24,11 @@ const projectAccentStyle = project.data.accent
   ? `--color-accent:${project.data.accent};--project-accent:${project.data.accent}`
   : undefined;
 const period = projectPeriod(project);
-const screenshots = getProjectScreenshots(project);
+const projectMedia = getProjectMedia(project);
+const hasDesktopAndMobileOnly = projectMedia.length === 2
+  && projectMedia.every(({ type }) => type === "image")
+  && projectMedia.some(({ kind }) => kind === "desktop")
+  && projectMedia.some(({ kind }) => kind === "mobile");
 const related = project.data.relatedProjects
   .map((slug) => projects.find(({ data }) => data.slug === slug))
   .filter((entry): entry is ProjectEntry => entry !== undefined);
@@ -65,14 +69,29 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
       </Container>
     </header>
 
-    {screenshots.length > 0 && (
-      <section class="project-screenshots" aria-label="Project screenshots">
+    {projectMedia.length > 0 && (
+      <section class="project-screenshots" aria-label="Project screenshots and videos">
         <Container>
-          <div class:list={["project-screenshots__grid", { "project-screenshots__grid--single": screenshots.length === 1 }]}>
-            {screenshots.map((screenshot) => (
-              <figure class:list={["project-screenshot", `project-screenshot--${screenshot.kind}`]}>
-                <figcaption>{screenshot.label}</figcaption>
-                <img src={screenshot.src} alt={screenshot.alt} loading="eager" decoding="async" />
+          <div class:list={["project-screenshots__grid", {
+            "project-screenshots__grid--single": projectMedia.length === 1,
+            "project-screenshots__grid--desktop-mobile": hasDesktopAndMobileOnly,
+          }]}>
+            {projectMedia.map((media) => (
+              <figure class:list={["project-screenshot", `project-screenshot--${media.kind}`, `project-screenshot--${media.type}`]}>
+                <figcaption>{media.label}</figcaption>
+                {media.type === "image" ? (
+                  <img src={media.src} alt={media.alt} loading="eager" decoding="async" />
+                ) : (
+                  <div class="project-screenshot__video">
+                    <iframe
+                      src={media.src}
+                      title={media.title}
+                      loading="lazy"
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
+                )}
               </figure>
             ))}
           </div>
@@ -107,7 +126,7 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
       <section class="related-projects" aria-labelledby="related-title">
         <Container>
           <p class="eyebrow">RELATED PROJECTS</p>
-          <h2 id="related-title">経験は、次の制作へつながる。</h2>
+          <h2 id="related-title">経験は、次の体験へ……</h2>
           <div class="project-list">
             {related.map((entry) => <ProjectCard project={entry} />)}
           </div>

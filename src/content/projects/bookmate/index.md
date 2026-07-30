@@ -24,7 +24,8 @@ roles:
 organization: BLOOMARK
 startedAt: "2020"
 endedAt: "2025"
-relatedProjects: []
+relatedProjects: 
+  - bigfooter
 draft: false
 accent: "#2e2e2e"
 ---

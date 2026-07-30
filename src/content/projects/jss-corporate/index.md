@@ -17,7 +17,10 @@ roles:
   - 写真撮影
 organization: BLOOMARK
 websiteUrl: https://j-ss.jp/
-relatedProjects: []
+relatedProjects: 
+  - technonex-corporate
+  - housetect-corporate
+  - tohzai-sangyo-corporate
 draft: false
 heroImage:
   asset: img/screenshot-desktop.jpg

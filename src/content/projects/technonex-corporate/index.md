@@ -23,6 +23,7 @@ roles:
   - 公開
 websiteUrl: https://technonex.co.jp/
 relatedProjects:
+  - jss-corporate
   - housetect-corporate
   - tatsujin-lab
 draft: false
@@ -34,6 +35,7 @@ screenshots:
   mobile: true
 endedAt: "2026.4"
 accent: "#3180db"
+
 ---
 
 <p class="eyebrow project-prose__eyebrow">ORIGIN</p>

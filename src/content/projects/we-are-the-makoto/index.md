@@ -23,6 +23,10 @@ draft: false
 heroImage:
   asset: img/hero.webp
   alt: We are the Makoto 動画サムネイル
+youtubeVideos:
+  music-video:
+    videoId: nvRCi3HtjGg
+    title: We are the Makoto
 accent: "#173ca7"
 startedAt: "2025.9"
 endedAt: "2025.10"
@@ -39,16 +43,6 @@ endedAt: "2025.10"
 ## 目指した体験
 
 単にメッセージを寄せ集めるのではなく、歌唱、イラスト、工作、撮影、編集という異なる参加方法を一つの映像へ統合し、贈られる本人だけでなく、制作に関わった人々にも共同制作の時間が残る状態を目指しました。
-
-<div class="project-video">
-  <iframe
-    src="https://www.youtube.com/embed/nvRCi3HtjGg?rel=0"
-    title="We are the Makoto"
-    loading="lazy"
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen
-  ></iframe>
-</div>
 
 <p class="eyebrow project-prose__eyebrow">DIRECTION</p>
 
