@@ -564,7 +564,7 @@ main[class] .asc-tag {
 .about-profile__body > p { max-width: 35rem; margin: 0; color: var(--color-muted); }
 .about-profile__body > p + p { margin-top: 1.5rem; }
 .about-profile__body .about-profile__statement { color: var(--color-text); font-size: clamp(1.8rem, 3.8vw, 3.2rem); font-weight: 620; line-height: 1.2; letter-spacing: -.045em; }
-.about-profile__body .asc-arrow-link { margin-top: 3rem; }
+.about-profile__links { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; margin-top: 3rem; }
 .index-page > .asc-container { padding-block: 0 var(--section-space); }
 .project-index-hero { padding-block: clamp(2.75rem, 5vw, 4.5rem); }
 .project-index-hero > .asc-container { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(18rem, .9fr); gap: clamp(2rem, 6vw, 7rem); align-items: end; }
