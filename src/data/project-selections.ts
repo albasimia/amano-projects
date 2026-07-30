@@ -1,23 +1,11 @@
 export const projectSelections = {
   home: {
-    pickUp: ["yasai-toretore", "kaka-see", "overcue"],
-    clientWork: [
-      "kayac-interactive-campaigns",
-      "subaru-operations",
-      "bookmate",
-    ],
-    personalProjects: [
-      "isutori-youtube",
-      "birthday-contents",
-      "watari-ea",
-    ],
+    pickUp: ["jss-corporate", "overcue", "bookmate"],
+    clientWork: ["technonex-corporate", "housetect-corporate", "bigfooter"],
+    personalProjects: ["quizzool", "aovista", "isutori-youtube"],
     inProgress: "kaka-see",
   },
   experience: {
-    earlierProjects: [
-      "hele-button",
-      "quizzool",
-      "rice-caster",
-    ],
+    earlierProjects: ["hele-button", "quizzool", "rice-caster"],
   },
 } as const;
