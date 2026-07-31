@@ -44,7 +44,6 @@ const workProjects = data.works
 >
   <header class="page-hero page-hero--statement company-experience-hero">
     <Container>
-      <ArrowLink href="/experience/">ALL EXPERIENCE</ArrowLink>
       <p class="eyebrow">PROFESSIONAL EXPERIENCE</p>
       <h1>{data.company}</h1>
       <p>{data.period} / {data.label}</p>
@@ -72,4 +71,33 @@ const workProjects = data.works
       </Container>
     </Section>
   )}
+
+  <Section
+    class={workProjects.length > 0 ? "experience-identity section--muted" : "experience-identity"}
+    labelledby="experience-identity-title"
+  >
+    <Container>
+      <SectionHeader
+        eyebrow="WHAT REMAINS"
+        title="経験が取り込まれた人格へ……"
+        id="experience-identity-title"
+      />
+      <div class="experience-identity__body">
+        <p>{data.whatRemains}</p>
+        <ArrowLink href="/about/">ABOUT</ArrowLink>
+      </div>
+    </Container>
+  </Section>
 </SiteLayout>
+
+<style>
+  .experience-identity__body p {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  }
+
+  .experience-identity__body :global(.asc-arrow-link) {
+    display: flex;
+    margin: clamp(2.5rem, 5vw, 4rem) 0 0 auto;
+  }
+</style>

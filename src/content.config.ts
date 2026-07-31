@@ -87,6 +87,7 @@ const companies = defineCollection({
     label: z.string().trim().min(1),
     period: z.string().trim().min(1),
     summary: z.string().trim().min(1),
+    whatRemains: z.string().trim().min(1),
     areas: z.array(z.string().trim().min(1)).min(1),
     works: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).default([]),
     order: z.number().int().nonnegative(),
