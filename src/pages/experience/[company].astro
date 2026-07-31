@@ -68,16 +68,49 @@ const workProjects = data.works
         <div class="project-card-grid">
           {workProjects.map((project) => <ProjectCard project={project} />)}
         </div>
-        <ArrowLink class="section-end-link" href="/about/">ABOUT</ArrowLink>
       </Container>
     </Section>
   )}
 
-  {workProjects.length === 0 && (
-    <Section>
-      <Container>
-        <ArrowLink class="section-end-link" href="/about/">ABOUT</ArrowLink>
-      </Container>
-    </Section>
-  )}
+  <Section
+    class={workProjects.length > 0 ? "experience-identity section--muted" : "experience-identity"}
+    labelledby="experience-identity-title"
+  >
+    <Container>
+      <SectionHeader
+        eyebrow="WHAT REMAINS"
+        title="経験が取り込まれた人格へ……"
+        id="experience-identity-title"
+      />
+      <div class="experience-identity__body">
+        <p>{data.whatRemains}</p>
+        <ArrowLink href="/about/">ABOUT</ArrowLink>
+      </div>
+    </Container>
+  </Section>
 </SiteLayout>
+
+<style>
+  .experience-identity__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 2rem 4rem;
+  }
+
+  .experience-identity__body p {
+    max-width: 45rem;
+    margin: 0;
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  }
+
+  .experience-identity__body :global(.asc-arrow-link) {
+    justify-self: end;
+  }
+
+  @media (max-width: 767px) {
+    .experience-identity__body {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
