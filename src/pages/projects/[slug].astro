@@ -120,7 +120,7 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
     <Container class="project-facts">
       <p class="eyebrow">FACTS</p>
       <MetaList items={facts} />
-      <div class="project-overview__links">
+      <div class="project-facts__links">
         <ArrowLink href="/about/">ABOUT</ArrowLink>
         <ArrowLink href="/experience/">EXPERIENCE</ArrowLink>
       </div>
@@ -139,3 +139,13 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
     )}
   </article>
 </SiteLayout>
+
+<style>
+  .project-facts__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+</style>
