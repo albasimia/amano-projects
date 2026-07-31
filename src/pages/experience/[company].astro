@@ -91,26 +91,13 @@ const workProjects = data.works
 </SiteLayout>
 
 <style>
-  .experience-identity__body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-    gap: 2rem 4rem;
-  }
-
   .experience-identity__body p {
-    max-width: 45rem;
     margin: 0;
     font-size: clamp(1.05rem, 1.8vw, 1.25rem);
   }
 
   .experience-identity__body :global(.asc-arrow-link) {
-    justify-self: end;
-  }
-
-  @media (max-width: 767px) {
-    .experience-identity__body {
-      grid-template-columns: 1fr;
-    }
+    display: flex;
+    margin: clamp(2.5rem, 5vw, 4rem) 0 0 auto;
   }
 </style>
