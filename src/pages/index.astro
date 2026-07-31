@@ -78,7 +78,6 @@ function projectStyle(project: ProjectEntry): string | undefined {
       <div class="home-hero__footer">
         <div class="home-hero__links">
           <a class="home-hero__button home-hero__button--primary" href="/projects/">VIEW PROJECTS <span aria-hidden="true">→</span></a>
-          <a class="home-hero__button" href="/about/">ABOUT</a>
         </div>
       </div>
     </Container>
@@ -135,7 +134,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
         <div class="project-card-grid">
           {pickUpProjects.map((project) => <ProjectCard project={project} />)}
         </div>
-        <ArrowLink class="section-end-link" href="/projects/">VIEW ALL</ArrowLink>
+        <ArrowLink class="section-end-link" href="/projects/">VIEW ALL PROJECTS</ArrowLink>
       </div>
 
       <div class="home-work-group">
@@ -145,7 +144,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
         <div class="project-card-grid">
           {featuredClientProjects.map((project) => <ProjectCard project={project} />)}
         </div>
-        <ArrowLink class="section-end-link" href="/projects/#client-work">VIEW ALL</ArrowLink>
+        <ArrowLink class="section-end-link" href="/projects/#client-work">VIEW ALL PROJECTS</ArrowLink>
       </div>
 
       <div class="home-work-group">
@@ -155,7 +154,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
         <div class="project-card-grid">
           {featuredPersonalProjects.map((project) => <ProjectCard project={project} />)}
         </div>
-        <ArrowLink class="section-end-link" href="/projects/#personal-projects">VIEW ALL</ArrowLink>
+        <ArrowLink class="section-end-link" href="/projects/#personal-projects">VIEW ALL PROJECTS</ArrowLink>
       </div>
 
       {inProgressProject && (
