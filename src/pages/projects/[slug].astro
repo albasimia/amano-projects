@@ -120,6 +120,10 @@ if (project.data.technologies.length) facts.push({ term: "Technology", value: pr
     <Container class="project-facts">
       <p class="eyebrow">FACTS</p>
       <MetaList items={facts} />
+      <div class="project-overview__links">
+        <ArrowLink href="/about/">ABOUT</ArrowLink>
+        <ArrowLink href="/experience/">EXPERIENCE</ArrowLink>
+      </div>
     </Container>
 
     {related.length > 0 && (
