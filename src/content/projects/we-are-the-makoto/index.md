@@ -1,5 +1,5 @@
 ---
-title: We are the Makoto
+title: We Are the Makoto
 slug: we-are-the-makoto
 summary: 友人の誕生日に向け、複数人の歌唱とパペット撮影を一つの映像へ統合したミュージックビデオ。
 origin: 友人の誕生日を、関係する人々がそれぞれの形で参加できる映像作品として祝いたかった。
@@ -22,11 +22,11 @@ relatedProjects:
 draft: false
 heroImage:
   asset: img/hero.webp
-  alt: We are the Makoto 動画サムネイル
+  alt: We Are the Makoto 動画サムネイル
 videos:
   music-video:
     videoId: nvRCi3HtjGg
-    title: We are the Makoto
+    title: We Are the Makoto
 accent: "#173ca7"
 startedAt: "2025.9"
 endedAt: "2025.10"
