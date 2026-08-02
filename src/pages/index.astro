@@ -104,14 +104,16 @@ function projectStyle(project: ProjectEntry): string | undefined {
     <Container>
       <SectionHeader eyebrow="PROCESS" title="経験が、構造になる" id="process-title" />
       <div class="process-cycle">
-        <svg class="process-cycle__track" viewBox="0 0 100 100" aria-hidden="true">
-          <defs>
-            <marker id="process-arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
-              <path d="M0,0 L5,2.5 L0,5 Z"></path>
-            </marker>
-          </defs>
-          {processSteps.map((item) => <path d={item.path} marker-end="url(#process-arrow)"></path>)}
-        </svg>
+        <div class="process-cycle__track-clip" aria-hidden="true">
+          <svg class="process-cycle__track" viewBox="0 0 100 100">
+            <defs>
+              <marker id="process-arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+                <path d="M0,0 L5,2.5 L0,5 Z"></path>
+              </marker>
+            </defs>
+            {processSteps.map((item) => <path d={item.path} marker-end="url(#process-arrow)"></path>)}
+          </svg>
+        </div>
         <ol class="process-cycle__nodes">
           {processSteps.map((item) => (
             <li style={item.style}><span>{item.number}</span><strong>{item.title}</strong></li>

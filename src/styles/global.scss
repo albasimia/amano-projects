@@ -341,9 +341,17 @@ main[class] .asc-tag {
   place-items: center;
   margin: 0 auto clamp(4rem, 8vw, 7rem);
 
-  &__track {
+  &__track-clip {
     position: absolute;
     inset: 0;
+    overflow: hidden;
+    overflow: clip;
+    contain: paint;
+    pointer-events: none;
+  }
+
+  &__track {
+    display: block;
     width: 100%;
     height: 100%;
     overflow: visible;
@@ -463,7 +471,7 @@ main[class] .asc-tag {
 .project-card__status--verification { --status-color: oklch(60.2% .14 350); }
 .project-card__status--operation { --status-color: oklch(60.2% .14 145); }
 .project-card__status--paused { --status-color: oklch(60.2% .14 25); }
-.project-card__status--completed { --status-color: #deb200; }
+.project-card__status--completed { --status-color: #cd9f00; }
 .project-card__period { margin: 1rem 0 0; color: var(--color-muted); font-size: .72rem; line-height: 1.6; }
 .project-card__period > span:first-child { margin-right: .65rem; color: var(--project-card-accent, var(--project-accent, var(--color-accent))); font-size: .62rem; font-weight: 750; letter-spacing: .14em; }
 .project-card__fields { margin: 1rem 0 0; color: var(--color-muted); font-size: .72rem; line-height: 1.6; overflow-wrap: anywhere; }
