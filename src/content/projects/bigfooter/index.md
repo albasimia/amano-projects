@@ -22,7 +22,7 @@ roles:
   - フロントエンド
   - バックエンド
   - 運用設計
-startedAt: "2022"
+startedAt: "2023"
 relatedProjects: 
   - bookmate
 draft: false
