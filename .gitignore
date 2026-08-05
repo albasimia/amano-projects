@@ -12,3 +12,4 @@ public/images/companies/
 .DS_Store
 *.log
 /amano-projects-dist.zip
+.aal/
