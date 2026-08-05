@@ -1,7 +1,7 @@
 ---
 title: albasimia-ai-logos
 slug: albasimia-ai-logos
-summary: AIと長期的に共同制作するために、判断基準、プロジェクト知識、変更履歴をGitで管理する制作OS。
+summary: AIと長期的に共同制作するために、判断基準、プロジェクト知識、変更履歴をGitで管理する判断・知識管理基盤。
 origin: ChatGPTやCodexとの共同制作では、スレッド、モデル、端末が変わるたびに、制作上の前提や判断理由が失われやすかった。
 intention: AIが変わっても同じ制作思想と現在地を再現し、人間に最終判断を残したまま共同制作を継続できる状態をつくる。
 status: operation
