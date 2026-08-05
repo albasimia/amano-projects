@@ -625,6 +625,19 @@ main[class] .asc-tag {
 .project-prose p + p { margin-top: 1.2rem; }
 .project-prose ul { padding-left: 1.35rem; }
 .project-prose li + li { margin-top: .5rem; }
+.project-prose pre.astro-code {
+  margin-block: 1.5rem;
+  padding: 1em;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  font-family: var(--font-code);
+  font-size: clamp(.78rem, 1.2vw, .9rem);
+  line-height: 1.7;
+  tab-size: 2;
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+}
+.project-prose pre.astro-code code { font: inherit; }
 .project-prose blockquote {
   position: relative;
   margin: 0;
@@ -656,7 +669,7 @@ main[class] .asc-tag {
 .project-prose blockquote th { color: var(--project-accent, var(--color-accent)); font-size: .72rem; font-weight: 750; letter-spacing: .08em; white-space: nowrap; }
 .project-prose blockquote th:nth-child(2),
 .project-prose blockquote td:nth-child(2) { min-width: 4.5rem; text-align: right; white-space: nowrap; }
-.project-prose blockquote pre { margin-block: 1.5rem; padding: 1rem; overflow-x: auto; background: var(--color-background); font-size: .78rem; line-height: 1.6; }
+.project-prose blockquote pre { margin-block: 1.5rem; padding: 1em; overflow-x: auto; background: var(--color-background); font-size: .78rem; line-height: 1.6; }
 
 @media (max-width: 48rem) {
   .project-prose blockquote table > :is(thead, tbody) {
