@@ -72,7 +72,7 @@ function projectStyle(project: ProjectEntry): string | undefined {
       <h1 id="home-title">
         <span>構想から、構造へ。</span>
         <span class="home-hero__break">構造から、実装へ。</span>
-        <span class="home-hero__accent-copy">そして、人が動くところまで。</span>
+        <span class="home-hero__accent-copy">そして、<br class="home-hero__sp-break" />人が動くところまで。</span>
       </h1>
       <div class="home-hero__footer">
         <div class="home-hero__links">
@@ -239,3 +239,15 @@ function projectStyle(project: ProjectEntry): string | undefined {
     </Container>
   </Section>
 </SiteLayout>
+
+<style>
+  .home-hero__sp-break {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .home-hero__sp-break {
+      display: inline;
+    }
+  }
+</style>
