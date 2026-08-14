@@ -75,6 +75,12 @@ Swift 6のmacOS CLIを基盤に、IOHIDからキーとダイヤル入力を取�
 
 実際のrekordbox上でCUE仕込みに使用し、配布用アプリ、GitHub Releases、多言語ガイドまで整備しました。
 
+<p class="eyebrow project-prose__eyebrow">ACTION</p>
+
+## 仕込み作業を、片手の専用ワークフローへ
+
+再生位置の移動、CUE設定、削除、再生のたびにマウスとキーボードを往復していた作業を、片手で連続して進められる操作へ変えました。既製デバイスを専用コントローラーとして読み替えることで、準備作業の身体的な負担と操作の切り替えを減らしています。
+
 <p class="eyebrow project-prose__eyebrow">SOCIAL CONNECTION</p>
 
 ## 社会との接続
