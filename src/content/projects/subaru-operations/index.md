@@ -50,6 +50,12 @@ accent: "#2362A5"
 
 GoogleスプレッドシートとJSONを利用した情報更新方法を提案し、運用へ定着させました。また、コネクティッドサービスのメンテナンス情報を扱うWordPress CMSを構築しました。
 
+<p class="eyebrow project-prose__eyebrow">ACTION</p>
+
+## 更新作業を、属人的な実装から運用へ
+
+情報を更新するたびにHTMLや実装へ直接手を入れるのではなく、GoogleスプレッドシートやCMSから必要な情報を更新できる流れへ移しました。担当者や会社が変わっても同じ手順で更新を続けられるようにし、制作物ではなく運用そのものを引き継げる状態へ変えています。
+
 <p class="eyebrow project-prose__eyebrow">LEARNING</p>
 
 ## 得られたこと
