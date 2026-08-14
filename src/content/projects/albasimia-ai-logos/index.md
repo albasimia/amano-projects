@@ -125,6 +125,12 @@ AAL自身の開発へAALを適用し、設計判断、変更履歴、proposal、
 
 共有lockによる版の再現、変更差分の固定、Project知識の全文置換、APIへ渡すcontextの安定生成を含む12件の統合テストを実装し、GitHub ActionsのUbuntuとmacOSで成功を確認しています。
 
+<p class="eyebrow project-prose__eyebrow">ACTION</p>
+
+## AIへ任せることから、人間が判断する運用へ
+
+会話の流れに任せてAIの提案をそのまま採用するのではなく、提案、差分、判断理由を分けて記録し、人間がacceptしたものだけを正本へ反映する運用へ変えました。AIを最終判断者にせず、判断材料と実装を支援する共同制作者として扱うために、人間側の制作行動そのものを構造化しています。
+
 <p class="eyebrow project-prose__eyebrow">LEARNING</p>
 
 ## 得られたこと
